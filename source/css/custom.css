@@ -1,0 +1,11 @@
+/* Fluid 主题：让导航栏「工具栏」下拉菜单鼠标悬浮即展开 */
+/* 默认 Bootstrap 4 dropdown 是点击展开，加上这条规则改为悬浮展开（桌面端） */
+@media (hover: hover) {
+  .navbar .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+  /* 悬浮时高亮工具栏入口文字，提示可交互 */
+  .navbar .dropdown:hover > .nav-link.dropdown-toggle {
+    color: #30a9de;
+  }
+}
