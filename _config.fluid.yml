@@ -18,10 +18,20 @@ index:
 # ==================== 文章页 ====================
 post:
   meta:
-    - date
-    - category
-    - tag
-    - wordcount
+    author:
+      enable: false
+    date:
+      enable: true
+      format: "LL a"
+    wordcount:
+      enable: true
+    min2read:
+      enable: true
+      awl: 2
+      wpm: 60
+    views:
+      enable: false
+      source: "busuanzi"
   highlight:
     theme: github
     dark_theme: github-dark
