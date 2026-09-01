@@ -1,0 +1,49 @@
+# ==================== 顶部导航栏 ====================
+navbar:
+  title: Novice learning
+  menu:
+    - { key: 'home', link: '/', icon: 'icon-home-fill' }
+    - { key: 'archive', link: '/archives/', icon: 'icon-archive-fill' }
+    - { key: 'category', link: '/categories/', icon: 'icon-category-fill' }
+    - { key: 'tag', link: '/tags/', icon: 'icon-tag-fill' }
+    - { key: 'about', link: '/about/', icon: 'icon-info-circle-fill' }
+
+# ==================== 首页 ====================
+index:
+  slogan:
+    text: 嵌入式工程师的折腾记录
+  post_list:
+    date_format: 'YYYY-MM-DD'
+
+# ==================== 文章页 ====================
+post:
+  meta:
+    - date
+    - category
+    - tag
+    - wordcount
+  highlight:
+    theme: github
+    dark_theme: github-dark
+  toc:
+    enable: true
+    expand: false
+  copyright:
+    enable: true
+    content: '本文采用 CC BY-NC-SA 4.0 协议，转载请注明出处。'
+
+
+# ==================== 本地搜索 ====================
+search:
+  enable: true
+  path: /search.json
+  field: post
+  content: true
+
+# ==================== 页脚 ====================
+footer:
+  content:
+    - '© 2026 chen-daoming'
+    - 'Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank">Fluid</a>'
+  statistics:
+    enable: false
