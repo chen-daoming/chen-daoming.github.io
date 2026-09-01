@@ -6,15 +6,20 @@ navbar:
     - { key: 'archive', link: '/archives/', icon: 'icon-archive-fill' }
     - { key: 'category', link: '/categories/', icon: 'icon-category-fill' }
     - { key: 'tag', link: '/tags/', icon: 'icon-tag-fill' }
+    # 工具栏：下拉菜单，鼠标悬浮展开，内含多个在线工具
+    - key: 'tools'
+      name: '工具栏'
+      icon: 'icon-tools-fill'
+      submenu:
+        - { key: 'crc', name: 'CRC 计算器', link: '/crc/' }
+        # 以后新增工具：- { key: 'xxx', name: '工具名', link: '/xxx/' }
     - { key: 'about', link: '/about/', icon: 'icon-info-circle-fill' }
-
 # ==================== 首页 ====================
 index:
   slogan:
     text: 嵌入式工程师的折腾记录
   post_list:
     date_format: 'YYYY-MM-DD'
-
 # ==================== 文章页 ====================
 post:
   meta:
@@ -41,15 +46,16 @@ post:
   copyright:
     enable: true
     content: '本文采用 CC BY-NC-SA 4.0 协议，转载请注明出处。'
-
-
 # ==================== 本地搜索 ====================
 search:
   enable: true
   path: /search.json
   field: post
   content: true
-
+# ==================== 自定义资源 ====================
+# 加载自定义 CSS（导航栏下拉菜单悬浮展开样式，文件位于 source/css/custom.css）
+custom_css:
+  - /css/custom.css
 # ==================== 页脚 ====================
 footer:
   content:
