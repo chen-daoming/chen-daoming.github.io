@@ -1,0 +1,334 @@
+---
+title: LED 串联电阻计算器
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LED 串联电阻计算器</title>
+<style>
+  :root{
+    --bg:#121518;--panel:#1b2026;--panel-2:#21272e;--border:#2b333c;--border-strong:#3a444f;
+    --text:#e9edf2;--text-dim:#98a4b1;--text-faint:#6b7683;
+    --accent:#e0a34b;--accent-soft:rgba(224,163,75,.14);
+    --display-bg:#0c120e;--display:#a7e8ba;--display-dim:#4c7a5e;
+    --ok:#58c67c;--err:#d9685f;--warn:#d9a85f;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Consolas,"Courier New",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+  }
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:28px 16px 40px}
+  .tool{max-width:960px;margin:0 auto}
+  .head{margin-bottom:22px}
+  .head-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin:0 0 8px}
+  .head h1{margin:0 0 6px;font-size:26px;font-weight:700}
+  .head-sub{margin:0;color:var(--text-dim);font-size:14px;max-width:68ch}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px}
+  .panel-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text-dim);letter-spacing:.06em;margin:0 0 14px}
+  .panel-title::before{content:"";width:6px;height:14px;background:var(--accent);border-radius:1px;flex:none}
+  .field-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:13px;color:var(--text-dim);font-weight:500;display:flex;align-items:center;gap:6px}
+  .field label .unit-tag{font-family:var(--mono);font-size:11px;background:var(--panel-2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;color:var(--accent)}
+  .field-input{display:flex;gap:0}
+  .field-input input{flex:1;min-width:0;background:#0f1317;border:1px solid var(--border-strong);border-right:none;border-radius:6px 0 0 6px;color:var(--display);font-family:var(--mono);font-size:15px;padding:10px 12px;min-height:42px}
+  .field-input input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .field-input input::placeholder{color:var(--text-faint)}
+  .field-input select{width:auto;min-width:72px;background:var(--panel-2);border:1px solid var(--border-strong);border-radius:0 6px 6px 0;color:var(--text);font-family:var(--sans);font-size:13px;padding:0 10px;min-height:42px;cursor:pointer}
+  .field-input select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .readout{background:var(--display-bg);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:14px;box-shadow:inset 0 1px 4px rgba(0,0,0,.5)}
+  .readout-label{font-size:12px;color:var(--display-dim);font-family:var(--mono);letter-spacing:.08em;margin-bottom:8px}
+  .readout-value{font-family:var(--mono);font-size:30px;font-weight:700;color:var(--display);line-height:1.2;word-break:break-all}
+  .readout-value .unit{font-size:18px;color:var(--display-dim);margin-left:8px;font-weight:500}
+  .detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+  .detail-item{background:var(--panel-2);border:1px solid var(--border);border-radius:6px;padding:10px 12px}
+  .detail-item .di-label{font-size:11px;color:var(--text-faint);letter-spacing:.04em;margin-bottom:3px}
+  .detail-item .di-value{font-family:var(--mono);font-size:14px;color:var(--text);font-weight:600;word-break:break-all}
+  .warn-box{background:rgba(217,168,95,.1);border:1px solid var(--warn);border-radius:8px;padding:10px 14px;margin-top:12px;font-size:13px;color:var(--warn)}
+  .err-box{background:rgba(217,104,95,.1);border:1px solid var(--err);border-radius:8px;padding:10px 14px;margin-top:12px;font-size:13px;color:var(--err);font-family:var(--mono)}
+  .rec-group{margin-bottom:12px}
+  .rec-group:last-child{margin-bottom:0}
+  .rec-target{font-size:13px;color:var(--text);font-weight:600;margin-bottom:6px}
+  .rec-target .val{font-family:var(--mono);color:var(--display);font-weight:700}
+  .rec-series{display:flex;align-items:baseline;gap:10px;font-size:12.5px;padding:4px 0;flex-wrap:wrap;border-bottom:1px dashed rgba(224,163,75,.15)}
+  .rec-series:last-child{border-bottom:none}
+  .rec-name{font-family:var(--mono);font-weight:700;color:var(--accent);min-width:88px}
+  .rec-val{font-family:var(--mono);color:var(--text);font-weight:600;min-width:80px}
+  .rec-vout{color:var(--text-dim);font-family:var(--mono);font-size:12px}
+  .dev{font-family:var(--mono);font-size:12px;color:var(--err)}
+  .dev.ok{color:var(--ok)}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .led-svg{width:100%;height:auto;display:block;max-width:320px;margin:0 auto}
+  .formula-main{background:var(--display-bg);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;margin-bottom:12px}
+  .formula-main .fm-text{font-family:var(--mono);font-size:16px;color:var(--display);font-weight:600}
+  .formula-main .fm-text .var{color:var(--accent)}
+  .derive-list{margin:0;padding:0;list-style:none}
+  .derive-list li{font-size:13px;color:var(--text-dim);padding:6px 0;border-bottom:1px dashed var(--border);display:flex;gap:10px;align-items:baseline}
+  .derive-list li:last-child{border-bottom:none}
+  .derive-list .step-num{font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:700;min-width:20px}
+  .derive-list .step-formula{font-family:var(--mono);color:var(--text);font-size:13px}
+  .color-table{width:100%;border-collapse:collapse;font-size:12.5px}
+  .color-table thead th{background:var(--panel-2);color:var(--accent);font-weight:600;text-align:left;padding:7px 10px;border-bottom:1px solid var(--border-strong);font-size:11.5px}
+  .color-table tbody td{padding:6px 10px;border-bottom:1px solid var(--border);font-family:var(--mono)}
+  .color-table tbody td:first-child{font-family:var(--sans);font-weight:500}
+  .color-table tbody tr{cursor:pointer}
+  .color-table tbody tr:hover{background:var(--accent-soft)}
+  .color-table tbody tr.active{background:var(--accent-soft);outline:1px solid var(--accent)}
+  .color-dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:middle;border:1px solid rgba(255,255,255,.2)}
+  .foot{margin-top:18px;color:var(--text-faint);font-size:12.5px;border-top:1px dashed var(--border);padding-top:12px}
+  .foot code{font-family:var(--mono);color:var(--text-dim);background:var(--panel-2);padding:1px 5px;border-radius:4px}
+  @media(max-width:640px){
+    body{padding:20px 12px 32px}.head h1{font-size:22px}
+    .field-grid{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}
+    .readout-value{font-size:24px}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="tool">
+  <header class="head">
+    <div class="head-kicker">Embedded Utility</div>
+    <h1>LED 串联电阻计算器</h1>
+    <p class="head-sub">计算驱动一个或多个串联 LED 所需的限流电阻值和功率，支持多 LED 串联、E24/E96/E192 标准电阻推荐，附电路原理图和 LED 正向电压参考表。</p>
+  </header>
+
+  <!-- ===== 输入 ===== -->
+  <section class="panel">
+    <h2 class="panel-title">参数输入</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label>供电电压 <span class="unit-tag">Vs</span></label>
+        <div class="field-input">
+          <input type="number" id="vsIn" step="any" min="0" placeholder="例如 5" value="5">
+          <select disabled style="min-width:72px"><option>V</option></select>
+        </div>
+      </div>
+      <div class="field">
+        <label>LED 正向电压 <span class="unit-tag">Vf</span></label>
+        <div class="field-input">
+          <input type="number" id="vfIn" step="any" min="0" placeholder="例如 2.0" value="2.0">
+          <select disabled style="min-width:72px"><option>V</option></select>
+        </div>
+      </div>
+      <div class="field">
+        <label>LED 数量（串联） <span class="unit-tag">N</span></label>
+        <div class="field-input">
+          <input type="number" id="nIn" step="1" min="1" placeholder="1" value="1">
+          <select disabled style="min-width:72px"><option>个</option></select>
+        </div>
+      </div>
+      <div class="field">
+        <label>正向电流 <span class="unit-tag">If</span></label>
+        <div class="field-input">
+          <input type="number" id="ifIn" step="any" min="0" placeholder="例如 20" value="20">
+          <select id="ifUnit">
+            <option value="0.001" selected>mA</option>
+            <option value="1">A</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div id="errBox" class="err-box" style="display:none"></div>
+  </section>
+
+  <!-- ===== 结果 ===== -->
+  <section class="panel">
+    <h2 class="panel-title">计算结果</h2>
+    <div class="readout">
+      <div class="readout-label">LIMITING RESISTOR</div>
+      <div class="readout-value" id="rMain">—<span class="unit"></span></div>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-item"><div class="di-label">电阻功耗</div><div class="di-value" id="dPower">—</div></div>
+      <div class="detail-item"><div class="di-label">推荐额定功率</div><div class="di-value" id="dRating">—</div></div>
+      <div class="detail-item"><div class="di-label">LED 总压降</div><div class="di-value" id="dVfTotal">—</div></div>
+      <div class="detail-item"><div class="di-label">电阻压降</div><div class="di-value" id="dVr">—</div></div>
+      <div class="detail-item"><div class="di-label">回路电流</div><div class="di-value" id="dIf">—</div></div>
+    </div>
+    <div class="warn-box">电阻额定功率建议选计算功耗的 <strong>2–10 倍</strong>，避免过热。例如计算功耗 0.06W 时选 1/8W(0.125W) 或 1/4W(0.25W) 电阻。</div>
+    <div id="recBox" class="panel" style="margin-top:14px;margin-bottom:0;padding:14px;background:var(--panel-2)">
+      <div class="panel-title" style="margin-bottom:10px">标准电阻推荐（E24 / E96 / E192）</div>
+      <div id="recContent"></div>
+    </div>
+  </section>
+
+  <!-- ===== 电路图 + 公式 ===== -->
+  <div class="two-col">
+    <section class="panel">
+      <h2 class="panel-title">电路原理图</h2>
+      <svg class="led-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LED 串联限流电阻电路">
+        <!-- 外框导线 -->
+        <rect x="40" y="20" width="220" height="240" fill="none" stroke="#98a4b1" stroke-width="1.8"/>
+        <!-- 电流方向箭头 -->
+        <path d="M 100 20 L 115 20 M 110 16 L 115 20 L 110 24" stroke="#e0a34b" stroke-width="1.5" fill="none"/>
+        <text x="130" y="15" fill="#e0a34b" font-family="ui-monospace,monospace" font-size="12" font-weight="700">I</text>
+        <!-- 电压源 -->
+        <circle cx="40" cy="140" r="22" fill="none" stroke="#e9edf2" stroke-width="2"/>
+        <text x="40" y="135" text-anchor="middle" fill="#e9edf2" font-family="ui-monospace,monospace" font-size="14" font-weight="700">+</text>
+        <text x="40" y="152" text-anchor="middle" fill="#e9edf2" font-family="ui-monospace,monospace" font-size="14" font-weight="700">−</text>
+        <text x="12" y="144" fill="#e0a34b" font-family="ui-monospace,monospace" font-size="13" font-weight="700">Vs</text>
+        <!-- LED 符号 -->
+        <line x1="150" y1="60" x2="150" y2="80" stroke="#98a4b1" stroke-width="1.8"/>
+        <path d="M 130 80 L 170 80 L 150 105 Z" fill="none" stroke="#a7e8ba" stroke-width="2"/>
+        <line x1="130" y1="105" x2="170" y2="105" stroke="#a7e8ba" stroke-width="2"/>
+        <line x1="150" y1="105" x2="150" y2="125" stroke="#98a4b1" stroke-width="1.8"/>
+        <!-- 光线箭头 -->
+        <line x1="160" y1="82" x2="178" y2="68" stroke="#a7e8ba" stroke-width="1.5"/>
+        <path d="M 172 68 L 178 68 L 176 74" stroke="#a7e8ba" stroke-width="1.5" fill="none"/>
+        <line x1="165" y1="90" x2="185" y2="80" stroke="#a7e8ba" stroke-width="1.5"/>
+        <path d="M 179 78 L 185 80 L 180 84" stroke="#a7e8ba" stroke-width="1.5" fill="none"/>
+        <text x="185" y="95" fill="#a7e8ba" font-family="ui-monospace,monospace" font-size="11" font-weight="600">LED</text>
+        <text x="118" y="74" fill="#98a4b1" font-family="ui-monospace,monospace" font-size="10">Anode</text>
+        <text x="118" y="118" fill="#98a4b1" font-family="ui-monospace,monospace" font-size="10">Cathode</text>
+        <!-- 电阻（锯齿形） -->
+        <line x1="150" y1="125" x2="150" y2="145" stroke="#98a4b1" stroke-width="1.8"/>
+        <path d="M 150 145 L 140 153 L 160 161 L 140 169 L 160 177 L 140 185 L 160 193 L 150 201" fill="none" stroke="#e9edf2" stroke-width="2"/>
+        <line x1="150" y1="201" x2="150" y2="220" stroke="#98a4b1" stroke-width="1.8"/>
+        <text x="170" y="178" fill="#e9edf2" font-family="ui-monospace,monospace" font-size="13" font-weight="600">R</text>
+      </svg>
+    </section>
+    <section class="panel">
+      <h2 class="panel-title">计算公式</h2>
+      <div class="formula-main">
+        <div class="fm-text"><span class="var">R</span> = (<span class="var">Vs</span> − N×<span class="var">Vf</span>) / <span class="var">If</span></div>
+        <div class="fm-text" style="margin-top:8px;font-size:14px;color:var(--display-dim)"><span class="var">P</span> = (<span class="var">Vs</span> − N×<span class="var">Vf</span>) × <span class="var">If</span></div>
+      </div>
+      <ol class="derive-list">
+        <li><span class="step-num">1</span><span>LED 总压降：<span class="step-formula">Vf_total = N × Vf</span></span></li>
+        <li><span class="step-num">2</span><span>电阻压降：<span class="step-formula">Vr = Vs − Vf_total</span></span></li>
+        <li><span class="step-num">3</span><span>限流电阻：<span class="step-formula">R = Vr / If</span></span></li>
+        <li><span class="step-num">4</span><span>电阻功耗：<span class="step-formula">P = Vr × If = Vr² / R</span></span></li>
+        <li><span class="step-num">5</span><span>额定功率：<span class="step-formula">P_rated ≥ P × 2（建议 2–10 倍）</span></span></li>
+      </ol>
+      <div class="warn-box" style="margin-top:10px">必须满足 <code style="font-family:var(--mono)">Vs > N × Vf</code>，否则 LED 无法正常点亮。</div>
+    </section>
+  </div>
+
+  <!-- ===== LED 颜色参考 ===== -->
+  <section class="panel">
+    <h2 class="panel-title">LED 颜色与正向电压参考（点击填入）</h2>
+    <div style="overflow-x:auto">
+    <table class="color-table" id="colorTable">
+      <thead><tr><th>颜色</th><th>典型 Vf</th><th>Vf 范围</th><th>典型 If</th><th>常见应用</th></tr></thead>
+      <tbody>
+        <tr data-vf="1.9" data-if="20"><td><span class="color-dot" style="background:#ff3333"></span>红 Red</td><td>1.9 V</td><td>1.8 – 2.1 V</td><td>20 mA</td><td>指示灯/数码管</td></tr>
+        <tr data-vf="2.1" data-if="20"><td><span class="color-dot" style="background:#ffaa00"></span>琥珀 Amber</td><td>2.1 V</td><td>2.0 – 2.2 V</td><td>20 mA</td><td>转向灯/信号</td></tr>
+        <tr data-vf="2.05" data-if="20"><td><span class="color-dot" style="background:#ff7700"></span>橙 Orange</td><td>2.05 V</td><td>1.9 – 2.2 V</td><td>20 mA</td><td>装饰/指示灯</td></tr>
+        <tr data-vf="2.05" data-if="20"><td><span class="color-dot" style="background:#ffee00"></span>黄 Yellow</td><td>2.05 V</td><td>1.9 – 2.2 V</td><td>20 mA</td><td>警示/背光</td></tr>
+        <tr data-vf="2.5" data-if="20"><td><span class="color-dot" style="background:#33cc33"></span>绿 Green</td><td>2.5 V</td><td>2.0 – 3.1 V</td><td>20 mA</td><td>状态指示/显示屏</td></tr>
+        <tr data-vf="3.3" data-if="20"><td><span class="color-dot" style="background:#3366ff"></span>蓝 Blue</td><td>3.3 V</td><td>3.0 – 3.7 V</td><td>20 mA</td><td>装饰/全彩</td></tr>
+        <tr data-vf="3.2" data-if="20"><td><span class="color-dot" style="background:#ffffff;border-color:#888"></span>白 White</td><td>3.2 V</td><td>3.0 – 3.4 V</td><td>20 mA</td><td>照明/背光</td></tr>
+        <tr data-vf="1.8" data-if="20"><td><span class="color-dot" style="background:#ff66aa"></span>红外 IR</td><td>1.8 V</td><td>1.2 – 2.0 V</td><td>20 mA</td><td>遥控/通信</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <footer class="foot">
+    公式：<code>R = (Vs − N×Vf) / If</code>，<code>P = (Vs − N×Vf) × If</code>。电阻额定功率需留 2–10 倍余量。所有计算在浏览器本地完成，数据不上传。
+  </footer>
+</main>
+
+<script>
+(function(){"use strict";
+var $=function(id){return document.getElementById(id)};
+
+/* ===== E 系列标准电阻 ===== */
+var E24_BASE=[1.0,1.1,1.2,1.3,1.5,1.6,1.8,2.0,2.2,2.4,2.7,3.0,3.3,3.6,3.9,4.3,4.7,5.1,5.6,6.2,6.8,7.5,8.2,9.1];
+function genE(n){var a=[];for(var i=0;i<n;i++)a.push(parseFloat(Math.pow(10,i/n).toPrecision(3)));return a}
+var SERIES=[
+  {key:"E24",tol:"5%",base:E24_BASE},
+  {key:"E96",tol:"1%",base:genE(96)},
+  {key:"E192",tol:"0.5%",base:genE(192)}
+];
+function buildVals(base){var a=[],i,n;for(n=0;n<=6;n++)for(i=0;i<base.length;i++)a.push(base[i]*Math.pow(10,n));return a}
+var SVAL={};SERIES.forEach(function(s){SVAL[s.key]=buildVals(s.base)});
+function nearest(vals,t){var b=vals[0],bd=Math.abs(vals[0]-t),i,d;for(i=1;i<vals.length;i++){d=Math.abs(vals[i]-t);if(d<bd){bd=d;b=vals[i]}}return{value:b,dev:(b-t)/t*100}}
+function recAll(t){var o=[],i;for(i=0;i<SERIES.length;i++){var r=nearest(SVAL[SERIES[i].key],t);o.push({key:SERIES[i].key,tol:SERIES[i].tol,value:r.value,dev:r.dev})}return o}
+
+/* ===== 格式化 ===== */
+function sf(num,f){if(!isFinite(num))return"—";if(num===0)return"0";var d=Math.floor(Math.log10(Math.abs(num)))+1;return Number(num.toFixed(Math.max(0,f-d))).toString()}
+function fmtR(r){if(!isFinite(r)||r<0)return"—";if(r>=1e6)return sf(r/1e6,5)+" MΩ";if(r>=1e3)return sf(r/1e3,5)+" kΩ";return sf(r,5)+" Ω"}
+function fmtP(p){if(!isFinite(p)||p<0)return"—";if(p>=1)return sf(p,4)+" W";if(p>=1e-3)return sf(p/1e-3,4)+" mW";return sf(p/1e-6,4)+" µW"}
+function fmtV(v){if(!isFinite(v)||v<0)return"—";if(v>=1)return sf(v,5)+" V";return sf(v*1e3,4)+" mV"}
+function fmtI(a){if(!isFinite(a)||a<0)return"—";if(a>=1)return sf(a,4)+" A";return sf(a*1e3,4)+" mA"}
+
+/* ===== 额定功率档位 ===== */
+var RATINGS=[
+  {label:"1/16W",w:0.0625},{label:"1/10W",w:0.1},{label:"1/8W",w:0.125},
+  {label:"1/4W",w:0.25},{label:"1/2W",w:0.5},{label:"1W",w:1},
+  {label:"2W",w:2},{label:"3W",w:3},{label:"5W",w:5}
+];
+function recRating(p){for(var i=0;i<RATINGS.length;i++)if(RATINGS[i].w>=p*2)return RATINGS[i].label+"（"+RATINGS[i].w+"W）";return "5W 以上"}
+
+/* ===== 计算 ===== */
+var vsIn=$("vsIn"),vfIn=$("vfIn"),nIn=$("nIn"),ifIn=$("ifIn"),ifUnit=$("ifUnit");
+var rMain=$("rMain"),dPower=$("dPower"),dRating=$("dRating"),dVfTotal=$("dVfTotal"),dVr=$("dVr"),dIf=$("dIf");
+var errBox=$("errBox"),recContent=$("recContent"),recBox=$("recBox");
+
+function calc(){
+  var vs=parseFloat(vsIn.value),vf=parseFloat(vfIn.value),n=parseInt(nIn.value,10);
+  var ifRaw=parseFloat(ifIn.value),ifMult=parseFloat(ifUnit.value);
+  errBox.style.display="none";recBox.style.display="none";
+  if(!isFinite(vs)||vs<=0||!isFinite(vf)||vf<=0||!isFinite(n)||n<1||!isFinite(ifRaw)||ifRaw<=0){
+    rMain.innerHTML="—<span class=\"unit\"></span>";
+    dPower.textContent="—";dRating.textContent="—";dVfTotal.textContent="—";dVr.textContent="—";dIf.textContent="—";
+    return;
+  }
+  var If=ifRaw*ifMult;
+  var vfTotal=n*vf;
+  if(vs<=vfTotal){
+    errBox.textContent="供电电压不足：Vs（"+fmtV(vs)+"）≤ N×Vf（"+fmtV(vfTotal)+"），LED 无法点亮。请提高供电电压或减少 LED 数量。";
+    errBox.style.display="block";
+    rMain.innerHTML="—<span class=\"unit\"></span>";
+    dPower.textContent="—";dRating.textContent="—";dVfTotal.textContent=fmtV(vfTotal);dVr.textContent="—";dIf.textContent=fmtI(If);
+    return;
+  }
+  var vr=vs-vfTotal;
+  var R=vr/If;
+  var P=vr*If;
+  rMain.innerHTML=fmtR(R)+'<span class="unit">Ω</span>';
+  dPower.textContent=fmtP(P);
+  dRating.textContent=recRating(P);
+  dVfTotal.textContent=fmtV(vfTotal);
+  dVr.textContent=fmtV(vr);
+  dIf.textContent=fmtI(If);
+  /* 标准电阻推荐 */
+  if(isFinite(R)&&R>0&&R<1e7){
+    var recs=recAll(R);
+    var html='<div class="rec-group"><div class="rec-target">目标阻值：<span class="val">'+fmtR(R)+'</span></div>';
+    for(var i=0;i<recs.length;i++){
+      var rc=recs[i];
+      var actualIf=vr/rc.value;
+      var devCls=Math.abs(rc.dev)<1?"dev ok":"dev";
+      var devSign=rc.dev>=0?"+":"";
+      html+='<div class="rec-series"><span class="rec-name">'+rc.key+' ('+rc.tol+')</span>'
+        +'<span class="rec-val">'+fmtR(rc.value)+'</span>'
+        +'<span class="'+devCls+'">偏差 '+devSign+sf(rc.dev,3)+'%</span>'
+        +'<span class="rec-vout">实际 If '+fmtI(actualIf)+'</span></div>';
+    }
+    html+='</div>';
+    recContent.innerHTML=html;
+    recBox.style.display="block";
+  }
+}
+[vsIn,vfIn,nIn,ifIn,ifUnit].forEach(function(el){el.addEventListener("input",calc);el.addEventListener("change",calc)});
+
+/* ===== 颜色表点击填入 ===== */
+document.querySelectorAll("#colorTable tbody tr").forEach(function(tr){
+  tr.addEventListener("click",function(){
+    document.querySelectorAll("#colorTable tbody tr").forEach(function(r){r.classList.remove("active")});
+    tr.classList.add("active");
+    vfIn.value=tr.getAttribute("data-vf");
+    ifIn.value=tr.getAttribute("data-if");
+    calc();
+  });
+});
+
+calc();
+})();
+</script>
+</body>
+</html>
