@@ -9,7 +9,7 @@ navbar:
     # 工具栏：下拉菜单，鼠标悬浮展开，内含多个在线工具
     - key: 'tools'
       name: '工具栏'
-      icon: 'icon-tools-fill'
+      icon: 'icon-code'
       submenu:
         - { key: 'crc', name: 'CRC 计算器', link: '/crc/' }
         - { key: 'ascii', name: 'ASCII 转换器', link: '/ascii/' }
