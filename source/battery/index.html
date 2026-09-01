@@ -1,0 +1,335 @@
+---
+title: 电池续航计算器
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电池续航计算器</title>
+<style>
+  :root{
+    --bg:#121518;--panel:#1b2026;--panel-2:#21272e;--border:#2b333c;--border-strong:#3a444f;
+    --text:#e9edf2;--text-dim:#98a4b1;--text-faint:#6b7683;
+    --accent:#e0a34b;--accent-soft:rgba(224,163,75,.14);--accent-ink:#211b12;
+    --display-bg:#0c120e;--display:#a7e8ba;--display-dim:#4c7a5e;
+    --ok:#58c67c;--err:#d9685f;--warn:#d9a85f;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Consolas,"Courier New",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+  }
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:28px 16px 40px}
+  .tool{max-width:960px;margin:0 auto}
+  .head{margin-bottom:22px}
+  .head-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin:0 0 8px}
+  .head h1{margin:0 0 6px;font-size:26px;font-weight:700;letter-spacing:.01em}
+  .head-sub{margin:0;color:var(--text-dim);font-size:14px;max-width:68ch}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px}
+  .panel-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text-dim);letter-spacing:.06em;margin:0 0 14px}
+  .panel-title::before{content:"";width:6px;height:14px;background:var(--accent);border-radius:1px;flex:none}
+  .field-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field.full{grid-column:1/-1}
+  .field label{font-size:13px;color:var(--text-dim);font-weight:500;display:flex;align-items:center;gap:6px}
+  .field label .unit-tag{font-family:var(--mono);font-size:11px;background:var(--panel-2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;color:var(--accent)}
+  .field-input{display:flex;gap:0}
+  .field-input input{flex:1;min-width:0;background:#0f1317;border:1px solid var(--border-strong);border-right:none;border-radius:6px 0 0 6px;color:var(--display);font-family:var(--mono);font-size:15px;padding:10px 12px;min-height:42px}
+  .field-input input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .field-input input::placeholder{color:var(--text-faint)}
+  .field-input select{width:auto;min-width:72px;background:var(--panel-2);border:1px solid var(--border-strong);border-radius:0 6px 6px 0;color:var(--text);font-family:var(--sans);font-size:13px;padding:0 10px;min-height:42px;cursor:pointer}
+  .field-input select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .field-hint{font-size:11.5px;color:var(--text-faint);margin-top:2px}
+  .readout{background:var(--display-bg);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:14px;box-shadow:inset 0 1px 4px rgba(0,0,0,.5)}
+  .readout-label{font-size:12px;color:var(--display-dim);font-family:var(--mono);letter-spacing:.08em;margin-bottom:8px}
+  .readout-value{font-family:var(--mono);font-size:32px;font-weight:700;color:var(--display);line-height:1.2;word-break:break-all}
+  .readout-value .unit{font-size:18px;color:var(--display-dim);margin-left:8px;font-weight:500}
+  .readout-sub{font-family:var(--mono);font-size:13px;color:var(--display-dim);margin-top:8px;display:flex;gap:16px;flex-wrap:wrap}
+  .detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+  .detail-item{background:var(--panel-2);border:1px solid var(--border);border-radius:6px;padding:10px 12px}
+  .detail-item .di-label{font-size:11px;color:var(--text-faint);letter-spacing:.04em;margin-bottom:3px}
+  .detail-item .di-value{font-family:var(--mono);font-size:14px;color:var(--text);font-weight:600;word-break:break-all}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .battery-svg{width:100%;height:auto;display:block;max-width:280px;margin:0 auto}
+  .formula-main{background:var(--display-bg);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;margin-bottom:12px}
+  .formula-main .fm-text{font-family:var(--mono);font-size:17px;color:var(--display);font-weight:600}
+  .formula-main .fm-text .var{color:var(--accent)}
+  .derive-list{margin:0;padding:0;list-style:none}
+  .derive-list li{font-size:13px;color:var(--text-dim);padding:6px 0;border-bottom:1px dashed var(--border);display:flex;gap:10px;align-items:baseline}
+  .derive-list li:last-child{border-bottom:none}
+  .derive-list .step-num{font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:700;min-width:20px}
+  .derive-list .step-formula{font-family:var(--mono);color:var(--text);font-size:13px}
+  .ref-table{width:100%;border-collapse:collapse;font-size:12.5px}
+  .ref-table thead th{background:var(--panel-2);color:var(--accent);font-weight:600;text-align:left;padding:7px 10px;border-bottom:1px solid var(--border-strong);font-size:11.5px;letter-spacing:.04em;cursor:pointer;user-select:none}
+  .ref-table thead th:hover{color:var(--text)}
+  .ref-table tbody td{padding:6px 10px;border-bottom:1px solid var(--border);font-family:var(--mono);color:var(--text)}
+  .ref-table tbody td:first-child{font-family:var(--sans);font-weight:500}
+  .ref-table tbody tr:hover{background:var(--accent-soft);cursor:pointer}
+  .ref-table tbody tr.active{background:var(--accent-soft);outline:1px solid var(--accent)}
+  .note{margin-top:10px;font-size:12px;color:var(--text-faint);line-height:1.6}
+  .note code{font-family:var(--mono);color:var(--text-dim);background:var(--panel-2);padding:1px 5px;border-radius:4px}
+  .foot{margin-top:18px;color:var(--text-faint);font-size:12.5px;border-top:1px dashed var(--border);padding-top:12px}
+  .foot code{font-family:var(--mono);color:var(--text-dim);background:var(--panel-2);padding:1px 5px;border-radius:4px}
+  @media(max-width:640px){
+    body{padding:20px 12px 32px}.head h1{font-size:22px}
+    .field-grid{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}
+    .readout-value{font-size:24px}.formula-main .fm-text{font-size:14px}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="tool">
+  <header class="head">
+    <div class="head-kicker">Embedded Utility</div>
+    <h1>电池续航计算器</h1>
+    <p class="head-sub">根据电池容量和负载电流/功率估算续航时间，支持 Ah/mAh/Wh 容量输入、A/mA/W 负载输入，附效率修正与常见电池参考表。</p>
+  </header>
+
+  <!-- ===== 输入 ===== -->
+  <section class="panel">
+    <h2 class="panel-title">参数输入</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label>电池容量 <span class="unit-tag">Capacity</span></label>
+        <div class="field-input">
+          <input type="number" id="capIn" step="any" min="0" placeholder="例如 3000">
+          <select id="capUnit">
+            <option value="1">Ah</option>
+            <option value="0.001" selected>mAh</option>
+            <option value="wh">Wh</option>
+          </select>
+        </div>
+        <div class="field-hint">Wh 模式需填写电池标称电压</div>
+      </div>
+      <div class="field" id="voltField">
+        <label>电池电压 <span class="unit-tag">V</span></label>
+        <div class="field-input">
+          <input type="number" id="voltIn" step="any" min="0" placeholder="例如 3.7" value="3.7">
+          <select disabled style="min-width:72px"><option>V</option></select>
+        </div>
+      </div>
+      <div class="field">
+        <label>负载 <span class="unit-tag">Load</span></label>
+        <div class="field-input">
+          <input type="number" id="loadIn" step="any" min="0" placeholder="例如 100">
+          <select id="loadUnit">
+            <option value="1">A</option>
+            <option value="0.001" selected>mA</option>
+            <option value="w">W</option>
+          </select>
+        </div>
+        <div class="field-hint">W 模式通过电压转换为电流</div>
+      </div>
+      <div class="field">
+        <label>放电效率 <span class="unit-tag">Efficiency</span></label>
+        <div class="field-input">
+          <input type="number" id="effIn" step="any" min="0" max="100" placeholder="85" value="85">
+          <select disabled style="min-width:72px"><option>%</option></select>
+        </div>
+        <div class="field-hint">考虑老化、温度、升压损耗，默认 85%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 结果 ===== -->
+  <section class="panel">
+    <h2 class="panel-title">估算续航</h2>
+    <div class="readout">
+      <div class="readout-label">ESTIMATED BATTERY LIFE（理想条件 × 效率）</div>
+      <div class="readout-value" id="lifeMain">—<span class="unit"></span></div>
+      <div class="readout-sub" id="lifeSub"></div>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-item"><div class="di-label">等效容量</div><div class="di-value" id="dAh">—</div></div>
+      <div class="detail-item"><div class="di-label">等效负载电流</div><div class="di-value" id="dA">—</div></div>
+      <div class="detail-item"><div class="di-label">理论续航</div><div class="di-value" id="dIdeal">—</div></div>
+      <div class="detail-item"><div class="di-label">电池能量</div><div class="di-value" id="dWh">—</div></div>
+    </div>
+    <div class="note">结果为估算值，实际续航受电池状态、使用年限、温度、放电倍率、自放电等因素影响。全新高质量电池在室温下、续航在 1 小时–1 年之间时最接近实际。</div>
+  </section>
+
+  <!-- ===== 示意图 + 公式 ===== -->
+  <div class="two-col">
+    <section class="panel">
+      <h2 class="panel-title">电池放电示意</h2>
+      <svg class="battery-svg" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="电池放电电路示意图">
+        <!-- 电池主体 -->
+        <rect x="20" y="50" width="90" height="80" rx="6" fill="rgba(167,232,186,0.08)" stroke="#a7e8ba" stroke-width="2"/>
+        <rect x="110" y="75" width="10" height="30" rx="2" fill="#a7e8ba"/>
+        <text x="65" y="85" text-anchor="middle" fill="#a7e8ba" font-family="ui-monospace,monospace" font-size="14" font-weight="700">BATTERY</text>
+        <text x="65" y="105" text-anchor="middle" fill="#4c7a5e" font-family="ui-monospace,monospace" font-size="11" id="svgCap">3000 mAh</text>
+        <!-- 导线 -->
+        <line x1="65" y1="50" x2="65" y2="30" stroke="#98a4b1" stroke-width="1.8"/>
+        <line x1="65" y1="30" x2="195" y2="30" stroke="#98a4b1" stroke-width="1.8"/>
+        <line x1="195" y1="30" x2="195" y2="60" stroke="#98a4b1" stroke-width="1.8"/>
+        <line x1="65" y1="130" x2="65" y2="150" stroke="#98a4b1" stroke-width="1.8"/>
+        <line x1="65" y1="150" x2="195" y2="150" stroke="#98a4b1" stroke-width="1.8"/>
+        <line x1="195" y1="150" x2="195" y2="120" stroke="#98a4b1" stroke-width="1.8"/>
+        <!-- 负载 -->
+        <rect x="175" y="60" width="40" height="60" rx="3" fill="rgba(224,163,75,0.1)" stroke="#e0a34b" stroke-width="2"/>
+        <text x="195" y="90" text-anchor="middle" fill="#e0a34b" font-family="ui-monospace,monospace" font-size="12" font-weight="700">LOAD</text>
+        <text x="195" y="108" text-anchor="middle" fill="#98a4b1" font-family="ui-monospace,monospace" font-size="10" id="svgLoad">100 mA</text>
+        <!-- 电流方向箭头 -->
+        <path d="M 130 30 L 145 30 M 140 26 L 145 30 L 140 34" stroke="#e0a34b" stroke-width="1.5" fill="none"/>
+        <text x="138" y="22" fill="#e0a34b" font-family="ui-monospace,monospace" font-size="10">I</text>
+        <!-- GND -->
+        <line x1="180" y1="150" x2="210" y2="150" stroke="#98a4b1" stroke-width="1.5"/>
+        <line x1="187" y1="157" x2="203" y2="157" stroke="#98a4b1" stroke-width="1.5"/>
+        <line x1="192" y1="164" x2="198" y2="164" stroke="#98a4b1" stroke-width="1.5"/>
+      </svg>
+    </section>
+    <section class="panel">
+      <h2 class="panel-title">计算公式</h2>
+      <div class="formula-main">
+        <div class="fm-text"><span class="var">T</span> = <span class="var">C</span> / <span class="var">I</span> × η</div>
+      </div>
+      <ol class="derive-list">
+        <li><span class="step-num">1</span><span>容量统一：<span class="step-formula">Ah = mAh / 1000</span></span></li>
+        <li><span class="step-num">2</span><span>瓦时转换：<span class="step-formula">Ah = Wh / V</span></span></li>
+        <li><span class="step-num">3</span><span>电流统一：<span class="step-formula">A = mA / 1000 = W / V</span></span></li>
+        <li><span class="step-num">4</span><span>理论续航：<span class="step-formula">T_ideal = Ah / A（小时）</span></span></li>
+        <li><span class="step-num">5</span><span>实际续航：<span class="step-formula">T = T_ideal × η</span></span></li>
+      </ol>
+      <div class="note">η 为放电效率系数（0–100%），涵盖电池老化、温度衰减、DC-DC 升压/降压损耗、自放电等。低功耗场景（µA 级）需额外考虑自放电，此时估算偏差较大。</div>
+    </section>
+  </div>
+
+  <!-- ===== 常见电池参考 ===== -->
+  <section class="panel">
+    <h2 class="panel-title">常见电池参考（点击填入）</h2>
+    <div style="overflow-x:auto">
+    <table class="ref-table" id="refTable">
+      <thead>
+        <tr><th>电池类型</th><th>容量</th><th>电压</th><th>能量</th><th>典型应用</th></tr>
+      </thead>
+      <tbody>
+        <tr data-cap="220" data-capu="0.001" data-v="3"><td>CR2032 纽扣电池</td><td>220 mAh</td><td>3 V</td><td>0.66 Wh</td><td>主板/RTC/遥控器</td></tr>
+        <tr data-cap="2000" data-capu="0.001" data-v="1.5"><td>AA 碱性电池</td><td>2000 mAh</td><td>1.5 V</td><td>3 Wh</td><td>玩具/遥控器/手电</td></tr>
+        <tr data-cap="800" data-capu="0.001" data-v="1.5"><td>AAA 碱性电池</td><td>800 mAh</td><td>1.5 V</td><td>1.2 Wh</td><td>小型电子/时钟</td></tr>
+        <tr data-cap="3000" data-capu="0.001" data-v="3.7"><td>18650 锂电池</td><td>3000 mAh</td><td>3.7 V</td><td>11.1 Wh</td><td>手电/充电宝/电动车</td></tr>
+        <tr data-cap="5000" data-capu="0.001" data-v="3.7"><td>21700 锂电池</td><td>5000 mAh</td><td>3.7 V</td><td>18.5 Wh</td><td>电动车/储能</td></tr>
+        <tr data-cap="4000" data-capu="0.001" data-v="3.85"><td>手机电池</td><td>4000 mAh</td><td>3.85 V</td><td>15.4 Wh</td><td>智能手机</td></tr>
+        <tr data-cap="50" data-capu="1" data-v="12"><td>汽车铅酸电瓶</td><td>50 Ah</td><td>12 V</td><td>600 Wh</td><td>汽车启动/照明</td></tr>
+        <tr data-cap="100" data-capu="1" data-v="12.8"><td>12V 磷酸铁锂</td><td>100 Ah</td><td>12.8 V</td><td>1280 Wh</td><td>房车/太阳能储能</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <footer class="foot">
+    续航公式：<code>T = C(Ah) / I(A) × η</code>。瓦时转安时：<code>Ah = Wh / V</code>。1 Ah = 1000 mAh，1 A = 1000 mA。所有计算在浏览器本地完成，数据不上传。
+  </footer>
+</main>
+
+<script>
+(function(){"use strict";
+var $=function(id){return document.getElementById(id)};
+
+/* ===== 单位换算 ===== */
+function toAh(val,unit,v){
+  if(!isFinite(val)||val<=0)return NaN;
+  if(unit==="wh"){if(!isFinite(v)||v<=0)return NaN;return val/v;}
+  return val*parseFloat(unit);
+}
+function toAmp(val,unit,v){
+  if(!isFinite(val)||val<=0)return NaN;
+  if(unit==="w"){if(!isFinite(v)||v<=0)return NaN;return val/v;}
+  return val*parseFloat(unit);
+}
+
+/* ===== 续航时间格式化 ===== */
+function formatHours(h){
+  if(!isFinite(h)||h<=0)return{main:"—",unit:"",sub:""};
+  var parts=[];
+  var y=Math.floor(h/8760),rem=h%8760;
+  var mo=Math.floor(rem/720);rem=rem%720;
+  var d=Math.floor(rem/24);rem=rem%24;
+  var hr=Math.floor(rem);
+  var min=Math.round((rem-hr)*60);
+  if(y>0)parts.push(y+" 年");
+  if(mo>0)parts.push(mo+" 月");
+  if(d>0)parts.push(d+" 天");
+  if(hr>0)parts.push(hr+" 小时");
+  if(min>0&&y===0&&mo===0)parts.push(min+" 分");
+  if(parts.length===0)parts.push(h.toFixed(2)+" 小时");
+  /* 主显示：最大单位 */
+  var main,unit;
+  if(y>0){main=(h/8760).toFixed(2);unit="年"}
+  else if(mo>0||h>=720){main=(h/720).toFixed(2);unit="月"}
+  else if(d>0||h>=168){main=(h/168).toFixed(2);unit="周"}
+  else if(hr>0||h>=24){main=(h/24).toFixed(2);unit="天"}
+  else if(h>=1){main=h.toFixed(2);unit="小时"}
+  else{main=(h*60).toFixed(1);unit="分钟"}
+  return{main:main,unit:unit,sub:parts.join(" ")};
+}
+
+function sf(num,f){if(!isFinite(num))return"—";if(num===0)return"0";var d=Math.floor(Math.log10(Math.abs(num)))+1;return Number(num.toFixed(Math.max(0,f-d))).toString()}
+function fmtAh(ah){if(!isFinite(ah))return"—";return ah>=1?sf(ah,5)+" Ah":sf(ah*1000,5)+" mAh"}
+function fmtA(a){if(!isFinite(a))return"—";return a>=1?sf(a,5)+" A":sf(a*1000,5)+" mA"}
+function fmtWh(wh){if(!isFinite(wh))return"—";return wh>=1?sf(wh,5)+" Wh":sf(wh*1000,4)+" mWh"}
+
+/* ===== 状态 ===== */
+var capIn=$("capIn"),capUnit=$("capUnit"),voltIn=$("voltIn"),voltField=$("voltField");
+var loadIn=$("loadIn"),loadUnit=$("loadUnit"),effIn=$("effIn");
+var lifeMain=$("lifeMain"),lifeSub=$("lifeSub");
+var dAh=$("dAh"),dA=$("dA"),dIdeal=$("dIdeal"),dWh=$("dWh");
+var svgCap=$("svgCap"),svgLoad=$("svgLoad");
+
+function updateVoltVisibility(){
+  var show=capUnit.value==="wh"||loadUnit.value==="w";
+  voltField.style.opacity=show?"1":"0.4";
+  voltIn.disabled=!show;
+}
+capUnit.addEventListener("change",function(){updateVoltVisibility();calc()});
+loadUnit.addEventListener("change",function(){updateVoltVisibility();calc()});
+[capIn,voltIn,loadIn,effIn].forEach(function(el){el.addEventListener("input",calc)});
+
+function calc(){
+  var cap=parseFloat(capIn.value),load=parseFloat(loadIn.value);
+  var v=parseFloat(voltIn.value),eff=parseFloat(effIn.value);
+  if(!isFinite(eff)||eff<=0||eff>100)eff=85;
+  var ah=toAh(cap,capUnit.value,v);
+  var amp=toAmp(load,loadUnit.value,v);
+  if(!isFinite(ah)||!isFinite(amp)||amp<=0){
+    lifeMain.innerHTML="—<span class=\"unit\"></span>";lifeSub.textContent="";
+    dAh.textContent="—";dA.textContent="—";dIdeal.textContent="—";dWh.textContent="—";
+    return;
+  }
+  var ideal=ah/amp;
+  var actual=ideal*eff/100;
+  var f=formatHours(actual);
+  lifeMain.innerHTML=f.main+'<span class="unit">'+f.unit+'</span>';
+  lifeSub.textContent=f.sub?("≈ "+f.sub+"（效率 "+eff+"%）"):"";
+  dAh.textContent=fmtAh(ah);
+  dA.textContent=fmtA(amp);
+  dIdeal.textContent=formatHours(ideal).sub||formatHours(ideal).main+formatHours(ideal).unit;
+  dWh.textContent=isFinite(v)&&v>0?fmtWh(ah*v):"—";
+  /* SVG 标注 */
+  if(capUnit.value==="wh")svgCap.textContent=sf(cap,4)+" Wh";
+  else if(capUnit.value==="1")svgCap.textContent=sf(cap,4)+" Ah";
+  else svgCap.textContent=sf(cap,4)+" mAh";
+  if(loadUnit.value==="w")svgLoad.textContent=sf(load,4)+" W";
+  else if(loadUnit.value==="1")svgLoad.textContent=sf(load,4)+" A";
+  else svgLoad.textContent=sf(load,4)+" mA";
+}
+
+/* ===== 参考表点击填入 ===== */
+document.querySelectorAll("#refTable tbody tr").forEach(function(tr){
+  tr.addEventListener("click",function(){
+    document.querySelectorAll("#refTable tbody tr").forEach(function(r){r.classList.remove("active")});
+    tr.classList.add("active");
+    capIn.value=tr.getAttribute("data-cap");
+    capUnit.value=tr.getAttribute("data-capu");
+    voltIn.value=tr.getAttribute("data-v");
+    updateVoltVisibility();
+    calc();
+  });
+});
+
+/* ===== 初始化 ===== */
+capIn.value="3000";loadIn.value="100";
+updateVoltVisibility();calc();
+})();
+</script>
+</body>
+</html>
