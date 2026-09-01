@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASCII 编码转换器</title>
+<style>
+  :root {
+    --bg: #121518;
+    --panel: #1b2026;
+    --panel-2: #21272e;
+    --border: #2b333c;
+    --border-strong: #3a444f;
+    --text: #e9edf2;
+    --text-dim: #98a4b1;
+    --text-faint: #6b7683;
+    --accent: #e0a34b;
+    --accent-soft: rgba(224, 163, 75, 0.14);
+    --accent-ink: #211b12;
+    --display-bg: #0c120e;
+    --display: #a7e8ba;
+    --display-dim: #4c7a5e;
+    --ok: #58c67c;
+    --ok-soft: rgba(88, 198, 124, 0.15);
+    --err: #d9685f;
+    --err-soft: rgba(217, 104, 95, 0.14);
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Consolas, "Courier New", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    padding: 28px 16px 40px;
+  }
+  .tool { max-width: 860px; margin: 0 auto; }
+
+  /* ===== 头部 ===== */
+  .head { margin-bottom: 22px; }
+  .head-kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .head h1 { margin: 0 0 6px; font-size: 26px; font-weight: 700; letter-spacing: 0.01em; }
+  .head-sub { margin: 0; color: var(--text-dim); font-size: 14px; max-width: 62ch; }
+
+  /* ===== 面板 ===== */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    margin: 0 0 14px;
+  }
+  .panel-title::before {
+    content: "";
+    width: 6px; height: 14px;
+    background: var(--accent);
+    border-radius: 1px;
+    flex: none;
+  }
+
+  /* ===== 输入 ===== */
+  .mono-input {
+    width: 100%;
+    background: #0f1317;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    color: var(--display);
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 12px;
+    resize: vertical;
+    min-height: 96px;
+  }
+  .mono-input::placeholder { color: var(--text-faint); }
+  .mono-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .meta-line { display: flex; align-items: center; gap: 12px; margin-top: 10px; min-height: 24px; flex-wrap: wrap; }
+  .spacer { flex: 1; }
+  .chip {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 3px 10px;
+  }
+  .err-text { color: var(--err); font-size: 13px; }
+  .btn-ghost {
+    appearance: none;
+    border: 1px solid var(--border-strong);
+    background: var(--panel-2);
+    color: var(--text-dim);
+    font-family: var(--sans);
+    font-size: 14px;
+    padding: 9px 14px;
+    min-height: 40px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .btn-ghost:hover { color: var(--text); border-color: var(--accent); }
+  .btn-ghost:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ===== 结果表 ===== */
+  .empty {
+    color: var(--text-faint);
+    font-size: 14px;
+    padding: 22px 10px;
+    border: 1px dashed var(--border-strong);
+    border-radius: 8px;
+    text-align: center;
+  }
+  .ctable { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .crow {
+    display: grid;
+    grid-template-columns: 60px 92px 96px 100px 1fr 110px;
+    gap: 8px 10px;
+    align-items: center;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .crow:last-child { border-bottom: none; }
+  .crow-head {
+    background: var(--panel-2);
+    font-size: 12px;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+    padding: 8px 14px;
+  }
+  .crow-head span { font-weight: 600; }
+  .c-char {
+    font-family: var(--mono);
+    font-size: 19px;
+    color: var(--display);
+    text-align: center;
+    background: var(--display-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 0;
+    white-space: nowrap;
+  }
+  .c-name { color: var(--text-dim); font-size: 12px; font-family: var(--mono); }
+  .c-dec, .c-hex, .c-uni { font-family: var(--mono); font-size: 13px; color: var(--text); }
+  .c-bin { font-family: var(--mono); font-size: 12.5px; color: var(--text-dim); letter-spacing: 0.02em; word-break: break-all; }
+  .crow.is-ctrl .c-char { color: var(--err); border-color: var(--err-soft); }
+  .crow.is-non .c-char { color: var(--accent); border-color: var(--accent-soft); }
+  .result-panel .meta-line { margin-top: 12px; }
+
+  /* ===== 反向转换 ===== */
+  .reverse-grid { display: grid; grid-template-columns: 160px 1fr; gap: 12px; }
+  .field { display: block; }
+  .field-label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 6px; }
+  select, input[type="text"] {
+    width: 100%;
+    background: #0f1317;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    padding: 9px 10px;
+    min-height: 40px;
+  }
+  select:focus, input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .mono { font-family: var(--mono) !important; color: var(--display) !important; }
+  .readout-secondary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .readout-secondary > div {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .readout-secondary .k { display: block; font-size: 12px; color: var(--text-faint); margin-bottom: 4px; }
+  .readout-secondary .v { font-size: 13px; color: var(--text); word-break: break-all; font-family: var(--mono); }
+  .rev-char {
+    font-size: 24px !important;
+    color: var(--display) !important;
+    background: var(--display-bg);
+    border-radius: 6px;
+    padding: 2px 10px;
+    display: inline-block;
+    min-width: 40px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+
+  /* ===== 按钮 ===== */
+  .btn {
+    appearance: none;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 11px 18px;
+    min-height: 44px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: filter .15s ease;
+  }
+  .btn:hover { filter: brightness(1.06); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn.copied { border-color: var(--ok); background: var(--ok); color: #0d1a11; }
+
+  .foot {
+    margin-top: 18px;
+    color: var(--text-faint);
+    font-size: 12.5px;
+    border-top: 1px dashed var(--border);
+    padding-top: 12px;
+  }
+  .foot code { font-family: var(--mono); color: var(--text-dim); background: var(--panel-2); padding: 1px 5px; border-radius: 4px; }
+
+  @media (max-width: 560px) {
+    body { padding: 20px 12px 32px; }
+    .head h1 { font-size: 22px; }
+    .crow { display: block; padding: 12px 6px; }
+    .crow-head { display: none; }
+    .crow > * { display: flex; align-items: baseline; gap: 10px; padding: 3px 0; }
+    .crow > *::before {
+      content: attr(data-l);
+      flex: none;
+      min-width: 64px;
+      color: var(--text-faint);
+      font-size: 12px;
+      font-family: var(--sans);
+    }
+    .c-char { font-size: 22px; padding: 4px 10px; justify-content: center; }
+    .c-bin { letter-spacing: 0; }
+    .reverse-grid { grid-template-columns: 1fr; }
+    .readout-secondary { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<main class="tool">
+  <header class="head">
+    <div class="head-kicker">Embedded Utility</div>
+    <h1>ASCII 编码转换器</h1>
+    <p class="head-sub">输入字符，实时查看每个字符的十进制、十六进制、二进制与 Unicode 码点；支持 ASCII 控制字符对照，也可反向输入数值查询对应字符。</p>
+  </header>
+
+  <section class="panel" aria-label="字符输入">
+    <h2 class="panel-title">字符输入</h2>
+    <textarea id="textInput" class="mono-input" rows="4" spellcheck="false" placeholder="输入要转换的字符，例如：Hello, STM32!"></textarea>
+    <div class="meta-line">
+      <span id="charInfo" class="chip">0 字符 · 0 字节</span>
+      <span class="spacer"></span>
+      <button id="sampleBtn" class="btn-ghost" type="button">示例</button>
+      <button id="clearBtn" class="btn-ghost" type="button">清空</button>
+    </div>
+  </section>
+
+  <section class="panel result-panel" aria-label="转换结果">
+    <h2 class="panel-title">转换结果</h2>
+    <div id="emptyState" class="empty">输入字符后，这里会实时显示每个字符的四种编码。</div>
+    <div id="tableWrap" hidden>
+      <div class="ctable">
+        <div class="crow crow-head" aria-hidden="true">
+          <span data-l="字符">字符</span>
+          <span data-l="名称">名称</span>
+          <span data-l="十进制">十进制</span>
+          <span data-l="十六进制">十六进制</span>
+          <span data-l="二进制">二进制</span>
+          <span data-l="Unicode">Unicode</span>
+        </div>
+        <div id="tableBody"></div>
+      </div>
+      <div class="meta-line">
+        <span id="truncInfo" class="err-text" hidden></span>
+        <span class="spacer"></span>
+        <button id="copyBtn" class="btn" type="button">复制结果 (TSV)</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="数值转字符">
+    <h2 class="panel-title">数值 → 字符</h2>
+    <div class="reverse-grid">
+      <label class="field">
+        <span class="field-label">进制</span>
+        <select id="revBase">
+          <option value="dec" selected>十进制</option>
+          <option value="hex">十六进制</option>
+          <option value="bin">二进制</option>
+        </select>
+      </label>
+      <label class="field">
+        <span class="field-label">数值（Unicode 码点）</span>
+        <input id="revInput" class="mono" placeholder="例如：65 / 0x41 / 01000001" spellcheck="false">
+      </label>
+    </div>
+    <div id="revErr" class="err-text" hidden></div>
+    <div id="revOut" class="readout-secondary" hidden>
+      <div><span class="k">字符</span><span id="revChar" class="v rev-char"></span></div>
+      <div><span class="k">十进制</span><span id="revDec" class="v"></span></div>
+      <div><span class="k">十六进制</span><span id="revHex" class="v"></span></div>
+      <div><span class="k">二进制</span><span id="revBin" class="v"></span></div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    ASCII 范围为 <code>0x00 – 0x7F</code>（0–127），控制字符（<code>0x00–0x1F</code>、<code>0x7F</code>）标注常用缩写；超出部分（如中文、Emoji 等）按 Unicode 码点显示。UTF-8 字节数按输入文本实际编码统计。
+  </footer>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var $ = function (id) { return document.getElementById(id); };
+  var MAX_ROWS = 500;
+
+  /* ===== 控制字符名（ASCII 缩写） ===== */
+  var CONTROL_NAMES = {
+    0x00: "NUL", 0x01: "SOH", 0x02: "STX", 0x03: "ETX", 0x04: "EOT", 0x05: "ENQ",
+    0x06: "ACK", 0x07: "BEL", 0x08: "BS",  0x09: "HT",  0x0A: "LF",  0x0B: "VT",
+    0x0C: "FF",  0x0D: "CR",  0x0E: "SO",  0x0F: "SI",  0x10: "DLE", 0x11: "DC1",
+    0x12: "DC2", 0x13: "DC3", 0x14: "DC4", 0x15: "NAK", 0x16: "SYN", 0x17: "ETB",
+    0x18: "CAN", 0x19: "EM",  0x1A: "SUB", 0x1B: "ESC", 0x1C: "FS",  0x1D: "GS",
+    0x1E: "RS",  0x1F: "US"
+  };
+
+  /* ===== 纯函数：单个字符的编码信息 ===== */
+  function controlName(code) {
+    if (code === 0x20) return "SPACE";
+    if (code === 0x7F) return "DEL";
+    if (code >= 0 && code <= 0x1F) return CONTROL_NAMES[code] || ("C" + code);
+    return "";
+  }
+
+  function charDisplay(code) {
+    if (code === 0x20) return "\u2423";            /* 空格显示为开口框 ␣ */
+    if (code < 0x20 || code === 0x7F) {            /* 控制字符显示为转义记法 */
+      var h = code.toString(16).toUpperCase();
+      if (h.length < 2) h = "0" + h;
+      return "\\x" + h;
+    }
+    return String.fromCodePoint(code);
+  }
+
+  function formatHex(code) {
+    var h = code.toString(16).toUpperCase();
+    if (h.length < 2) h = "0" + h;
+    return "0x" + h;
+  }
+
+  function formatBin(code) {
+    var bits = code.toString(2);
+    var width;
+    if (code > 0xFFFF) {                           /* 基本平面之外：4 位对齐 */
+      width = 20;
+      while (bits.length > width) width += 4;
+    } else if (code > 0xFF) {
+      width = 16;
+    } else {
+      width = 8;
+    }
+    while (bits.length < width) bits = "0" + bits;
+    var groups = [], i;
+    for (i = 0; i < bits.length; i += 4) groups.push(bits.substr(i, 4));
+    return groups.join(" ");
+  }
+
+  function formatUnicode(code) {
+    var h = code.toString(16).toUpperCase();
+    while (h.length < 4) h = "0" + h;
+    return "U+" + h;
+  }
+
+  /* ===== 按 Unicode 码点拆分字符串（兼容代理对） ===== */
+  function codePoints(str) {
+    var pts = [], i, c, c2;
+    for (i = 0; i < str.length; i++) {
+      c = str.charCodeAt(i);
+      if (c >= 0xD800 && c <= 0xDBFF && i + 1 < str.length) {
+        c2 = str.charCodeAt(i + 1);
+        if (c2 >= 0xDC00 && c2 <= 0xDFFF) {
+          pts.push(((c - 0xD800) << 10) + (c2 - 0xDC00) + 0x10000);
+          i++;
+          continue;
+        }
+      }
+      pts.push(c);
+    }
+    return pts;
+  }
+
+  function utf8Length(str) {
+    if (window.TextEncoder) return new TextEncoder().encode(str).length;
+    var n = 0, i, c;
+    for (i = 0; i < str.length; i++) {
+      c = str.charCodeAt(i);
+      if (c < 0x80) n += 1;
+      else if (c < 0x800) n += 2;
+      else if (c >= 0xD800 && c <= 0xDBFF && i + 1 < str.length) {
+        var c2 = str.charCodeAt(i + 1);
+        if (c2 >= 0xDC00 && c2 <= 0xDFFF) { n += 4; i++; }
+        else n += 3;
+      } else n += 3;
+    }
+    return n;
+  }
+
+  /* ===== 数值 → 码点解析（反向转换用） ===== */
+  function parseValue(text, base) {
+    var s = text.trim();
+    if (!s) return { ok: false, msg: "请输入数值" };
+    var val, cleaned;
+    if (base === "hex") {
+      cleaned = s.replace(/^0x/i, "").replace(/[\s_]+/g, "");
+      if (!/^[0-9a-fA-F]+$/.test(cleaned)) return { ok: false, msg: "十六进制格式错误，应为 0x41 形式" };
+      val = parseInt(cleaned, 16);
+    } else if (base === "bin") {
+      cleaned = s.replace(/^0b/i, "").replace(/[\s_]+/g, "");
+      if (!/^[01]+$/.test(cleaned)) return { ok: false, msg: "二进制格式错误，应为 01000001 形式" };
+      val = parseInt(cleaned, 2);
+    } else {
+      cleaned = s.replace(/[\s_]+/g, "");
+      if (!/^\d+$/.test(cleaned)) return { ok: false, msg: "十进制格式错误，应为 65 形式" };
+      val = parseInt(cleaned, 10);
+    }
+    if (isNaN(val)) return { ok: false, msg: "数值无法解析" };
+    if (val > 0x10FFFF) return { ok: false, msg: "超出 Unicode 码点范围（最大 0x10FFFF）" };
+    if (val >= 0xD800 && val <= 0xDFFF) return { ok: false, msg: "0xD800–0xDFFF 为代理区，不能单独表示字符" };
+    return { ok: true, val: val };
+  }
+
+  /* ===== 转义与 TSV ===== */
+  function escapeHtml(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function buildTsv(codes) {
+    var lines = ["字符\t名称\t十进制\t十六进制\t二进制\tUnicode"], i;
+    for (i = 0; i < codes.length; i++) {
+      var code = codes[i];
+      lines.push([charDisplay(code), controlName(code), String(code),
+        formatHex(code), formatBin(code), formatUnicode(code)].join("\t"));
+    }
+    return lines.join("\n");
+  }
+
+  /* ===== DOM 引用 ===== */
+  var textInput = $("textInput");
+  var charInfo = $("charInfo"), emptyState = $("emptyState"), tableWrap = $("tableWrap");
+  var tableBody = $("tableBody"), truncInfo = $("truncInfo"), copyBtn = $("copyBtn");
+  var sampleBtn = $("sampleBtn"), clearBtn = $("clearBtn");
+  var revBase = $("revBase"), revInput = $("revInput"), revErr = $("revErr"), revOut = $("revOut");
+  var revChar = $("revChar"), revDec = $("revDec"), revHex = $("revHex"), revBin = $("revBin");
+
+  var SAMPLE = "Hello, STM32!\nCRC = 0x4B37 \u00b7 中文";
+
+  /* ===== 渲染 ===== */
+  function rowHtml(idx, code) {
+    var disp = escapeHtml(charDisplay(code));
+    var name = escapeHtml(controlName(code));
+    var cls = (code < 0x20 || code === 0x7F) ? " is-ctrl" : (code > 0x7F ? " is-non" : "");
+    return '<div class="crow' + cls + '">'
+      + '<span class="c-char" data-l="字符">' + disp + '</span>'
+      + '<span class="c-name" data-l="名称">' + name + '</span>'
+      + '<span class="c-dec" data-l="十进制">' + code + '</span>'
+      + '<span class="c-hex" data-l="十六进制">' + formatHex(code) + '</span>'
+      + '<span class="c-bin" data-l="二进制">' + formatBin(code) + '</span>'
+      + '<span class="c-uni" data-l="Unicode">' + formatUnicode(code) + '</span>'
+      + '</div>';
+  }
+
+  function recompute() {
+    var text = textInput.value;
+    var pts = codePoints(text);
+    charInfo.textContent = pts.length + " 字符 \u00b7 " + utf8Length(text) + " 字节";
+
+    if (pts.length === 0) {
+      emptyState.hidden = false;
+      tableWrap.hidden = true;
+      return;
+    }
+    emptyState.hidden = true;
+    tableWrap.hidden = false;
+
+    var shown = pts.length > MAX_ROWS ? pts.slice(0, MAX_ROWS) : pts;
+    var html = "", i;
+    for (i = 0; i < shown.length; i++) html += rowHtml(i, shown[i]);
+    tableBody.innerHTML = html;
+
+    if (pts.length > MAX_ROWS) {
+      truncInfo.hidden = false;
+      truncInfo.textContent = "字符较多，仅显示前 " + MAX_ROWS + " 个";
+    } else {
+      truncInfo.hidden = true;
+      truncInfo.textContent = "";
+    }
+  }
+
+  /* ===== 反向转换 ===== */
+  function updateReverse() {
+    var r = parseValue(revInput.value, revBase.value);
+    if (!r.ok) {
+      revErr.hidden = false;
+      revErr.textContent = r.msg;
+      revOut.hidden = true;
+      return;
+    }
+    revErr.hidden = true;
+    revOut.hidden = false;
+    revChar.textContent = charDisplay(r.val);
+    revDec.textContent = String(r.val);
+    revHex.textContent = formatHex(r.val);
+    revBin.textContent = formatBin(r.val);
+  }
+
+  /* ===== 复制 ===== */
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); } catch (e) { /* 忽略 */ }
+    document.body.removeChild(ta);
+  }
+
+  copyBtn.addEventListener("click", function () {
+    var text = textInput.value;
+    if (!text) return;
+    var tsv = buildTsv(codePoints(text));
+    function done() {
+      copyBtn.textContent = "已复制";
+      copyBtn.classList.add("copied");
+      setTimeout(function () {
+        copyBtn.textContent = "复制结果 (TSV)";
+        copyBtn.classList.remove("copied");
+      }, 1600);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(tsv).then(done, function () { fallbackCopy(tsv); done(); });
+    } else {
+      fallbackCopy(tsv); done();
+    }
+  });
+
+  /* ===== 事件绑定 ===== */
+  textInput.addEventListener("input", recompute);
+  sampleBtn.addEventListener("click", function () { textInput.value = SAMPLE; recompute(); });
+  clearBtn.addEventListener("click", function () { textInput.value = ""; recompute(); });
+  revInput.addEventListener("input", updateReverse);
+  revBase.addEventListener("change", updateReverse);
+
+  /* ===== 初始化 ===== */
+  textInput.value = SAMPLE;
+  recompute();
+  updateReverse();
+})();
+</script>
+</body>
+</html>
