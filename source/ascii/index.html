@@ -13,7 +13,7 @@ title: ASCII 编码转换器
     --panel: #1b2026;
     --panel-2: #21272e;
     --border: #2b333c;
-    --border-strong: #3a444f; 
+    --border-strong: #3a444f;
     --text: #e9edf2;
     --text-dim: #98a4b1;
     --text-faint: #6b7683;
@@ -40,7 +40,7 @@ title: ASCII 编码转换器
     -webkit-font-smoothing: antialiased;
     padding: 28px 16px 40px;
   }
-  .tool { max-width: 860px; margin: 0 auto; }
+  .tool { max-width: 920px; margin: 0 auto; }
 
   /* ===== 头部 ===== */
   .head { margin-bottom: 22px; }
@@ -53,7 +53,7 @@ title: ASCII 编码转换器
     margin: 0 0 8px;
   }
   .head h1 { margin: 0 0 6px; font-size: 26px; font-weight: 700; letter-spacing: 0.01em; }
-  .head-sub { margin: 0; color: var(--text-dim); font-size: 14px; max-width: 62ch; }
+  .head-sub { margin: 0; color: var(--text-dim); font-size: 14px; max-width: 64ch; }
 
   /* ===== 面板 ===== */
   .panel {
@@ -80,6 +80,30 @@ title: ASCII 编码转换器
     border-radius: 1px;
     flex: none;
   }
+
+  /* ===== 标签页 ===== */
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .tab {
+    appearance: none;
+    border: 1px solid var(--border-strong);
+    background: var(--panel-2);
+    color: var(--text-dim);
+    font-family: var(--sans);
+    font-size: 14px;
+    padding: 9px 18px;
+    min-height: 40px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .tab:hover { color: var(--text); border-color: var(--accent); }
+  .tab.is-active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   /* ===== 输入 ===== */
   .mono-input {
@@ -124,88 +148,102 @@ title: ASCII 编码转换器
   }
   .btn-ghost:hover { color: var(--text); border-color: var(--accent); }
   .btn-ghost:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-  /* ===== 结果表 ===== */
-  .empty {
-    color: var(--text-faint);
-    font-size: 14px;
-    padding: 22px 10px;
-    border: 1px dashed var(--border-strong);
-    border-radius: 8px;
-    text-align: center;
-  }
-  .ctable { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-  .crow {
-    display: grid;
-    grid-template-columns: 60px 92px 96px 100px 1fr 110px;
-    gap: 8px 10px;
+  .sep-label {
+    display: inline-flex;
     align-items: center;
-    padding: 9px 14px;
-    border-bottom: 1px solid var(--border);
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-dim);
   }
-  .crow:last-child { border-bottom: none; }
-  .crow-head {
-    background: var(--panel-2);
-    font-size: 12px;
-    color: var(--text-faint);
-    letter-spacing: 0.05em;
-    padding: 8px 14px;
-  }
-  .crow-head span { font-weight: 600; }
-  .c-char {
-    font-family: var(--mono);
-    font-size: 19px;
-    color: var(--display);
-    text-align: center;
-    background: var(--display-bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 3px 0;
-    white-space: nowrap;
-  }
-  .c-name { color: var(--text-dim); font-size: 12px; font-family: var(--mono); }
-  .c-dec, .c-hex, .c-uni { font-family: var(--mono); font-size: 13px; color: var(--text); }
-  .c-bin { font-family: var(--mono); font-size: 12.5px; color: var(--text-dim); letter-spacing: 0.02em; word-break: break-all; }
-  .crow.is-ctrl .c-char { color: var(--err); border-color: var(--err-soft); }
-  .crow.is-non .c-char { color: var(--accent); border-color: var(--accent-soft); }
-  .result-panel .meta-line { margin-top: 12px; }
-
-  /* ===== 反向转换 ===== */
-  .reverse-grid { display: grid; grid-template-columns: 160px 1fr; gap: 12px; }
-  .field { display: block; }
-  .field-label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 6px; }
-  select, input[type="text"] {
-    width: 100%;
+  .sep-label select {
+    width: auto;
+    min-width: 96px;
     background: #0f1317;
     border: 1px solid var(--border-strong);
     border-radius: 6px;
     color: var(--text);
     font-family: var(--sans);
-    font-size: 14px;
-    padding: 9px 10px;
-    min-height: 40px;
+    font-size: 13px;
+    padding: 7px 10px;
+    min-height: 36px;
   }
-  select:focus, input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-  .mono { font-family: var(--mono) !important; color: var(--display) !important; }
-  .readout-secondary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-  .readout-secondary > div {
+  .sep-label select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  /* ===== 结果卡片 ===== */
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .result-card {
     background: var(--panel-2);
     border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 12px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
-  .readout-secondary .k { display: block; font-size: 12px; color: var(--text-faint); margin-bottom: 4px; }
-  .readout-secondary .v { font-size: 13px; color: var(--text); word-break: break-all; font-family: var(--mono); }
-  .rev-char {
-    font-size: 24px !important;
-    color: var(--display) !important;
+  .rc-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 9px 12px;
+    background: rgba(0,0,0,0.18);
+    border-bottom: 1px solid var(--border);
+  }
+  .rc-name {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+  }
+  .rc-copy {
+    appearance: none;
+    border: 1px solid var(--border-strong);
+    background: transparent;
+    color: var(--text-dim);
+    font-family: var(--sans);
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .rc-copy:hover { color: var(--accent); border-color: var(--accent); }
+  .rc-copy.copied { color: var(--ok); border-color: var(--ok); }
+  .rc-body {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--display);
+    padding: 12px;
+    word-break: break-all;
+    min-height: 48px;
+    line-height: 1.7;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+  .rc-body.empty { color: var(--text-faint); font-style: italic; }
+
+  /* ===== 读数（编码转文本结果） ===== */
+  .readout {
     background: var(--display-bg);
-    border-radius: 6px;
-    padding: 2px 10px;
-    display: inline-block;
-    min-width: 40px;
-    text-align: center;
     border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,.5);
+  }
+  .readout-label { font-size: 12px; color: var(--display-dim); font-family: var(--mono); letter-spacing: 0.08em; margin-bottom: 6px; }
+  .readout-value {
+    font-family: var(--mono);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--display);
+    line-height: 1.3;
+    word-break: break-all;
+    min-height: 34px;
   }
 
   /* ===== 按钮 ===== */
@@ -227,6 +265,55 @@ title: ASCII 编码转换器
   .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .btn.copied { border-color: var(--ok); background: var(--ok); color: #0d1a11; }
 
+  /* ===== ASCII 码表 ===== */
+  .ascii-wrap {
+    max-height: 420px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .ascii-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .ascii-table thead th {
+    position: sticky;
+    top: 0;
+    background: var(--panel-2);
+    color: var(--text-dim);
+    font-weight: 600;
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border-strong);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    z-index: 1;
+  }
+  .ascii-table tbody td {
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    color: var(--text);
+  }
+  .ascii-table tbody tr:hover { background: var(--accent-soft); }
+  .ascii-table tbody tr:last-child td { border-bottom: none; }
+  .ascii-table .col-char { color: var(--display); font-weight: 600; }
+  .ascii-table .col-ctrl { color: var(--err); }
+  .insert-btn {
+    appearance: none;
+    border: 1px solid var(--border-strong);
+    background: var(--panel);
+    color: var(--text-dim);
+    font-family: var(--sans);
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .insert-btn:hover { color: var(--accent); border-color: var(--accent); }
+
   .foot {
     margin-top: 18px;
     color: var(--text-faint);
@@ -236,24 +323,13 @@ title: ASCII 编码转换器
   }
   .foot code { font-family: var(--mono); color: var(--text-dim); background: var(--panel-2); padding: 1px 5px; border-radius: 4px; }
 
-  @media (max-width: 560px) {
+  @media (max-width: 640px) {
     body { padding: 20px 12px 32px; }
     .head h1 { font-size: 22px; }
-    .crow { display: block; padding: 12px 6px; }
-    .crow-head { display: none; }
-    .crow > * { display: flex; align-items: baseline; gap: 10px; padding: 3px 0; }
-    .crow > *::before {
-      content: attr(data-l);
-      flex: none;
-      min-width: 64px;
-      color: var(--text-faint);
-      font-size: 12px;
-      font-family: var(--sans);
-    }
-    .c-char { font-size: 22px; padding: 4px 10px; justify-content: center; }
-    .c-bin { letter-spacing: 0; }
-    .reverse-grid { grid-template-columns: 1fr; }
-    .readout-secondary { grid-template-columns: 1fr; }
+    .result-grid { grid-template-columns: 1fr; }
+    .readout-value { font-size: 20px; }
+    .ascii-table { font-size: 12px; }
+    .ascii-table thead th, .ascii-table tbody td { padding: 6px 8px; }
   }
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
@@ -265,70 +341,104 @@ title: ASCII 编码转换器
   <header class="head">
     <div class="head-kicker">Embedded Utility</div>
     <h1>ASCII 编码转换器</h1>
-    <p class="head-sub">输入字符，实时查看每个字符的十进制、十六进制、二进制与 Unicode 码点；支持 ASCII 控制字符对照，也可反向输入数值查询对应字符。</p>
+    <p class="head-sub">同时显示十进制、十六进制、二进制和 Unicode 转义序列四种结果；支持文本↔编码双向转换，输入含中文时自动使用 Unicode 格式。</p>
   </header>
 
-  <section class="panel" aria-label="字符输入">
-    <h2 class="panel-title">字符输入</h2>
-    <textarea id="textInput" class="mono-input" rows="4" spellcheck="false" placeholder="输入要转换的字符，例如：Hello, STM32!"></textarea>
-    <div class="meta-line">
-      <span id="charInfo" class="chip">0 字符 · 0 字节</span>
-      <span class="spacer"></span>
-      <button id="sampleBtn" class="btn-ghost" type="button">示例</button>
-      <button id="clearBtn" class="btn-ghost" type="button">清空</button>
-    </div>
-  </section>
+  <div class="tabs" role="tablist" aria-label="转换方向">
+    <button class="tab is-active" data-mode="text2code" role="tab" aria-selected="true">文本转编码</button>
+    <button class="tab" data-mode="code2text" role="tab" aria-selected="false">编码转文本</button>
+  </div>
 
-  <section class="panel result-panel" aria-label="转换结果">
-    <h2 class="panel-title">转换结果</h2>
-    <div id="emptyState" class="empty">输入字符后，这里会实时显示每个字符的四种编码。</div>
-    <div id="tableWrap" hidden>
-      <div class="ctable">
-        <div class="crow crow-head" aria-hidden="true">
-          <span data-l="字符">字符</span>
-          <span data-l="名称">名称</span>
-          <span data-l="十进制">十进制</span>
-          <span data-l="十六进制">十六进制</span>
-          <span data-l="二进制">二进制</span>
-          <span data-l="Unicode">Unicode</span>
-        </div>
-        <div id="tableBody"></div>
-      </div>
+  <!-- ===== 视图：文本转编码 ===== -->
+  <section data-view="text2code" aria-label="文本转编码">
+    <div class="panel">
+      <h2 class="panel-title">输入文本</h2>
+      <textarea id="textInput" class="mono-input" rows="4" spellcheck="false" placeholder="输入要转换的文本，例如：Hello, 中文！"></textarea>
       <div class="meta-line">
-        <span id="truncInfo" class="err-text" hidden></span>
+        <span id="charInfo" class="chip">0 字符 · 0 字节</span>
         <span class="spacer"></span>
-        <button id="copyBtn" class="btn" type="button">复制结果 (TSV)</button>
+        <label class="sep-label">
+          分隔符
+          <select id="sepSelect">
+            <option value="space">空格</option>
+            <option value="comma">逗号</option>
+            <option value="none">无分隔符</option>
+          </select>
+        </label>
+        <button id="sampleBtn1" class="btn-ghost" type="button">示例</button>
+        <button id="clearBtn1" class="btn-ghost" type="button">清空</button>
       </div>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel-title">转换结果（四种格式）</h2>
+      <div class="result-grid">
+        <div class="result-card">
+          <div class="rc-head"><span class="rc-name">十进制</span><button class="rc-copy" data-fmt="dec" type="button">复制</button></div>
+          <div id="outDec" class="rc-body empty">—</div>
+        </div>
+        <div class="result-card">
+          <div class="rc-head"><span class="rc-name">十六进制</span><button class="rc-copy" data-fmt="hex" type="button">复制</button></div>
+          <div id="outHex" class="rc-body empty">—</div>
+        </div>
+        <div class="result-card">
+          <div class="rc-head"><span class="rc-name">二进制</span><button class="rc-copy" data-fmt="bin" type="button">复制</button></div>
+          <div id="outBin" class="rc-body empty">—</div>
+        </div>
+        <div class="result-card">
+          <div class="rc-head"><span class="rc-name">Unicode 转义序列</span><button class="rc-copy" data-fmt="uni" type="button">复制</button></div>
+          <div id="outUni" class="rc-body empty">—</div>
+        </div>
+      </div>
+      <button id="copyAllBtn" class="btn" type="button">复制全部结果</button>
     </div>
   </section>
 
-  <section class="panel" aria-label="数值转字符">
-    <h2 class="panel-title">数值 → 字符</h2>
-    <div class="reverse-grid">
-      <label class="field">
-        <span class="field-label">进制</span>
-        <select id="revBase">
-          <option value="dec" selected>十进制</option>
-          <option value="hex">十六进制</option>
-          <option value="bin">二进制</option>
-        </select>
-      </label>
-      <label class="field">
-        <span class="field-label">数值（Unicode 码点）</span>
-        <input id="revInput" class="mono" placeholder="例如：65 / 0x41 / 01000001" spellcheck="false">
-      </label>
+  <!-- ===== 视图：编码转文本 ===== -->
+  <section data-view="code2text" aria-label="编码转文本" hidden>
+    <div class="panel">
+      <h2 class="panel-title">输入编码（支持十进制 / 0x十六进制 / 0b二进制 / \uXXXX）</h2>
+      <textarea id="codeInput" class="mono-input" rows="4" spellcheck="false" placeholder="例如：72 101 0x6C 0b1101100 \u006F"></textarea>
+      <div class="meta-line">
+        <span id="codeInfo" class="chip">0 个编码</span>
+        <span id="codeErr" class="err-text"></span>
+        <span class="spacer"></span>
+        <button id="sampleBtn2" class="btn-ghost" type="button">示例</button>
+        <button id="clearBtn2" class="btn-ghost" type="button">清空</button>
+      </div>
     </div>
-    <div id="revErr" class="err-text" hidden></div>
-    <div id="revOut" class="readout-secondary" hidden>
-      <div><span class="k">字符</span><span id="revChar" class="v rev-char"></span></div>
-      <div><span class="k">十进制</span><span id="revDec" class="v"></span></div>
-      <div><span class="k">十六进制</span><span id="revHex" class="v"></span></div>
-      <div><span class="k">二进制</span><span id="revBin" class="v"></span></div>
+
+    <div class="panel">
+      <h2 class="panel-title">转换结果（文本）</h2>
+      <div class="readout">
+        <div class="readout-label">TEXT</div>
+        <div id="outText" class="readout-value">—</div>
+      </div>
+      <button id="copyTextBtn" class="btn" type="button">复制文本</button>
+    </div>
+  </section>
+
+  <!-- ===== ASCII 码表 ===== -->
+  <section class="panel" aria-label="ASCII 码表参考">
+    <h2 class="panel-title">ASCII 码表参考（0–127）</h2>
+    <div class="ascii-wrap">
+      <table class="ascii-table">
+        <thead>
+          <tr>
+            <th>十进制</th>
+            <th>十六进制</th>
+            <th>二进制</th>
+            <th>字符 / 名称</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="asciiTableBody"></tbody>
+      </table>
     </div>
   </section>
 
   <footer class="foot">
-    ASCII 范围为 <code>0x00 – 0x7F</code>（0–127），控制字符（<code>0x00–0x1F</code>、<code>0x7F</code>）标注常用缩写；超出部分（如中文、Emoji 等）按 Unicode 码点显示。UTF-8 字节数按输入文本实际编码统计。
+    ASCII 范围为 <code>0x00 – 0x7F</code>（0–127），控制字符（<code>0x00–0x1F</code>、<code>0x7F</code>）标注常用缩写；超出部分（如中文、Emoji）按 Unicode 码点显示为 <code>\uXXXX</code> 或 <code>\u{XXXXX}</code>。编码转文本支持混合输入，如 <code>72 0x65 0b1101100 \u006F</code>。所有转换在浏览器本地完成，数据不上传。
   </footer>
 </main>
 
@@ -337,19 +447,19 @@ title: ASCII 编码转换器
   "use strict";
 
   var $ = function (id) { return document.getElementById(id); };
-  var MAX_ROWS = 500;
 
-  /* ===== 控制字符名（ASCII 缩写） ===== */
+  var state = { mode: "text2code" };
+
+  /* ===== 控制字符名 ===== */
   var CONTROL_NAMES = {
     0x00: "NUL", 0x01: "SOH", 0x02: "STX", 0x03: "ETX", 0x04: "EOT", 0x05: "ENQ",
-    0x06: "ACK", 0x07: "BEL", 0x08: "BS",  0x09: "HT",  0x0A: "LF",  0x0B: "VT",
+    0x06: "ACK", 0x07: "BEL", 0x08: "BS",  0x09: "TAB", 0x0A: "LF",  0x0B: "VT",
     0x0C: "FF",  0x0D: "CR",  0x0E: "SO",  0x0F: "SI",  0x10: "DLE", 0x11: "DC1",
     0x12: "DC2", 0x13: "DC3", 0x14: "DC4", 0x15: "NAK", 0x16: "SYN", 0x17: "ETB",
     0x18: "CAN", 0x19: "EM",  0x1A: "SUB", 0x1B: "ESC", 0x1C: "FS",  0x1D: "GS",
     0x1E: "RS",  0x1F: "US"
   };
 
-  /* ===== 纯函数：单个字符的编码信息 ===== */
   function controlName(code) {
     if (code === 0x20) return "SPACE";
     if (code === 0x7F) return "DEL";
@@ -357,46 +467,13 @@ title: ASCII 编码转换器
     return "";
   }
 
-  function charDisplay(code) {
-    if (code === 0x20) return "\u2423";            /* 空格显示为开口框 ␣ */
-    if (code < 0x20 || code === 0x7F) {            /* 控制字符显示为转义记法 */
-      var h = code.toString(16).toUpperCase();
-      if (h.length < 2) h = "0" + h;
-      return "\\x" + h;
-    }
-    return String.fromCodePoint(code);
+  function charLabel(code) {
+    var n = controlName(code);
+    if (n) return n;
+    return String.fromCharCode(code);
   }
 
-  function formatHex(code) {
-    var h = code.toString(16).toUpperCase();
-    if (h.length < 2) h = "0" + h;
-    return "0x" + h;
-  }
-
-  function formatBin(code) {
-    var bits = code.toString(2);
-    var width;
-    if (code > 0xFFFF) {                           /* 基本平面之外：4 位对齐 */
-      width = 20;
-      while (bits.length > width) width += 4;
-    } else if (code > 0xFF) {
-      width = 16;
-    } else {
-      width = 8;
-    }
-    while (bits.length < width) bits = "0" + bits;
-    var groups = [], i;
-    for (i = 0; i < bits.length; i += 4) groups.push(bits.substr(i, 4));
-    return groups.join(" ");
-  }
-
-  function formatUnicode(code) {
-    var h = code.toString(16).toUpperCase();
-    while (h.length < 4) h = "0" + h;
-    return "U+" + h;
-  }
-
-  /* ===== 按 Unicode 码点拆分字符串（兼容代理对） ===== */
+  /* ===== 按 Unicode 码点拆分（兼容代理对） ===== */
   function codePoints(str) {
     var pts = [], i, c, c2;
     for (i = 0; i < str.length; i++) {
@@ -423,119 +500,87 @@ title: ASCII 编码转换器
       else if (c < 0x800) n += 2;
       else if (c >= 0xD800 && c <= 0xDBFF && i + 1 < str.length) {
         var c2 = str.charCodeAt(i + 1);
-        if (c2 >= 0xDC00 && c2 <= 0xDFFF) { n += 4; i++; }
-        else n += 3;
+        if (c2 >= 0xDC00 && c2 <= 0xDFFF) { n += 4; i++; } else n += 3;
       } else n += 3;
     }
     return n;
   }
 
-  /* ===== 数值 → 码点解析（反向转换用） ===== */
-  function parseValue(text, base) {
-    var s = text.trim();
-    if (!s) return { ok: false, msg: "请输入数值" };
-    var val, cleaned;
-    if (base === "hex") {
-      cleaned = s.replace(/^0x/i, "").replace(/[\s_]+/g, "");
-      if (!/^[0-9a-fA-F]+$/.test(cleaned)) return { ok: false, msg: "十六进制格式错误，应为 0x41 形式" };
-      val = parseInt(cleaned, 16);
-    } else if (base === "bin") {
-      cleaned = s.replace(/^0b/i, "").replace(/[\s_]+/g, "");
-      if (!/^[01]+$/.test(cleaned)) return { ok: false, msg: "二进制格式错误，应为 01000001 形式" };
-      val = parseInt(cleaned, 2);
-    } else {
-      cleaned = s.replace(/[\s_]+/g, "");
-      if (!/^\d+$/.test(cleaned)) return { ok: false, msg: "十进制格式错误，应为 65 形式" };
-      val = parseInt(cleaned, 10);
-    }
-    if (isNaN(val)) return { ok: false, msg: "数值无法解析" };
-    if (val > 0x10FFFF) return { ok: false, msg: "超出 Unicode 码点范围（最大 0x10FFFF）" };
-    if (val >= 0xD800 && val <= 0xDFFF) return { ok: false, msg: "0xD800–0xDFFF 为代理区，不能单独表示字符" };
-    return { ok: true, val: val };
+  /* ===== 四种格式输出 ===== */
+  function fmtDec(code) { return String(code); }
+
+  function fmtHex(code) {
+    var h = code.toString(16).toUpperCase();
+    if (h.length < 2) h = "0" + h;
+    return "0x" + h;
   }
 
-  /* ===== 转义与 TSV ===== */
-  function escapeHtml(s) {
-    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  function fmtBin(code) {
+    var bits = code.toString(2);
+    var width = code > 0xFFFF ? 20 : (code > 0xFF ? 16 : 8);
+    while (bits.length > width) width += 4;
+    while (bits.length < width) bits = "0" + bits;
+    return "0b" + bits;
   }
 
-  function buildTsv(codes) {
-    var lines = ["字符\t名称\t十进制\t十六进制\t二进制\tUnicode"], i;
-    for (i = 0; i < codes.length; i++) {
-      var code = codes[i];
-      lines.push([charDisplay(code), controlName(code), String(code),
-        formatHex(code), formatBin(code), formatUnicode(code)].join("\t"));
+  function fmtUni(code) {
+    if (code <= 0xFFFF) {
+      var h = code.toString(16).toUpperCase();
+      while (h.length < 4) h = "0" + h;
+      return "\\u" + h;
     }
-    return lines.join("\n");
+    return "\\u{" + code.toString(16).toUpperCase() + "}";
   }
 
-  /* ===== DOM 引用 ===== */
-  var textInput = $("textInput");
-  var charInfo = $("charInfo"), emptyState = $("emptyState"), tableWrap = $("tableWrap");
-  var tableBody = $("tableBody"), truncInfo = $("truncInfo"), copyBtn = $("copyBtn");
-  var sampleBtn = $("sampleBtn"), clearBtn = $("clearBtn");
-  var revBase = $("revBase"), revInput = $("revInput"), revErr = $("revErr"), revOut = $("revOut");
-  var revChar = $("revChar"), revDec = $("revDec"), revHex = $("revHex"), revBin = $("revBin");
-
-  var SAMPLE = "Hello, STM32!\nCRC = 0x4B37 \u00b7 中文";
-
-  /* ===== 渲染 ===== */
-  function rowHtml(idx, code) {
-    var disp = escapeHtml(charDisplay(code));
-    var name = escapeHtml(controlName(code));
-    var cls = (code < 0x20 || code === 0x7F) ? " is-ctrl" : (code > 0x7F ? " is-non" : "");
-    return '<div class="crow' + cls + '">'
-      + '<span class="c-char" data-l="字符">' + disp + '</span>'
-      + '<span class="c-name" data-l="名称">' + name + '</span>'
-      + '<span class="c-dec" data-l="十进制">' + code + '</span>'
-      + '<span class="c-hex" data-l="十六进制">' + formatHex(code) + '</span>'
-      + '<span class="c-bin" data-l="二进制">' + formatBin(code) + '</span>'
-      + '<span class="c-uni" data-l="Unicode">' + formatUnicode(code) + '</span>'
-      + '</div>';
+  function joinArr(arr, sep) {
+    if (sep === "comma") return arr.join(",");
+    if (sep === "none") return arr.join("");
+    return arr.join(" ");
   }
 
-  function recompute() {
-    var text = textInput.value;
-    var pts = codePoints(text);
-    charInfo.textContent = pts.length + " 字符 \u00b7 " + utf8Length(text) + " 字节";
-
-    if (pts.length === 0) {
-      emptyState.hidden = false;
-      tableWrap.hidden = true;
-      return;
+  /* ===== 编码转文本解析 ===== */
+  function parseOneToken(t) {
+    var m;
+    /* 连写的 Unicode 转义：\u4E2D\u6587 或 \u{1F680}\u0041 */
+    if (/^\\u/.test(t)) {
+      var matches = t.match(/\\u\{[0-9a-fA-F]+\}|\\u[0-9a-fA-F]{4}/g);
+      if (matches && matches.join("") === t) {
+        var codes = [], i;
+        for (i = 0; i < matches.length; i++) {
+          if (matches[i].charAt(2) === "{") codes.push(parseInt(matches[i].slice(3, -1), 16));
+          else codes.push(parseInt(matches[i].slice(2), 16));
+        }
+        return { ok: true, codes: codes };
+      }
+      return { ok: false };
     }
-    emptyState.hidden = true;
-    tableWrap.hidden = false;
-
-    var shown = pts.length > MAX_ROWS ? pts.slice(0, MAX_ROWS) : pts;
-    var html = "", i;
-    for (i = 0; i < shown.length; i++) html += rowHtml(i, shown[i]);
-    tableBody.innerHTML = html;
-
-    if (pts.length > MAX_ROWS) {
-      truncInfo.hidden = false;
-      truncInfo.textContent = "字符较多，仅显示前 " + MAX_ROWS + " 个";
-    } else {
-      truncInfo.hidden = true;
-      truncInfo.textContent = "";
+    if (/^0x/i.test(t)) {
+      var h = t.replace(/^0x/i, "");
+      if (/^[0-9a-fA-F]+$/.test(h)) return { ok: true, codes: [parseInt(h, 16)] };
     }
+    if (/^0b/i.test(t)) {
+      var b = t.replace(/^0b/i, "");
+      if (/^[01]+$/.test(b)) return { ok: true, codes: [parseInt(b, 2)] };
+    }
+    if (/^[0-9a-fA-F]+h$/i.test(t)) return { ok: true, codes: [parseInt(t.replace(/h$/i, ""), 16)] };
+    if (/^\d+$/.test(t)) return { ok: true, codes: [parseInt(t, 10)] };
+    return { ok: false };
   }
 
-  /* ===== 反向转换 ===== */
-  function updateReverse() {
-    var r = parseValue(revInput.value, revBase.value);
-    if (!r.ok) {
-      revErr.hidden = false;
-      revErr.textContent = r.msg;
-      revOut.hidden = true;
-      return;
+  function parseCodes(text) {
+    var tokens = text.split(/[\s,]+/).filter(function (t) { return t.length > 0; });
+    var chars = [], errors = [], i, j, r, code;
+    for (i = 0; i < tokens.length; i++) {
+      r = parseOneToken(tokens[i]);
+      if (!r.ok) { errors.push(tokens[i] + "（无法识别）"); continue; }
+      for (j = 0; j < r.codes.length; j++) {
+        code = r.codes[j];
+        if (code > 0x10FFFF) { errors.push(tokens[i] + "（超出 Unicode 范围）"); continue; }
+        if (code >= 0xD800 && code <= 0xDFFF) { errors.push(tokens[i] + "（代理区，不能单独成字符）"); continue; }
+        chars.push(String.fromCodePoint(code));
+      }
     }
-    revErr.hidden = true;
-    revOut.hidden = false;
-    revChar.textContent = charDisplay(r.val);
-    revDec.textContent = String(r.val);
-    revHex.textContent = formatHex(r.val);
-    revBin.textContent = formatBin(r.val);
+    return { text: chars.join(""), count: chars.length, errors: errors };
   }
 
   /* ===== 复制 ===== */
@@ -549,36 +594,208 @@ title: ASCII 编码转换器
     document.body.removeChild(ta);
   }
 
-  copyBtn.addEventListener("click", function () {
-    var text = textInput.value;
-    if (!text) return;
-    var tsv = buildTsv(codePoints(text));
-    function done() {
-      copyBtn.textContent = "已复制";
-      copyBtn.classList.add("copied");
-      setTimeout(function () {
-        copyBtn.textContent = "复制结果 (TSV)";
-        copyBtn.classList.remove("copied");
-      }, 1600);
-    }
+  function copyText(text, done) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(tsv).then(done, function () { fallbackCopy(tsv); done(); });
+      navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
     } else {
-      fallbackCopy(tsv); done();
+      fallbackCopy(text); done();
     }
+  }
+
+  function flashBtn(btn, original) {
+    btn.textContent = "已复制";
+    btn.classList.add("copied");
+    setTimeout(function () {
+      btn.textContent = original;
+      btn.classList.remove("copied");
+    }, 1400);
+  }
+
+  /* ===== 在光标处插入 ===== */
+  function insertAtCursor(el, text) {
+    el.focus();
+    if (document.execCommand && document.execCommand("insertText", false, text)) return;
+    var start = el.selectionStart, end = el.selectionEnd;
+    el.value = el.value.slice(0, start) + text + el.value.slice(end);
+    el.selectionStart = el.selectionEnd = start + text.length;
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
+  /* ===== DOM 引用 ===== */
+  var textInput = $("textInput"), codeInput = $("codeInput");
+  var charInfo = $("charInfo"), sepSelect = $("sepSelect");
+  var outDec = $("outDec"), outHex = $("outHex"), outBin = $("outBin"), outUni = $("outUni");
+  var copyAllBtn = $("copyAllBtn");
+  var codeInfo = $("codeInfo"), codeErr = $("codeErr"), outText = $("outText"), copyTextBtn = $("copyTextBtn");
+  var sampleBtn1 = $("sampleBtn1"), clearBtn1 = $("clearBtn1");
+  var sampleBtn2 = $("sampleBtn2"), clearBtn2 = $("clearBtn2");
+  var asciiTableBody = $("asciiTableBody");
+
+  var SAMPLE_TEXT = "Hello, STM32! 中文";
+  var SAMPLE_CODE = "72 101 0x6C 0b1101100 \\u006F";
+
+  /* ===== 文本转编码渲染 ===== */
+  var lastResults = { dec: "", hex: "", bin: "", uni: "" };
+
+  function renderText2Code() {
+    var text = textInput.value;
+    var pts = codePoints(text);
+    charInfo.textContent = pts.length + " 字符 \u00b7 " + utf8Length(text) + " 字节";
+
+    if (pts.length === 0) {
+      ["outDec", "outHex", "outBin", "outUni"].forEach(function (id) {
+        $(id).textContent = "—";
+        $(id).classList.add("empty");
+      });
+      lastResults = { dec: "", hex: "", bin: "", uni: "" };
+      return;
+    }
+
+    var sep = sepSelect.value;
+    var decs = [], hexs = [], bins = [], unis = [], i;
+    for (i = 0; i < pts.length; i++) {
+      decs.push(fmtDec(pts[i]));
+      hexs.push(fmtHex(pts[i]));
+      bins.push(fmtBin(pts[i]));
+      unis.push(fmtUni(pts[i]));
+    }
+    lastResults.dec = joinArr(decs, sep);
+    lastResults.hex = joinArr(hexs, sep);
+    lastResults.bin = joinArr(bins, sep);
+    lastResults.uni = joinArr(unis, sep === "none" ? "" : sep);
+
+    outDec.textContent = lastResults.dec; outDec.classList.remove("empty");
+    outHex.textContent = lastResults.hex; outHex.classList.remove("empty");
+    outBin.textContent = lastResults.bin; outBin.classList.remove("empty");
+    outUni.textContent = lastResults.uni; outUni.classList.remove("empty");
+  }
+
+  /* ===== 编码转文本渲染 ===== */
+  function renderCode2Text() {
+    var r = parseCodes(codeInput.value);
+    codeInfo.textContent = r.count + " 个编码";
+    if (r.errors.length > 0) {
+      codeErr.textContent = r.errors.slice(0, 3).join("；") + (r.errors.length > 3 ? " 等" : "");
+    } else {
+      codeErr.textContent = "";
+    }
+    if (r.count === 0) {
+      outText.textContent = "—";
+    } else {
+      outText.textContent = r.text;
+    }
+  }
+
+  /* ===== 标签页切换 ===== */
+  document.querySelectorAll(".tab").forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      var mode = tab.getAttribute("data-mode");
+      if (state.mode === mode) return;
+      state.mode = mode;
+      document.querySelectorAll(".tab").forEach(function (t) {
+        var active = t === tab;
+        t.classList.toggle("is-active", active);
+        t.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      document.querySelectorAll("section[data-view]").forEach(function (sec) {
+        sec.hidden = sec.getAttribute("data-view") !== mode;
+      });
+    });
   });
 
   /* ===== 事件绑定 ===== */
-  textInput.addEventListener("input", recompute);
-  sampleBtn.addEventListener("click", function () { textInput.value = SAMPLE; recompute(); });
-  clearBtn.addEventListener("click", function () { textInput.value = ""; recompute(); });
-  revInput.addEventListener("input", updateReverse);
-  revBase.addEventListener("change", updateReverse);
+  textInput.addEventListener("input", renderText2Code);
+  sepSelect.addEventListener("change", renderText2Code);
+  codeInput.addEventListener("input", renderCode2Text);
+
+  sampleBtn1.addEventListener("click", function () { textInput.value = SAMPLE_TEXT; renderText2Code(); });
+  clearBtn1.addEventListener("click", function () { textInput.value = ""; renderText2Code(); });
+  sampleBtn2.addEventListener("click", function () { codeInput.value = SAMPLE_CODE; renderCode2Text(); });
+  clearBtn2.addEventListener("click", function () { codeInput.value = ""; renderCode2Text(); });
+
+  /* 单格式复制 */
+  document.querySelectorAll(".rc-copy").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var fmt = btn.getAttribute("data-fmt");
+      var text = lastResults[fmt];
+      if (!text) return;
+      copyText(text, function () { flashBtn(btn, "复制"); });
+    });
+  });
+
+  /* 复制全部 */
+  copyAllBtn.addEventListener("click", function () {
+    if (!lastResults.dec && !lastResults.hex && !lastResults.bin && !lastResults.uni) return;
+    var all = [
+      "十进制：" + lastResults.dec,
+      "十六进制：" + lastResults.hex,
+      "二进制：" + lastResults.bin,
+      "Unicode：" + lastResults.uni
+    ].join("\n");
+    copyText(all, function () { flashBtn(copyAllBtn, "复制全部结果"); });
+  });
+
+  /* 复制文本 */
+  copyTextBtn.addEventListener("click", function () {
+    var t = outText.textContent;
+    if (!t || t === "—") return;
+    copyText(t, function () { flashBtn(copyTextBtn, "复制文本"); });
+  });
+
+  /* ===== 构建 ASCII 码表 ===== */
+  (function buildTable() {
+    var frag = document.createDocumentFragment();
+    for (var code = 0; code <= 127; code++) {
+      var tr = document.createElement("tr");
+
+      var tdDec = document.createElement("td");
+      tdDec.textContent = String(code);
+
+      var tdHex = document.createElement("td");
+      tdHex.textContent = fmtHex(code);
+
+      var tdBin = document.createElement("td");
+      tdBin.textContent = fmtBin(code);
+
+      var tdChar = document.createElement("td");
+      var isCtrl = code < 0x20 || code === 0x7F;
+      tdChar.textContent = charLabel(code);
+      tdChar.className = isCtrl ? "col-ctrl" : "col-char";
+
+      var tdOp = document.createElement("td");
+      var btn = document.createElement("button");
+      btn.className = "insert-btn";
+      btn.type = "button";
+      btn.textContent = "插入";
+      btn.setAttribute("data-code", String(code));
+      tdOp.appendChild(btn);
+
+      tr.appendChild(tdDec);
+      tr.appendChild(tdHex);
+      tr.appendChild(tdBin);
+      tr.appendChild(tdChar);
+      tr.appendChild(tdOp);
+      frag.appendChild(tr);
+    }
+    asciiTableBody.appendChild(frag);
+  })();
+
+  /* 码表插入：文本模式插入字符，编码模式插入十进制 */
+  asciiTableBody.addEventListener("click", function (e) {
+    var btn = e.target.closest(".insert-btn");
+    if (!btn) return;
+    var code = parseInt(btn.getAttribute("data-code"), 10);
+    if (state.mode === "text2code") {
+      insertAtCursor(textInput, String.fromCodePoint(code));
+    } else {
+      insertAtCursor(codeInput, String(code) + " ");
+    }
+  });
 
   /* ===== 初始化 ===== */
-  textInput.value = SAMPLE;
-  recompute();
-  updateReverse();
+  textInput.value = SAMPLE_TEXT;
+  renderText2Code();
+  renderCode2Text();
 })();
 </script>
 </body>
