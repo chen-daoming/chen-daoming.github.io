@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRC 在线计算器</title>
+<style>
+  :root {
+    --bg: #121518;
+    --panel: #1b2026;
+    --panel-2: #21272e;
+    --border: #2b333c;
+    --border-strong: #3a444f;
+    --text: #e9edf2;
+    --text-dim: #98a4b1;
+    --text-faint: #6b7683;
+    --accent: #e0a34b;
+    --accent-soft: rgba(224, 163, 75, 0.14);
+    --accent-ink: #211b12;
+    --display-bg: #0c120e;
+    --display: #a7e8ba;
+    --display-dim: #4c7a5e;
+    --ok: #58c67c;
+    --ok-soft: rgba(88, 198, 124, 0.15);
+    --err: #d9685f;
+    --err-soft: rgba(217, 104, 95, 0.14);
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Consolas, "Courier New", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    padding: 28px 16px 40px;
+  }
+  .tool { max-width: 840px; margin: 0 auto; }
+
+  /* ===== 头部 ===== */
+  .head { margin-bottom: 22px; }
+  .head-kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .head h1 { margin: 0 0 6px; font-size: 26px; font-weight: 700; letter-spacing: 0.01em; }
+  .head-sub { margin: 0; color: var(--text-dim); font-size: 14px; max-width: 60ch; }
+
+  /* ===== 面板 ===== */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    margin: 0 0 14px;
+  }
+  .panel-title::before {
+    content: "";
+    width: 6px; height: 14px;
+    background: var(--accent);
+    border-radius: 1px;
+    flex: none;
+  }
+
+  /* ===== 标签页 ===== */
+  .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+  .tab {
+    appearance: none;
+    border: 1px solid var(--border-strong);
+    background: var(--panel-2);
+    color: var(--text-dim);
+    font-family: var(--sans);
+    font-size: 14px;
+    padding: 9px 16px;
+    min-height: 40px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .tab:hover { color: var(--text); border-color: var(--accent); }
+  .tab.is-active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ===== 输入 ===== */
+  .mono-input {
+    width: 100%;
+    background: #0f1317;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    color: var(--display);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 12px;
+    resize: vertical;
+    min-height: 92px;
+  }
+  .mono-input::placeholder { color: var(--text-faint); }
+  .mono-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .meta-line { display: flex; align-items: center; gap: 12px; margin-top: 10px; min-height: 24px; flex-wrap: wrap; }
+  .chip {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 3px 10px;
+  }
+  .err-text { color: var(--err); font-size: 13px; }
+
+  /* ===== 算法参数 ===== */
+  .field { display: block; }
+  .field-label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 6px; }
+  select, input[type="text"], input:not([type]) {
+    width: 100%;
+    background: #0f1317;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    padding: 9px 10px;
+    min-height: 40px;
+  }
+  select:focus, input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .mono { font-family: var(--mono) !important; color: var(--display) !important; }
+  .params-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .check-row { display: flex; gap: 20px; margin-top: 12px; flex-wrap: wrap; }
+  .check { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-dim); min-height: 40px; cursor: pointer; }
+  .check input { width: 16px; height: 16px; accent-color: var(--accent); }
+
+  /* ===== 结果 ===== */
+  .result-panel { background: var(--panel); }
+  .readout {
+    background: var(--display-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,.5);
+  }
+  .readout-label { font-size: 12px; color: var(--display-dim); font-family: var(--mono); letter-spacing: 0.08em; margin-bottom: 6px; }
+  .readout-value {
+    font-family: var(--mono);
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--display);
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    word-break: break-all;
+    min-height: 42px;
+  }
+  .readout-secondary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .readout-secondary > div {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .readout-secondary .k { display: block; font-size: 12px; color: var(--text-faint); margin-bottom: 4px; }
+  .readout-secondary .v { font-size: 13px; color: var(--text); word-break: break-all; }
+  .verify-line { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+  .verify-line .field { flex: 1 1 200px; }
+  .badge {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 14px;
+    min-height: 40px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+  .badge.ok { background: var(--ok-soft); color: var(--ok); border: 1px solid var(--ok); }
+  .badge.no { background: var(--err-soft); color: var(--err); border: 1px solid var(--err); }
+  .badge.empty { background: transparent; color: var(--text-faint); border: 1px dashed var(--border-strong); }
+  .btn {
+    appearance: none;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 11px 18px;
+    min-height: 44px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: filter .15s ease;
+  }
+  .btn:hover { filter: brightness(1.06); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn.copied { border-color: var(--ok); background: var(--ok); color: #0d1a11; }
+
+  .foot {
+    margin-top: 18px;
+    color: var(--text-faint);
+    font-size: 12.5px;
+    border-top: 1px dashed var(--border);
+    padding-top: 12px;
+  }
+  .foot code { font-family: var(--mono); color: var(--text-dim); background: var(--panel-2); padding: 1px 5px; border-radius: 4px; }
+
+  @media (max-width: 560px) {
+    body { padding: 20px 12px 32px; }
+    .head h1 { font-size: 22px; }
+    .readout-value { font-size: 26px; }
+    .readout-secondary { grid-template-columns: 1fr; }
+    .params-grid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<main class="tool">
+  <header class="head">
+    <div class="head-kicker">Embedded Utility</div>
+    <h1>CRC 在线计算器</h1>
+    <p class="head-sub">支持 CRC-8 / CRC-16 / CRC-32 常用预设算法，HEX 字节与 ASCII 文本两种输入，也可自定义多项式参数，并可与预期校验值比对。</p>
+  </header>
+
+  <section class="panel" aria-label="数据输入">
+    <h2 class="panel-title">数据输入</h2>
+    <div class="tabs" role="tablist" aria-label="输入方式">
+      <button class="tab is-active" data-mode="hex" role="tab" aria-selected="true">HEX 字节</button>
+      <button class="tab" data-mode="ascii" role="tab" aria-selected="false">ASCII 文本</button>
+    </div>
+    <textarea id="hexInput" class="mono-input" rows="4" spellcheck="false" placeholder="例如：01 03 00 00 00 0A，或 0x01 0x03 0x00 0x00 0x00 0x0A"></textarea>
+    <textarea id="asciiInput" class="mono-input" rows="4" spellcheck="false" placeholder="例如：123456789" hidden></textarea>
+    <div class="meta-line">
+      <span id="byteInfo" class="chip">0 字节</span>
+      <span id="errInfo" class="err-text"></span>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="算法参数">
+    <h2 class="panel-title">算法参数</h2>
+    <label class="field">
+      <span class="field-label">预设算法</span>
+      <select id="presetSelect"></select>
+    </label>
+    <div class="params-grid">
+      <label class="field">
+        <span class="field-label">宽度 (bit)</span>
+        <select id="pWidth">
+          <option value="8">8</option>
+          <option value="16" selected>16</option>
+          <option value="32">32</option>
+        </select>
+      </label>
+      <label class="field">
+        <span class="field-label">多项式 Poly (HEX)</span>
+        <input id="pPoly" class="mono" value="8005" spellcheck="false">
+      </label>
+      <label class="field">
+        <span class="field-label">初始值 Init (HEX)</span>
+        <input id="pInit" class="mono" value="FFFF" spellcheck="false">
+      </label>
+      <label class="field">
+        <span class="field-label">异或值 XorOut (HEX)</span>
+        <input id="pXor" class="mono" value="0000" spellcheck="false">
+      </label>
+    </div>
+    <div class="check-row">
+      <label class="check"><input type="checkbox" id="pRefin" checked> 输入反转 RefIn</label>
+      <label class="check"><input type="checkbox" id="pRefout" checked> 输出反转 RefOut</label>
+    </div>
+  </section>
+
+  <section class="panel result-panel" aria-label="计算结果">
+    <h2 class="panel-title">计算结果</h2>
+    <div class="readout">
+      <div class="readout-label">CRC &middot; HEX</div>
+      <div id="crcHex" class="readout-value">0x----</div>
+    </div>
+    <div class="readout-secondary">
+      <div><span class="k">二进制</span><span id="crcBin" class="v">--</span></div>
+      <div><span class="k">十进制</span><span id="crcDec" class="v">--</span></div>
+    </div>
+    <div class="verify-line">
+      <label class="field">
+        <span class="field-label">预期校验值（可选）</span>
+        <input id="expectInput" class="mono" placeholder="例如 0x4B37" spellcheck="false">
+      </label>
+      <span id="verifyBadge" class="badge empty">未比对</span>
+    </div>
+    <button id="copyBtn" class="btn">复制结果 (HEX)</button>
+  </section>
+
+  <footer class="foot">
+    验证向量：以 ASCII <code>123456789</code> 为输入，CRC-32 应为 <code>0xCBF43926</code>，CRC-16/MODBUS 应为 <code>0x4B37</code>，CRC-8/MAXIM 应为 <code>0xA1</code>。
+  </footer>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ===== 预设算法（Rocksoft 参数模型，poly 为常规表示） ===== */
+  var PRESETS = {
+    crc8_smbus:      { name: "CRC-8/SMBUS",             width: 8,  poly: "07",       init: "00",       refin: false, refout: false, xor: "00"       },
+    crc8_maxim:      { name: "CRC-8/MAXIM (Dallas)",    width: 8,  poly: "31",       init: "00",       refin: true,  refout: true,  xor: "00"       },
+    crc16_modbus:    { name: "CRC-16/MODBUS",           width: 16, poly: "8005",     init: "FFFF",     refin: true,  refout: true,  xor: "0000"     },
+    crc16_ccitt:     { name: "CRC-16/CCITT-FALSE",      width: 16, poly: "1021",     init: "FFFF",     refin: false, refout: false, xor: "0000"     },
+    crc16_xmodem:    { name: "CRC-16/XMODEM",           width: 16, poly: "1021",     init: "0000",     refin: false, refout: false, xor: "0000"     },
+    crc16_kermit:    { name: "CRC-16/KERMIT",           width: 16, poly: "1021",     init: "0000",     refin: true,  refout: true,  xor: "0000"     },
+    crc16_ibm:       { name: "CRC-16/IBM (ARC)",        width: 16, poly: "8005",     init: "0000",     refin: true,  refout: true,  xor: "0000"     },
+    crc32:           { name: "CRC-32 (IEEE 802.3)",     width: 32, poly: "04C11DB7", init: "FFFFFFFF", refin: true,  refout: true,  xor: "FFFFFFFF" },
+    crc32_mpeg2:     { name: "CRC-32/MPEG-2",           width: 32, poly: "04C11DB7", init: "FFFFFFFF", refin: false, refout: false, xor: "00000000" },
+    crc32c:          { name: "CRC-32C (Castagnoli)",    width: 32, poly: "1EDC6F41", init: "FFFFFFFF", refin: true,  refout: true,  xor: "FFFFFFFF" },
+    crc32_posix:     { name: "CRC-32/POSIX (ck_sum)",   width: 32, poly: "04C11DB7", init: "00000000", refin: false, refout: false, xor: "FFFFFFFF" }
+  };
+
+  /* ===== 状态 ===== */
+  var state = {
+    mode: "hex",
+    preset: "crc16_modbus",
+    width: 16,
+    poly: 0x8005,
+    init: 0xFFFF,
+    refin: true,
+    refout: true,
+    xor: 0x0000,
+    crc: null
+  };
+
+  /* ===== 工具函数 ===== */
+  function reflect(v, bits) {
+    var r = 0, i;
+    for (i = 0; i < bits; i++) {
+      if (v & 1) r |= 1 << (bits - 1 - i);
+      v >>>= 1;
+    }
+    return r >>> 0;
+  }
+
+  function crcCompute(bytes, width, poly, init, refin, refout, xorout) {
+    var mask = width === 8 ? 0xFF : width === 16 ? 0xFFFF : 0xFFFFFFFF;
+    var topBit = 1 << (width - 1);
+    var rpoly = refin ? (reflect(poly, width) & mask) : 0;
+    var crc = init & mask, i, j, b;
+    for (i = 0; i < bytes.length; i++) {
+      b = bytes[i];
+      if (refin) {
+        crc ^= b;
+        for (j = 0; j < 8; j++) {
+          if (crc & 1) crc = ((crc >>> 1) ^ rpoly) & mask;
+          else crc = (crc >>> 1) & mask;
+        }
+      } else {
+        crc ^= (b << (width - 8)) & mask;
+        for (j = 0; j < 8; j++) {
+          if (crc & topBit) crc = ((crc << 1) ^ poly) & mask;
+          else crc = (crc << 1) & mask;
+        }
+      }
+    }
+    crc &= mask;
+    if (refin !== refout) crc = reflect(crc, width) & mask;
+    crc ^= xorout;
+    return (crc & mask) >>> 0;
+  }
+
+  function parseHexStr(s) {
+    var cleaned = s.replace(/0x/gi, " ").replace(/[\s,;:|_\-]+/g, "");
+    if (!/^[0-9a-fA-F]*$/.test(cleaned)) return { ok: false, msg: "HEX 数据含非法字符" };
+    if (cleaned.length % 2 !== 0) return { ok: false, msg: "HEX 数据长度为奇数，无法按字节解析" };
+    var bytes = [], i;
+    for (i = 0; i < cleaned.length; i += 2) bytes.push(parseInt(cleaned.substr(i, 2), 16));
+    return { ok: true, bytes: bytes, hex: cleaned.toUpperCase() };
+  }
+
+  function hexVal(s, digits) {
+    var cleaned = s.replace(/0x/gi, "").replace(/[\s,;:|_\-]+/g, "");
+    if (!/^[0-9a-fA-F]*$/.test(cleaned) || cleaned.length === 0 || cleaned.length > digits) return null;
+    return parseInt(cleaned, 16);
+  }
+
+  function widthMask(w) { return w === 8 ? 0xFF : w === 16 ? 0xFFFF : 0xFFFFFFFF; }
+
+  function padHex(v, w) {
+    var h = v.toString(16).toUpperCase();
+    while (h.length < w / 4) h = "0" + h;
+    return h;
+  }
+
+  function padBin(v, w) {
+    var b = v.toString(2);
+    while (b.length < w) b = "0" + b;
+    var out = [], i;
+    for (i = 0; i < b.length; i += 4) out.push(b.substr(i, 4));
+    return out.join(" ");
+  }
+
+  /* ===== DOM 引用 ===== */
+  var hexInput = $("hexInput"), asciiInput = $("asciiInput");
+  var presetSelect = $("presetSelect"), pWidth = $("pWidth"), pPoly = $("pPoly"), pInit = $("pInit"), pXor = $("pXor");
+  var pRefin = $("pRefin"), pRefout = $("pRefout");
+  var byteInfo = $("byteInfo"), errInfo = $("errInfo");
+  var crcHexEl = $("crcHex"), crcBinEl = $("crcBin"), crcDecEl = $("crcDec");
+  var expectInput = $("expectInput"), verifyBadge = $("verifyBadge"), copyBtn = $("copyBtn");
+
+  /* ===== 预设下拉初始化 ===== */
+  (function buildPresetSelect() {
+    var opt;
+    opt = document.createElement("option");
+    opt.value = "custom"; opt.textContent = "自定义参数";
+    presetSelect.appendChild(opt);
+    Object.keys(PRESETS).forEach(function (key) {
+      opt = document.createElement("option");
+      opt.value = key; opt.textContent = PRESETS[key].name;
+      presetSelect.appendChild(opt);
+    });
+  })();
+
+  /* ===== 读参数 ===== */
+  function readParams() {
+    var w = parseInt(pWidth.value, 10);
+    var mask = widthMask(w);
+    var poly = hexVal(pPoly.value, w / 4);
+    var init = hexVal(pInit.value, w / 4);
+    var xor = hexVal(pXor.value, w / 4);
+    if (poly === null || init === null || xor === null) return { ok: false, msg: "多项式 / 初始值 / 异或值格式错误（HEX）" };
+    return {
+      ok: true, width: w,
+      poly: poly & mask, init: init & mask, xor: xor & mask,
+      refin: pRefin.checked, refout: pRefout.checked
+    };
+  }
+
+  /* ===== 应用预设 ===== */
+  function applyPreset(key) {
+    var p = PRESETS[key];
+    state.preset = key;
+    pWidth.value = String(p.width);
+    pPoly.value = p.poly;
+    pInit.value = p.init;
+    pXor.value = p.xor;
+    pRefin.checked = p.refin;
+    pRefout.checked = p.refout;
+  }
+
+  /* ===== 计算与渲染 ===== */
+  function recompute() {
+    /* 1. 读数据 */
+    var bytes = null, err = null;
+    if (state.mode === "hex") {
+      var r = parseHexStr(hexInput.value);
+      if (r.ok) { bytes = r.bytes; errInfo.textContent = ""; }
+      else { err = r.msg; errInfo.textContent = r.msg; }
+    } else {
+      bytes = Array.prototype.map.call(asciiInput.value, function (c) { return c.charCodeAt(0) & 0xFF; });
+      errInfo.textContent = "";
+    }
+    byteInfo.textContent = bytes ? bytes.length + " 字节" : "0 字节";
+
+    /* 2. 读参数 */
+    var params = readParams();
+    if (!params.ok) { err = params.msg; errInfo.textContent = params.msg; }
+
+    /* 3. 计算 */
+    if (bytes && params.ok) {
+      state.crc = crcCompute(bytes, params.width, params.poly, params.init, params.refin, params.refout, params.xor);
+      var w = params.width;
+      crcHexEl.textContent = "0x" + padHex(state.crc, w);
+      crcBinEl.textContent = padBin(state.crc, w);
+      crcDecEl.textContent = String(state.crc);
+    } else {
+      state.crc = null;
+      crcHexEl.textContent = "0x----";
+      crcBinEl.textContent = "--";
+      crcDecEl.textContent = "--";
+    }
+
+    /* 4. 校验比对 */
+    updateVerify();
+  }
+
+  function updateVerify() {
+    var v = expectInput.value.trim();
+    if (!v) { verifyBadge.className = "badge empty"; verifyBadge.textContent = "未比对"; return; }
+    var w = parseInt(pWidth.value, 10);
+    var mask = widthMask(w);
+    var ev = hexVal(v, w / 4);
+    if (ev === null) { verifyBadge.className = "badge empty"; verifyBadge.textContent = "格式错误"; return; }
+    if (state.crc === null) { verifyBadge.className = "badge empty"; verifyBadge.textContent = "待计算"; return; }
+    if ((state.crc & mask) === (ev & mask)) {
+      verifyBadge.className = "badge ok"; verifyBadge.textContent = "校验通过";
+    } else {
+      verifyBadge.className = "badge no"; verifyBadge.textContent = "校验不通过";
+    }
+  }
+
+  /* ===== 事件绑定 ===== */
+  document.querySelectorAll(".tab").forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      var mode = tab.getAttribute("data-mode");
+      if (state.mode === mode) return;
+      state.mode = mode;
+      document.querySelectorAll(".tab").forEach(function (t) {
+        var active = t === tab;
+        t.classList.toggle("is-active", active);
+        t.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      hexInput.hidden = mode !== "hex";
+      asciiInput.hidden = mode !== "ascii";
+      recompute();
+    });
+  });
+
+  hexInput.addEventListener("input", recompute);
+  asciiInput.addEventListener("input", recompute);
+  expectInput.addEventListener("input", updateVerify);
+
+  presetSelect.addEventListener("change", function () {
+    if (presetSelect.value === "custom") { state.preset = "custom"; return; }
+    applyPreset(presetSelect.value);
+    recompute();
+  });
+
+  function markCustom() {
+    if (state.preset !== "custom") {
+      state.preset = "custom";
+      presetSelect.value = "custom";
+    }
+  }
+
+  [pWidth, pPoly, pInit, pXor, pRefin, pRefout].forEach(function (el) {
+    el.addEventListener("input", function () { markCustom(); recompute(); });
+    el.addEventListener("change", function () { markCustom(); recompute(); });
+  });
+
+  copyBtn.addEventListener("click", function () {
+    if (state.crc === null) return;
+    var w = parseInt(pWidth.value, 10);
+    var text = "0x" + padHex(state.crc, w);
+    function done() {
+      copyBtn.textContent = "已复制";
+      copyBtn.classList.add("copied");
+      setTimeout(function () {
+        copyBtn.textContent = "复制结果 (HEX)";
+        copyBtn.classList.remove("copied");
+      }, 1600);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+    } else {
+      fallbackCopy(text); done();
+    }
+  });
+
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); } catch (e) { /* 忽略 */ }
+    document.body.removeChild(ta);
+  }
+
+  /* ===== 初始化：默认 MODBUS 预设 + 示例数据 ===== */
+  applyPreset("crc16_modbus");
+  hexInput.value = "01 03 00 00 00 0A";
+  recompute();
+})();
+</script>
+</body>
+</html>
