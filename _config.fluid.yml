@@ -18,6 +18,7 @@ navbar:
         - { key: 'battery', name: '电池续航计算器', link: '/battery/' }
         - { key: 'led', name: 'LED 串联电阻', link: '/led-resistor/' }
         - { key: 'base', name: '进制转换器', link: '/base-converter/' }
+        - { key: 'pcb', name: 'PCB走线宽度', link: '/pcb-trace/' }
 
         # 以后新增工具：- { key: 'xxx', name: '工具名', link: '/xxx/' }
     - { key: 'about', link: '/about/', icon: 'icon-info-circle-fill' }
