@@ -15,6 +15,8 @@ navbar:
         - { key: 'ascii', name: 'ASCII 转换器', link: '/ascii/' }
         - { key: 'vdiv', name: '分压电阻计算器', link: '/vdiv/' }
         - { key: 'cap', name: '电容换算器', link: '/capacitance/' }
+        - { key: 'battery', name: '电池续航计算器', link: '/battery/' }
+
         # 以后新增工具：- { key: 'xxx', name: '工具名', link: '/xxx/' }
     - { key: 'about', link: '/about/', icon: 'icon-info-circle-fill' }
 # ==================== 首页 ====================
