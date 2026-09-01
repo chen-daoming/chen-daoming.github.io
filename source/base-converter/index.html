@@ -1,0 +1,329 @@
+---
+title: 进制转换器
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>进制转换器</title>
+<style>
+  :root{
+    --bg:#121518;--panel:#1b2026;--panel-2:#21272e;--border:#2b333c;--border-strong:#3a444f;
+    --text:#e9edf2;--text-dim:#98a4b1;--text-faint:#6b7683;
+    --accent:#e0a34b;--accent-soft:rgba(224,163,75,.14);
+    --display-bg:#0c120e;--display:#a7e8ba;--display-dim:#4c7a5e;
+    --bit-on:#58c67c;--bit-off:#2b333c;--bit-on-bg:rgba(88,198,124,.18);
+    --ok:#58c67c;--err:#d9685f;--warn:#d9a85f;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Consolas,"Courier New",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+  }
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:28px 16px 40px}
+  .tool{max-width:960px;margin:0 auto}
+  .head{margin-bottom:22px}
+  .head-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin:0 0 8px}
+  .head h1{margin:0 0 6px;font-size:26px;font-weight:700}
+  .head-sub{margin:0;color:var(--text-dim);font-size:14px;max-width:68ch}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px}
+  .panel-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text-dim);letter-spacing:.06em;margin:0 0 14px}
+  .panel-title::before{content:"";width:6px;height:14px;background:var(--accent);border-radius:1px;flex:none}
+  .conv-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .conv-field{display:flex;flex-direction:column;gap:6px}
+  .conv-field label{font-size:13px;color:var(--text-dim);font-weight:500;display:flex;align-items:center;gap:8px}
+  .conv-field label .base-tag{font-family:var(--mono);font-size:11px;background:var(--panel-2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;color:var(--accent)}
+  .conv-field input{width:100%;background:#0f1317;border:1px solid var(--border-strong);border-radius:6px;color:var(--display);font-family:var(--mono);font-size:15px;padding:10px 12px;min-height:42px;letter-spacing:.03em}
+  .conv-field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .conv-field input.invalid{border-color:var(--err);color:var(--err)}
+  .conv-field .hint{font-size:11px;color:var(--text-faint);font-family:var(--mono)}
+  /* 位视图 */
+  .bit-view{background:var(--display-bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px}
+  .bit-groups{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+  .bit-group{display:flex;flex-direction:column;gap:4px;align-items:center}
+  .bit-group-label{font-family:var(--mono);font-size:10px;color:var(--display-dim);letter-spacing:.05em}
+  .bit-row{display:flex;gap:3px}
+  .bit-cell{width:26px;height:30px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;border-radius:4px;cursor:pointer;user-select:none;border:1px solid var(--border);transition:background .12s,color .12s}
+  .bit-cell.on{background:var(--bit-on-bg);color:var(--bit-on);border-color:var(--bit-on)}
+  .bit-cell.off{background:transparent;color:var(--text-faint)}
+  .bit-cell:hover{border-color:var(--accent)}
+  .bit-num{font-family:var(--mono);font-size:9px;color:var(--display-dim);text-align:center;line-height:1}
+  .bit-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;justify-content:center}
+  .bit-btn{background:var(--panel-2);border:1px solid var(--border-strong);color:var(--text);font-family:var(--sans);font-size:12.5px;padding:7px 14px;border-radius:6px;cursor:pointer;min-height:34px}
+  .bit-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .bit-btn:active{background:var(--accent-soft)}
+  .bit-info{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;justify-content:center;font-family:var(--mono);font-size:12px;color:var(--display-dim)}
+  .bit-info span b{color:var(--display);font-weight:600}
+  /* 详情 */
+  .detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+  .detail-item{background:var(--panel-2);border:1px solid var(--border);border-radius:6px;padding:10px 12px}
+  .detail-item .di-label{font-size:11px;color:var(--text-faint);letter-spacing:.04em;margin-bottom:3px}
+  .detail-item .di-value{font-family:var(--mono);font-size:13px;color:var(--text);font-weight:600;word-break:break-all}
+  /* 对照表 */
+  .ref-table{width:100%;border-collapse:collapse;font-size:12.5px}
+  .ref-table thead th{background:var(--panel-2);color:var(--accent);font-weight:600;text-align:left;padding:7px 10px;border-bottom:1px solid var(--border-strong);font-size:11.5px;letter-spacing:.04em}
+  .ref-table tbody td{padding:6px 10px;border-bottom:1px solid var(--border);font-family:var(--mono);color:var(--text)}
+  .ref-table tbody td:first-child{font-weight:600;color:var(--display)}
+  .ref-table tbody tr:hover{background:var(--accent-soft);cursor:pointer}
+  .ref-table tbody tr.active{background:var(--accent-soft);outline:1px solid var(--accent)}
+  /* 原理 */
+  .principle-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .principle-card{background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:14px}
+  .principle-card h3{margin:0 0 8px;font-size:14px;color:var(--accent);font-family:var(--mono);letter-spacing:.03em}
+  .principle-card .formula{font-family:var(--mono);font-size:13px;color:var(--display);background:var(--display-bg);border-radius:6px;padding:8px 10px;margin-bottom:8px;line-height:1.6}
+  .principle-card .formula .var{color:var(--accent)}
+  .principle-card p{margin:0;font-size:12.5px;color:var(--text-dim);line-height:1.6}
+  .principle-card .example{font-family:var(--mono);font-size:12px;color:var(--text);margin-top:6px;padding:6px 8px;background:rgba(224,163,75,.06);border-left:2px solid var(--accent);border-radius:0 4px 4px 0}
+  .foot{margin-top:18px;color:var(--text-faint);font-size:12.5px;border-top:1px dashed var(--border);padding-top:12px}
+  .foot code{font-family:var(--mono);color:var(--text-dim);background:var(--panel-2);padding:1px 5px;border-radius:4px}
+  @media(max-width:640px){
+    body{padding:20px 12px 32px}.head h1{font-size:22px}
+    .conv-grid{grid-template-columns:1fr}.principle-grid{grid-template-columns:1fr}
+    .bit-cell{width:20px;height:24px;font-size:11px}
+    .bit-groups{gap:8px}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="tool">
+  <header class="head">
+    <div class="head-kicker">Embedded Utility</div>
+    <h1>进制转换器</h1>
+    <p class="head-sub">二进制、八进制、十进制、十六进制四进制实时联动，附 32 位位操作视图、位翻转、对照表与进制原理说明。</p>
+  </header>
+
+  <!-- ===== 四进制输入 ===== -->
+  <section class="panel">
+    <h2 class="panel-title">进制转换（任意输入，其余自动更新）</h2>
+    <div class="conv-grid">
+      <div class="conv-field">
+        <label>二进制 <span class="base-tag">Base-2</span></label>
+        <input type="text" id="binIn" spellcheck="false" autocomplete="off" placeholder="0 / 1">
+        <div class="hint">仅 0 和 1</div>
+      </div>
+      <div class="conv-field">
+        <label>八进制 <span class="base-tag">Base-8</span></label>
+        <input type="text" id="octIn" spellcheck="false" autocomplete="off" placeholder="0 – 7">
+        <div class="hint">仅 0–7</div>
+      </div>
+      <div class="conv-field">
+        <label>十进制 <span class="base-tag">Base-10</span></label>
+        <input type="text" id="decIn" spellcheck="false" autocomplete="off" placeholder="0 – 9">
+        <div class="hint">仅 0–9（无符号 32 位）</div>
+      </div>
+      <div class="conv-field">
+        <label>十六进制 <span class="base-tag">Base-16</span></label>
+        <input type="text" id="hexIn" spellcheck="false" autocomplete="off" placeholder="0 – 9, A – F">
+        <div class="hint">0–9 与 A–F（不区分大小写）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 位视图 ===== -->
+  <section class="panel">
+    <h2 class="panel-title">32 位位视图（点击位翻转）</h2>
+    <div class="bit-view">
+      <div class="bit-groups" id="bitGroups"></div>
+      <div class="bit-actions">
+        <button class="bit-btn" id="btnSetAll">全部置位</button>
+        <button class="bit-btn" id="btnClearAll">全部清除</button>
+        <button class="bit-btn" id="btnInv">按位取反</button>
+        <button class="bit-btn" id="btnShl">左移 1 位</button>
+        <button class="bit-btn" id="btnShr">右移 1 位</button>
+      </div>
+      <div class="bit-info">
+        <span>置位数 <b id="popcount">0</b></span>
+        <span>最高位 <b id="msb">—</b></span>
+        <span>最低位 <b id="lsb">—</b></span>
+        <span>有符号 <b id="signed">0</b></span>
+      </div>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-item"><div class="di-label">十六进制（字节分组）</div><div class="di-value" id="dHexBytes">00 00 00 00</div></div>
+      <div class="detail-item"><div class="di-label">二进制（每 4 位分组）</div><div class="di-value" id="dBinGroup">0000 0000 0000 0000 0000 0000 0000 0000</div></div>
+      <div class="detail-item"><div class="di-label">位权展开（十进制）</div><div class="di-value" id="dExpand">0</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 对照表 ===== -->
+  <section class="panel">
+    <h2 class="panel-title">0–15 进制对照表（点击填入）</h2>
+    <div style="overflow-x:auto">
+    <table class="ref-table" id="refTable">
+      <thead><tr><th>十进制</th><th>二进制</th><th>八进制</th><th>十六进制</th><th>位权展开</th></tr></thead>
+      <tbody id="refBody"></tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- ===== 原理 ===== -->
+  <section class="panel">
+    <h2 class="panel-title">进制原理</h2>
+    <div class="principle-grid">
+      <div class="principle-card">
+        <h3>通用公式</h3>
+        <div class="formula">N = Σ d<sub>i</sub> × <span class="var">base</span><sup>i</sup><br>i = 0（LSB）→ n−1（MSB）</div>
+        <p>任意进制数的每一位 d<sub>i</sub> 乘以基数的 i 次幂，求和即得十进制值。十进制转其他进制用「除基取余法」：不断除以基数，余数从低位到高位排列。</p>
+        <div class="example">例：13₁₀ = 1101₂ = 1×8 + 1×4 + 0×2 + 1×1</div>
+      </div>
+      <div class="principle-card">
+        <h3>二进制 Base-2</h3>
+        <div class="formula">位权：2⁰ 2¹ 2² 2³ ...<br>= 1, 2, 4, 8, 16, 32 ...</div>
+        <p>只用 0 和 1，每位代表一个电路状态（通/断），是所有数字电路的基础。缺点是大数书写很长。1 位十六进制 = 4 位二进制。</p>
+        <div class="example">1011₂ = 8+0+2+1 = 11₁₀</div>
+      </div>
+      <div class="principle-card">
+        <h3>八进制 Base-8</h3>
+        <div class="formula">位权：8⁰ 8¹ 8² ...<br>= 1, 8, 64, 512 ...</div>
+        <p>用 0–7，1 位八进制 = 3 位二进制。曾用于早期计算机（如 Unix 文件权限），现已基本被十六进制取代。</p>
+        <div class="example">135₈ = 1×64 + 3×8 + 5×1 = 93₁₀</div>
+      </div>
+      <div class="principle-card">
+        <h3>十六进制 Base-16</h3>
+        <div class="formula">位权：16⁰ 16¹ 16² ...<br>= 1, 16, 256, 4096 ...<br>数字：0–9, A(10)–F(15)</div>
+        <p>用 0–9 和 A–F，1 位十六进制 = 4 位二进制，能将长二进制串压缩为易读格式。嵌入式寄存器、内存地址普遍使用。</p>
+        <div class="example">4B6₁₆ = 4×256 + 11×16 + 6×1 = 1206₁₀</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    通用公式：<code>N = Σ(dᵢ × baseⁱ)</code>。转换方法：其他进制→十进制按位权展开；十进制→其他进制除基取余。所有计算在浏览器本地完成，数据不上传。
+  </footer>
+</main>
+
+<script>
+(function(){"use strict";
+var $=function(id){return document.getElementById(id)};
+var MAX=0xFFFFFFFF;
+
+/* ===== 输入验证 ===== */
+var PAT={bin:/^[01]*$/,oct:/^[0-7]*$/,dec:/^[0-9]*$/,hex:/^[0-9a-fA-F]*$/};
+function parse(str,base){
+  if(!str)return null;
+  if(base===2&&!PAT.bin.test(str))return NaN;
+  if(base===8&&!PAT.oct.test(str))return NaN;
+  if(base===10&&!PAT.dec.test(str))return NaN;
+  if(base===16&&!PAT.hex.test(str))return NaN;
+  var v=parseInt(str,base);
+  if(isNaN(v))return NaN;
+  if(v>MAX)return NaN;
+  return v>>>0;
+}
+
+/* ===== 格式化 ===== */
+function pad(s,n){while(s.length<n)s="0"+s;return s}
+function toBin(v){return pad((v>>>0).toString(2),32)}
+function toOct(v){return (v>>>0).toString(8)}
+function toDec(v){return (v>>>0).toString(10)}
+function toHex(v){return pad((v>>>0).toString(16).toUpperCase(),8)}
+function groupHex(v){return toHex(v).match(/.{2}/g).join(" ")}
+function groupBin(v){return toBin(v).match(/.{4}/g).join(" ")}
+function signed32(v){v=v>>>0;return v>=0x80000000?v-0x100000000:v}
+function popcount(v){v=v>>>0;var c=0;while(v){c+=v&1;v>>>=1}return c}
+function msbPos(v){v=v>>>0;if(v===0)return -1;return 31-Math.clz32(v)}
+function lsbPos(v){v=v>>>0;if(v===0)return -1;var p=0;while(!(v&1)){v>>>=1;p++}return p}
+function expand(v){
+  v=v>>>0;if(v===0)return"0";
+  var parts=[],i;
+  for(i=0;i<32;i++)if((v>>>i)&1)parts.unshift("2^"+i);
+  return parts.join(" + ");
+}
+
+/* ===== 状态 ===== */
+var current=0;
+var binIn=$("binIn"),octIn=$("octIn"),decIn=$("decIn"),hexIn=$("hexIn");
+var inputs={2:binIn,8:octIn,10:decIn,16:hexIn};
+
+function setInvalid(el,bad){el.classList.toggle("invalid",bad)}
+
+function updateAll(skipBase){
+  var v=current;
+  if(skipBase!==2){binIn.value=toBin(v);setInvalid(binIn,false)}
+  if(skipBase!==8){octIn.value=toOct(v);setInvalid(octIn,false)}
+  if(skipBase!==10){decIn.value=toDec(v);setInvalid(decIn,false)}
+  if(skipBase!==16){hexIn.value=toHex(v);setInvalid(hexIn,false)}
+  renderBits(v);
+  $("popcount").textContent=popcount(v);
+  var msb=msbPos(v),lsb=lsbPos(v);
+  $("msb").textContent=msb>=0?"bit "+msb:"—";
+  $("lsb").textContent=lsb>=0?"bit "+lsb:"—";
+  $("signed").textContent=signed32(v).toString();
+  $("dHexBytes").textContent=groupHex(v);
+  $("dBinGroup").textContent=groupBin(v);
+  $("dExpand").textContent=expand(v);
+}
+
+function onInput(base){
+  return function(){
+    var el=inputs[base];
+    var v=parse(el.value,base);
+    if(v===null){current=0;updateAll(base);return}
+    if(isNaN(v)){setInvalid(el,true);return}
+    setInvalid(el,false);
+    current=v;
+    updateAll(base);
+  };
+}
+binIn.addEventListener("input",onInput(2));
+octIn.addEventListener("input",onInput(8));
+decIn.addEventListener("input",onInput(10));
+hexIn.addEventListener("input",onInput(16));
+
+/* ===== 位视图渲染 ===== */
+var bitGroups=$("bitGroups");
+function renderBits(v){
+  v=v>>>0;
+  var html="",group,byte,i,bit;
+  for(group=0;group<4;group++){
+    var hi=31-group*8,lo=24-group*8;
+    html+='<div class="bit-group"><div class="bit-group-label">b'+hi+'–b'+lo+'</div><div class="bit-row">';
+    for(i=0;i<8;i++){
+      bit=hi-i;
+      var on=(v>>>bit)&1;
+      html+='<div class="bit-cell '+(on?"on":"off")+'" data-bit="'+bit+'">'+on+'</div>';
+    }
+    html+='</div><div class="bit-row">';
+    for(i=0;i<8;i++){html+='<div class="bit-num">'+(hi-i)+'</div>'}
+    html+='</div></div>';
+  }
+  bitGroups.innerHTML=html;
+  bitGroups.querySelectorAll(".bit-cell").forEach(function(c){
+    c.addEventListener("click",function(){
+      var b=parseInt(c.getAttribute("data-bit"),10);
+      current=(current^(1<<b))>>>0;
+      updateAll();
+    });
+  });
+}
+
+/* ===== 位操作按钮 ===== */
+$("btnSetAll").addEventListener("click",function(){current=MAX;updateAll()});
+$("btnClearAll").addEventListener("click",function(){current=0;updateAll()});
+$("btnInv").addEventListener("click",function(){current=(~current)>>>0;updateAll()});
+$("btnShl").addEventListener("click",function(){current=(current<<1)>>>0;updateAll()});
+$("btnShr").addEventListener("click",function(){current=current>>>1;updateAll()});
+
+/* ===== 对照表 ===== */
+var refBody=$("refBody");
+var refHtml="";
+for(var n=0;n<=15;n++){
+  refHtml+='<tr data-val="'+n+'"><td>'+n+'</td><td>'+pad(n.toString(2),4)+'</td><td>'+n.toString(8)+'</td><td>'+n.toString(16).toUpperCase()+'</td><td>'+(n?expand(n):"0")+'</td></tr>';
+}
+refBody.innerHTML=refHtml;
+refBody.querySelectorAll("tr").forEach(function(tr){
+  tr.addEventListener("click",function(){
+    refBody.querySelectorAll("tr").forEach(function(r){r.classList.remove("active")});
+    tr.classList.add("active");
+    current=parseInt(tr.getAttribute("data-val"),10);
+    updateAll();
+  });
+});
+
+/* ===== 初始化 ===== */
+current=0;
+updateAll();
+})();
+</script>
+</body>
+</html>
