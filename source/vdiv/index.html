@@ -1,0 +1,750 @@
+---
+title: 分压电阻计算器
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>分压电阻计算器</title>
+<style>
+  :root {
+    --bg: #121518;
+    --panel: #1b2026;
+    --panel-2: #21272e;
+    --border: #2b333c;
+    --border-strong: #3a444f;
+    --text: #e9edf2;
+    --text-dim: #98a4b1;
+    --text-faint: #6b7683;
+    --accent: #e0a34b;
+    --accent-soft: rgba(224, 163, 75, 0.14);
+    --accent-ink: #211b12;
+    --display-bg: #0c120e;
+    --display: #a7e8ba;
+    --display-dim: #4c7a5e;
+    --ok: #58c67c;
+    --ok-soft: rgba(88, 198, 124, 0.15);
+    --err: #d9685f;
+    --err-soft: rgba(217, 104, 95, 0.14);
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Consolas, "Courier New", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    padding: 28px 16px 40px;
+  }
+  .tool { max-width: 960px; margin: 0 auto; }
+
+  /* ===== 头部 ===== */
+  .head { margin-bottom: 22px; }
+  .head-kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .head h1 { margin: 0 0 6px; font-size: 26px; font-weight: 700; letter-spacing: 0.01em; }
+  .head-sub { margin: 0; color: var(--text-dim); font-size: 14px; max-width: 68ch; }
+
+  /* ===== 面板 ===== */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    margin: 0 0 14px;
+  }
+  .panel-title::before {
+    content: "";
+    width: 6px; height: 14px;
+    background: var(--accent);
+    border-radius: 1px;
+    flex: none;
+  }
+
+  /* ===== 模式标签 ===== */
+  .mode-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .mode-tab {
+    appearance: none;
+    border: 1px solid var(--border-strong);
+    background: var(--panel-2);
+    color: var(--text-dim);
+    font-family: var(--sans);
+    font-size: 14px;
+    padding: 9px 16px;
+    min-height: 40px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .mode-tab:hover { color: var(--text); border-color: var(--accent); }
+  .mode-tab.is-active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .mode-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ===== 输入区 ===== */
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field.hidden { display: none; }
+  .field label {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+  .field-input { display: flex; gap: 0; }
+  .field-input input {
+    flex: 1;
+    min-width: 0;
+    background: #0f1317;
+    border: 1px solid var(--border-strong);
+    border-right: none;
+    border-radius: 6px 0 0 6px;
+    color: var(--display);
+    font-family: var(--mono);
+    font-size: 15px;
+    padding: 10px 12px;
+    min-height: 42px;
+  }
+  .field-input input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .field-input input::placeholder { color: var(--text-faint); }
+  .field-input select {
+    width: auto;
+    min-width: 64px;
+    background: var(--panel-2);
+    border: 1px solid var(--border-strong);
+    border-radius: 0 6px 6px 0;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    padding: 0 10px;
+    min-height: 42px;
+    cursor: pointer;
+  }
+  .field-input select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  /* ===== 结果读数 ===== */
+  .readout {
+    background: var(--display-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,.5);
+  }
+  .readout-label { font-size: 12px; color: var(--display-dim); font-family: var(--mono); letter-spacing: 0.08em; margin-bottom: 6px; }
+  .readout-value {
+    font-family: var(--mono);
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--display);
+    line-height: 1.2;
+    word-break: break-all;
+  }
+  .readout-value .unit { font-size: 18px; color: var(--display-dim); margin-left: 6px; font-weight: 500; }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .detail-item {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .detail-item .di-label { font-size: 11px; color: var(--text-faint); letter-spacing: 0.04em; margin-bottom: 3px; }
+  .detail-item .di-value { font-family: var(--mono); font-size: 15px; color: var(--text); font-weight: 600; word-break: break-all; }
+
+  /* ===== E24 推荐 ===== */
+  .e24-box {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 14px;
+  }
+  .e24-box.hidden { display: none; }
+  .e24-title { font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 8px; }
+  .rec-group { margin-bottom: 14px; }
+  .rec-group:last-child { margin-bottom: 0; }
+  .rec-target { font-size: 13px; color: var(--text); font-weight: 600; margin-bottom: 7px; }
+  .rec-target .val { font-family: var(--mono); color: var(--display); font-weight: 700; }
+  .rec-series {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 12.5px;
+    padding: 4px 0;
+    flex-wrap: wrap;
+    border-bottom: 1px dashed rgba(224,163,75,0.15);
+  }
+  .rec-series:last-child { border-bottom: none; }
+  .rec-name { font-family: var(--mono); font-weight: 700; color: var(--accent); min-width: 88px; }
+  .rec-val { font-family: var(--mono); color: var(--text); font-weight: 600; min-width: 80px; }
+  .rec-vout { color: var(--text-dim); font-family: var(--mono); font-size: 12px; }
+  .dev { font-family: var(--mono); font-size: 12px; color: var(--err); }
+  .dev.ok { color: var(--ok); }
+
+  .err-msg { color: var(--err); font-size: 14px; margin-top: 10px; font-family: var(--mono); }
+
+  /* ===== 电路图 + 公式 ===== */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .circuit-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .formula-main {
+    background: var(--display-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .formula-main .fm-text {
+    font-family: var(--mono);
+    font-size: 20px;
+    color: var(--display);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .formula-main .fm-text .var { color: var(--accent); }
+  .derive-list { margin: 0; padding: 0; list-style: none; }
+  .derive-list li {
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--border);
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+  }
+  .derive-list li:last-child { border-bottom: none; }
+  .derive-list .step-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    min-width: 20px;
+  }
+  .derive-list .step-formula {
+    font-family: var(--mono);
+    color: var(--text);
+    font-size: 13px;
+  }
+  .power-note {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    font-size: 12px;
+    color: var(--text-faint);
+  }
+  .power-note code { font-family: var(--mono); color: var(--text-dim); background: var(--panel-2); padding: 1px 5px; border-radius: 4px; }
+
+  .foot {
+    margin-top: 18px;
+    color: var(--text-faint);
+    font-size: 12.5px;
+    border-top: 1px dashed var(--border);
+    padding-top: 12px;
+  }
+  .foot code { font-family: var(--mono); color: var(--text-dim); background: var(--panel-2); padding: 1px 5px; border-radius: 4px; }
+
+  @media (max-width: 720px) {
+    body { padding: 20px 12px 32px; }
+    .head h1 { font-size: 22px; }
+    .field-grid { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .readout-value { font-size: 24px; }
+    .formula-main .fm-text { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<main class="tool">
+  <header class="head">
+    <div class="head-kicker">Embedded Utility</div>
+    <h1>分压电阻计算器</h1>
+    <p class="head-sub">电阻分压电路计算：支持求输出电压、求上/下电阻、给定总阻求配比，自动推荐 E24 标准电阻值，附带电路原理图与公式推导。</p>
+  </header>
+
+  <!-- ===== 模式选择 ===== -->
+  <div class="mode-tabs" role="tablist" aria-label="计算模式">
+    <button class="mode-tab is-active" data-mode="vout" role="tab" aria-selected="true">求输出电压 Vout</button>
+    <button class="mode-tab" data-mode="rb" role="tab" aria-selected="false">求下电阻 Rb</button>
+    <button class="mode-tab" data-mode="ra" role="tab" aria-selected="false">求上电阻 Ra</button>
+    <button class="mode-tab" data-mode="ratio" role="tab" aria-selected="false">给定总阻求配比</button>
+  </div>
+
+  <!-- ===== 输入 ===== -->
+  <section class="panel" aria-label="参数输入">
+    <h2 class="panel-title">参数输入</h2>
+    <div class="field-grid">
+      <div class="field" data-field="vin">
+        <label for="vin">输入电压 Vin</label>
+        <div class="field-input">
+          <input type="number" id="vin" step="any" min="0" placeholder="例如 5">
+          <select id="vinUnit"><option value="1">V</option><option value="0.001">mV</option></select>
+        </div>
+      </div>
+      <div class="field hidden" data-field="vout">
+        <label for="voutIn">目标输出电压 Vout</label>
+        <div class="field-input">
+          <input type="number" id="voutIn" step="any" min="0" placeholder="例如 3.3">
+          <select id="voutUnit"><option value="1">V</option><option value="0.001">mV</option></select>
+        </div>
+      </div>
+      <div class="field" data-field="ra">
+        <label for="ra">上电阻 Ra</label>
+        <div class="field-input">
+          <input type="number" id="ra" step="any" min="0" placeholder="例如 10">
+          <select id="raUnit"><option value="1">Ω</option><option value="1000" selected>kΩ</option><option value="1000000">MΩ</option></select>
+        </div>
+      </div>
+      <div class="field" data-field="rb">
+        <label for="rb">下电阻 Rb</label>
+        <div class="field-input">
+          <input type="number" id="rb" step="any" min="0" placeholder="例如 10">
+          <select id="rbUnit"><option value="1">Ω</option><option value="1000" selected>kΩ</option><option value="1000000">MΩ</option></select>
+        </div>
+      </div>
+      <div class="field hidden" data-field="rtotal">
+        <label for="rtotal">总电阻 Rtotal</label>
+        <div class="field-input">
+          <input type="number" id="rtotal" step="any" min="0" placeholder="例如 20">
+          <select id="rtotalUnit"><option value="1">Ω</option><option value="1000" selected>kΩ</option><option value="1000000">MΩ</option></select>
+        </div>
+      </div>
+    </div>
+    <div id="errMsg" class="err-msg"></div>
+  </section>
+
+  <!-- ===== 结果 ===== -->
+  <section class="panel" aria-label="计算结果">
+    <h2 class="panel-title">计算结果</h2>
+    <div class="readout">
+      <div class="readout-label" id="resultLabel">输出电压 Vout</div>
+      <div class="readout-value" id="resultValue">—<span class="unit"></span></div>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-item"><div class="di-label">静态电流 I</div><div class="di-value" id="dCurrent">—</div></div>
+      <div class="detail-item"><div class="di-label">Ra 功耗</div><div class="di-value" id="dPRA">—</div></div>
+      <div class="detail-item"><div class="di-label">Rb 功耗</div><div class="di-value" id="dPRB">—</div></div>
+      <div class="detail-item"><div class="di-label">总功耗</div><div class="di-value" id="dPTotal">—</div></div>
+      <div class="detail-item"><div class="di-label">分压比</div><div class="di-value" id="dRatio">—</div></div>
+      <div class="detail-item"><div class="di-label">总电阻</div><div class="di-value" id="dRTotal">—</div></div>
+    </div>
+    <div id="e24Box" class="e24-box hidden">
+      <div class="e24-title">标准电阻推荐（E24 / E96 / E192）</div>
+      <div id="e24Content"></div>
+    </div>
+  </section>
+
+  <!-- ===== 电路图 + 公式 ===== -->
+  <div class="two-col">
+    <section class="panel" aria-label="电路原理图">
+      <h2 class="panel-title">电路原理图</h2>
+      <svg class="circuit-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="电阻分压电路原理图">
+        <!-- Vin terminal -->
+        <circle cx="150" cy="28" r="5" fill="none" stroke="#e0a34b" stroke-width="2"/>
+        <text x="150" y="16" text-anchor="middle" fill="#e0a34b" font-family="ui-monospace,monospace" font-size="13" font-weight="700">Vin</text>
+        <!-- wire Vin -> Ra -->
+        <line x1="150" y1="33" x2="150" y2="58" stroke="#98a4b1" stroke-width="2"/>
+        <!-- Ra resistor -->
+        <rect x="120" y="58" width="60" height="36" rx="3" fill="none" stroke="#e9edf2" stroke-width="2"/>
+        <text x="190" y="80" fill="#e9edf2" font-family="ui-monospace,monospace" font-size="14" font-weight="600">Ra</text>
+        <!-- wire Ra -> node -->
+        <line x1="150" y1="94" x2="150" y2="130" stroke="#98a4b1" stroke-width="2"/>
+        <!-- Vout node -->
+        <circle cx="150" cy="130" r="4" fill="#a7e8ba"/>
+        <!-- Vout tap -->
+        <line x1="150" y1="130" x2="230" y2="130" stroke="#98a4b1" stroke-width="2"/>
+        <circle cx="235" cy="130" r="5" fill="none" stroke="#a7e8ba" stroke-width="2"/>
+        <text x="248" y="134" fill="#a7e8ba" font-family="ui-monospace,monospace" font-size="13" font-weight="700">Vout</text>
+        <!-- wire node -> Rb -->
+        <line x1="150" y1="130" x2="150" y2="158" stroke="#98a4b1" stroke-width="2"/>
+        <!-- Rb resistor -->
+        <rect x="120" y="158" width="60" height="36" rx="3" fill="none" stroke="#e9edf2" stroke-width="2"/>
+        <text x="190" y="180" fill="#e9edf2" font-family="ui-monospace,monospace" font-size="14" font-weight="600">Rb</text>
+        <!-- wire Rb -> GND -->
+        <line x1="150" y1="194" x2="150" y2="228" stroke="#98a4b1" stroke-width="2"/>
+        <!-- GND symbol -->
+        <line x1="130" y1="228" x2="170" y2="228" stroke="#98a4b1" stroke-width="2.5"/>
+        <line x1="137" y1="237" x2="163" y2="237" stroke="#98a4b1" stroke-width="2.5"/>
+        <line x1="143" y1="246" x2="157" y2="246" stroke="#98a4b1" stroke-width="2.5"/>
+        <text x="150" y="268" text-anchor="middle" fill="#6b7683" font-family="ui-monospace,monospace" font-size="12">GND</text>
+      </svg>
+    </section>
+
+    <section class="panel" aria-label="公式与推导">
+      <h2 class="panel-title">分压公式</h2>
+      <div class="formula-main">
+        <div class="fm-text"><span class="var">Vout</span> = <span class="var">Vin</span> × <span class="var">Rb</span> / (<span class="var">Ra</span> + <span class="var">Rb</span>)</div>
+      </div>
+      <ol class="derive-list">
+        <li><span class="step-num">1</span><span>总电阻：<span class="step-formula">Rtotal = Ra + Rb</span></span></li>
+        <li><span class="step-num">2</span><span>回路电流：<span class="step-formula">I = Vin / Rtotal</span></span></li>
+        <li><span class="step-num">3</span><span>Rb 两端电压：<span class="step-formula">Vout = I × Rb</span></span></li>
+        <li><span class="step-num">4</span><span>代入化简：<span class="step-formula">Vout = Vin × Rb / (Ra + Rb)</span></span></li>
+      </ol>
+      <div class="power-note">
+        功耗：<code>P_Ra = I² × Ra</code>，<code>P_Rb = I² × Rb</code>，<code>P_total = Vin × I</code>。选型时电阻额定功率需大于实际功耗，建议留 1.5–2 倍余量。
+      </div>
+    </section>
+  </div>
+
+  <footer class="foot">
+    E 系列为国际电工委员会（IEC 60063）标准电阻值：E24（5% 精度，24 档/十倍程）、E96（1% 精度，96 档/十倍程）、E192（0.5% 精度，192 档/十倍程）。推荐值覆盖 1Ω–10MΩ，所有计算在浏览器本地完成，数据不上传。适用于 ADC 采样分压、电平匹配、基准电压等场景。
+  </footer>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ===== 标准电阻系列（E24 / E96 / E192，1Ω – 10MΩ） ===== */
+  /* E24 存在非数学舍入，硬编码；E96/E192 由 10^(n/N) 生成 */
+  var E24_BASE = [1.0, 1.1, 1.2, 1.3, 1.5, 1.6, 1.8, 2.0, 2.2, 2.4, 2.7, 3.0,
+                  3.3, 3.6, 3.9, 4.3, 4.7, 5.1, 5.6, 6.2, 6.8, 7.5, 8.2, 9.1];
+
+  function generateEBase(count) {
+    var arr = [], n;
+    for (n = 0; n < count; n++) {
+      arr.push(parseFloat(Math.pow(10, n / count).toPrecision(3)));
+    }
+    return arr;
+  }
+  var E96_BASE = generateEBase(96);
+  var E192_BASE = generateEBase(192);
+
+  var SERIES = [
+    { key: "E24",  tol: "5%",   base: E24_BASE },
+    { key: "E96",  tol: "1%",   base: E96_BASE },
+    { key: "E192", tol: "0.5%", base: E192_BASE }
+  ];
+
+  function buildSeriesValues(base) {
+    var arr = [], i, n;
+    for (n = 0; n <= 6; n++) {
+      for (i = 0; i < base.length; i++) {
+        arr.push(base[i] * Math.pow(10, n));
+      }
+    }
+    return arr;
+  }
+  var SERIES_VALUES = {};
+  SERIES.forEach(function (s) { SERIES_VALUES[s.key] = buildSeriesValues(s.base); });
+
+  function nearestInSeries(values, target) {
+    if (!isFinite(target) || target <= 0) return null;
+    var best = values[0], bestDiff = Math.abs(values[0] - target), i, diff;
+    for (i = 1; i < values.length; i++) {
+      diff = Math.abs(values[i] - target);
+      if (diff < bestDiff) { bestDiff = diff; best = values[i]; }
+    }
+    return { value: best, deviation: (best - target) / target * 100 };
+  }
+
+  function recommendAllSeries(target) {
+    var out = [], i;
+    for (i = 0; i < SERIES.length; i++) {
+      var s = SERIES[i];
+      var rec = nearestInSeries(SERIES_VALUES[s.key], target);
+      if (rec) out.push({ key: s.key, tol: s.tol, value: rec.value, deviation: rec.deviation });
+    }
+    return out;
+  }
+
+  /* ===== 格式化 ===== */
+  function sigFigs(num, figs) {
+    if (!isFinite(num)) return "—";
+    if (num === 0) return "0";
+    var abs = Math.abs(num);
+    var d = Math.floor(Math.log10(abs)) + 1;
+    var decimals = Math.max(0, figs - d);
+    return Number(num.toFixed(decimals)).toString();
+  }
+
+  function formatResistance(ohms) {
+    if (!isFinite(ohms) || ohms < 0) return "—";
+    if (ohms >= 1e6) return sigFigs(ohms / 1e6, 4) + " MΩ";
+    if (ohms >= 1e3) return sigFigs(ohms / 1e3, 4) + " kΩ";
+    return sigFigs(ohms, 4) + " Ω";
+  }
+
+  function formatVoltage(volts) {
+    if (!isFinite(volts) || volts < 0) return "—";
+    if (volts >= 1) return sigFigs(volts, 5) + " V";
+    if (volts >= 1e-3) return sigFigs(volts / 1e-3, 4) + " mV";
+    if (volts >= 1e-6) return sigFigs(volts / 1e-6, 4) + " µV";
+    return sigFigs(volts, 4) + " V";
+  }
+
+  function formatCurrent(amps) {
+    if (!isFinite(amps) || amps < 0) return "—";
+    if (amps >= 1) return sigFigs(amps, 4) + " A";
+    if (amps >= 1e-3) return sigFigs(amps / 1e-3, 4) + " mA";
+    if (amps >= 1e-6) return sigFigs(amps / 1e-6, 4) + " µA";
+    if (amps >= 1e-9) return sigFigs(amps / 1e-9, 4) + " nA";
+    return sigFigs(amps, 4) + " A";
+  }
+
+  function formatPower(watts) {
+    if (!isFinite(watts) || watts < 0) return "—";
+    if (watts >= 1) return sigFigs(watts, 4) + " W";
+    if (watts >= 1e-3) return sigFigs(watts / 1e-3, 4) + " mW";
+    if (watts >= 1e-6) return sigFigs(watts / 1e-6, 4) + " µW";
+    return sigFigs(watts, 4) + " W";
+  }
+
+  /* ===== 读取输入 ===== */
+  function readVal(inputId, unitId) {
+    var raw = parseFloat($(inputId).value);
+    var mult = parseFloat($(unitId).value);
+    if (isNaN(raw) || raw < 0) return NaN;
+    return raw * mult;
+  }
+
+  /* ===== 核心计算 ===== */
+  function compute(mode, vin, voutTarget, ra, rb, rtotal) {
+    var result = {
+      vout: NaN, ra: ra, rb: rb, rtotal: NaN,
+      current: NaN, pRa: NaN, pRb: NaN, pTotal: NaN,
+      ratio: NaN, computedRes: null, computedLabel: "",
+      error: ""
+    };
+
+    if (!isFinite(vin) || vin <= 0) { result.error = "输入电压 Vin 必须大于 0"; return result; }
+
+    if (mode === "vout") {
+      if (!isFinite(ra) || ra <= 0) { result.error = "上电阻 Ra 必须大于 0"; return result; }
+      if (!isFinite(rb) || rb <= 0) { result.error = "下电阻 Rb 必须大于 0"; return result; }
+      result.rtotal = ra + rb;
+      result.vout = vin * rb / result.rtotal;
+    } else if (mode === "rb") {
+      if (!isFinite(voutTarget) || voutTarget <= 0) { result.error = "目标 Vout 必须大于 0"; return result; }
+      if (voutTarget >= vin) { result.error = "目标 Vout 必须小于 Vin（无源分压无法升压）"; return result; }
+      if (!isFinite(ra) || ra <= 0) { result.error = "上电阻 Ra 必须大于 0"; return result; }
+      result.rb = ra * voutTarget / (vin - voutTarget);
+      result.rtotal = ra + result.rb;
+      result.vout = voutTarget;
+      result.computedRes = result.rb;
+      result.computedLabel = "Rb";
+    } else if (mode === "ra") {
+      if (!isFinite(voutTarget) || voutTarget <= 0) { result.error = "目标 Vout 必须大于 0"; return result; }
+      if (voutTarget >= vin) { result.error = "目标 Vout 必须小于 Vin（无源分压无法升压）"; return result; }
+      if (!isFinite(rb) || rb <= 0) { result.error = "下电阻 Rb 必须大于 0"; return result; }
+      result.ra = rb * (vin - voutTarget) / voutTarget;
+      result.rtotal = result.ra + rb;
+      result.vout = voutTarget;
+      result.computedRes = result.ra;
+      result.computedLabel = "Ra";
+    } else if (mode === "ratio") {
+      if (!isFinite(voutTarget) || voutTarget <= 0) { result.error = "目标 Vout 必须大于 0"; return result; }
+      if (voutTarget >= vin) { result.error = "目标 Vout 必须小于 Vin（无源分压无法升压）"; return result; }
+      if (!isFinite(rtotal) || rtotal <= 0) { result.error = "总电阻 Rtotal 必须大于 0"; return result; }
+      result.ratio = voutTarget / vin;
+      result.rb = rtotal * result.ratio;
+      result.ra = rtotal - result.rb;
+      result.rtotal = rtotal;
+      result.vout = voutTarget;
+      result.computedRes = null; /* 两个都算，单独处理 */
+    }
+
+    /* 派生量 */
+    if (isFinite(result.rtotal) && result.rtotal > 0 && isFinite(result.ra) && isFinite(result.rb)
+        && result.ra > 0 && result.rb > 0) {
+      result.current = vin / result.rtotal;
+      result.pRa = result.current * result.current * result.ra;
+      result.pRb = result.current * result.current * result.rb;
+      result.pTotal = vin * result.current;
+      if (!isFinite(result.ratio)) result.ratio = result.rb / result.rtotal;
+    }
+
+    return result;
+  }
+
+  /* ===== 渲染 ===== */
+  var state = { mode: "vout" };
+
+  var fieldVisibility = {
+    vout:  { vin: true,  vout: false, ra: true,  rb: true,  rtotal: false },
+    rb:    { vin: true,  vout: true,  ra: true,  rb: false, rtotal: false },
+    ra:    { vin: true,  vout: true,  ra: false, rb: true,  rtotal: false },
+    ratio: { vin: true,  vout: true,  ra: false, rb: false, rtotal: true  }
+  };
+
+  function applyFieldVisibility() {
+    var vis = fieldVisibility[state.mode];
+    document.querySelectorAll(".field").forEach(function (f) {
+      var key = f.getAttribute("data-field");
+      f.classList.toggle("hidden", !vis[key]);
+    });
+  }
+
+  function render() {
+    var vin = readVal("vin", "vinUnit");
+    var voutTarget = readVal("voutIn", "voutUnit");
+    var ra = readVal("ra", "raUnit");
+    var rb = readVal("rb", "rbUnit");
+    var rtotal = readVal("rtotal", "rtotalUnit");
+
+    var r = compute(state.mode, vin, voutTarget, ra, rb, rtotal);
+    var errMsg = $("errMsg");
+    var resultLabel = $("resultLabel");
+    var resultValue = $("resultValue");
+
+    if (r.error) {
+      errMsg.textContent = r.error;
+      resultValue.innerHTML = "—<span class=\"unit\"></span>";
+      ["dCurrent", "dPRA", "dPRB", "dPTotal", "dRatio", "dRTotal"].forEach(function (id) { $(id).textContent = "—"; });
+      $("e24Box").classList.add("hidden");
+      return;
+    }
+    errMsg.textContent = "";
+
+    /* 主结果 */
+    if (state.mode === "vout") {
+      resultLabel.textContent = "输出电压 Vout";
+      resultValue.innerHTML = formatVoltage(r.vout);
+    } else if (state.mode === "rb") {
+      resultLabel.textContent = "计算得到下电阻 Rb";
+      resultValue.innerHTML = formatResistance(r.rb);
+    } else if (state.mode === "ra") {
+      resultLabel.textContent = "计算得到上电阻 Ra";
+      resultValue.innerHTML = formatResistance(r.ra);
+    } else {
+      resultLabel.textContent = "配比结果（Ra / Rb）";
+      resultValue.innerHTML = formatResistance(r.ra) + " / " + formatResistance(r.rb);
+    }
+
+    /* 详细参数 */
+    $("dCurrent").textContent = formatCurrent(r.current);
+    $("dPRA").textContent = formatPower(r.pRa);
+    $("dPRB").textContent = formatPower(r.pRb);
+    $("dPTotal").textContent = formatPower(r.pTotal);
+    $("dRatio").textContent = isFinite(r.ratio) ? (r.ratio * 100).toFixed(2) + " %" : "—";
+    $("dRTotal").textContent = formatResistance(r.rtotal);
+
+    /* 标准电阻推荐（E24 / E96 / E192） */
+    var e24Box = $("e24Box");
+    var e24Content = $("e24Content");
+    var groups = [];
+
+    var computedList = [];
+    if (state.mode === "rb" && isFinite(r.rb) && r.rb > 0) {
+      computedList.push({ label: "Rb", target: r.rb, other: r.ra, otherLabel: "Ra" });
+    }
+    if (state.mode === "ra" && isFinite(r.ra) && r.ra > 0) {
+      computedList.push({ label: "Ra", target: r.ra, other: r.rb, otherLabel: "Rb" });
+    }
+    if (state.mode === "ratio") {
+      if (isFinite(r.ra) && r.ra > 0) computedList.push({ label: "Ra", target: r.ra, other: r.rb, otherLabel: "Rb" });
+      if (isFinite(r.rb) && r.rb > 0) computedList.push({ label: "Rb", target: r.rb, other: r.ra, otherLabel: "Ra" });
+    }
+
+    for (var ci = 0; ci < computedList.length; ci++) {
+      var c = computedList[ci];
+      var recs = recommendAllSeries(c.target);
+      var groupHtml = "<div class=\"rec-group\">";
+      groupHtml += "<div class=\"rec-target\">" + c.label + " 目标值：<span class=\"val\">" + formatResistance(c.target) + "</span></div>";
+      for (var ri = 0; ri < recs.length; ri++) {
+        var rec = recs[ri];
+        var actualVout;
+        if (c.label === "Rb") {
+          actualVout = vin * rec.value / (c.other + rec.value);
+        } else {
+          actualVout = vin * c.other / (rec.value + c.other);
+        }
+        var devCls = Math.abs(rec.deviation) < 0.5 ? "dev ok" : "dev";
+        var devSign = rec.deviation >= 0 ? "+" : "";
+        groupHtml += "<div class=\"rec-series\">"
+          + "<span class=\"rec-name\">" + rec.key + " (" + rec.tol + ")</span>"
+          + "<span class=\"rec-val\">" + formatResistance(rec.value) + "</span>"
+          + "<span class=\"" + devCls + "\">偏差 " + devSign + sigFigs(rec.deviation, 3) + "%</span>"
+          + "<span class=\"rec-vout\">实际 Vout " + formatVoltage(actualVout) + "</span>"
+          + "</div>";
+      }
+      groupHtml += "</div>";
+      groups.push(groupHtml);
+    }
+
+    if (groups.length > 0) {
+      e24Content.innerHTML = groups.join("");
+      e24Box.classList.remove("hidden");
+    } else {
+      e24Box.classList.add("hidden");
+    }
+  }
+
+  /* ===== 事件绑定 ===== */
+  document.querySelectorAll(".mode-tab").forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      var mode = tab.getAttribute("data-mode");
+      if (state.mode === mode) return;
+      state.mode = mode;
+      document.querySelectorAll(".mode-tab").forEach(function (t) {
+        var active = t === tab;
+        t.classList.toggle("is-active", active);
+        t.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      applyFieldVisibility();
+      render();
+    });
+  });
+
+  ["vin", "voutIn", "ra", "rb", "rtotal"].forEach(function (id) {
+    $(id).addEventListener("input", render);
+  });
+  ["vinUnit", "voutUnit", "raUnit", "rbUnit", "rtotalUnit"].forEach(function (id) {
+    $(id).addEventListener("change", render);
+  });
+
+  /* ===== 初始化默认值 ===== */
+  $("vin").value = "5";
+  $("ra").value = "10";
+  $("rb").value = "10";
+  applyFieldVisibility();
+  render();
+})();
+</script>
+</body>
+</html>
