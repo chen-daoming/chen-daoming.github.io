@@ -1,0 +1,114 @@
+---
+title: 电容换算器
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电容换算器</title>
+<style>
+  :root{--bg:#121518;--panel:#1b2026;--panel-2:#21272e;--border:#2b333c;--border-strong:#3a444f;--text:#e9edf2;--text-dim:#98a4b1;--text-faint:#6b7683;--accent:#e0a34b;--accent-soft:rgba(224,163,75,.14);--display:#a7e8ba;--mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Consolas,"Courier New",monospace;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;padding:28px 16px 40px}
+  .tool{max-width:960px;margin:0 auto}
+  .head-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin:0 0 8px}
+  .head h1{margin:0 0 6px;font-size:26px;font-weight:700}.head-sub{margin:0;color:var(--text-dim);font-size:14px}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px}
+  .panel-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text-dim);letter-spacing:.06em;margin:0 0 14px}
+  .panel-title::before{content:"";width:6px;height:14px;background:var(--accent);border-radius:1px;flex:none}
+  .conv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .conv-field{display:flex;flex-direction:column;gap:6px}
+  .conv-field label{font-size:13px;color:var(--text-dim);font-weight:500;display:flex;align-items:center;gap:6px}
+  .unit-tag{font-family:var(--mono);font-size:11px;background:var(--panel-2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;color:var(--accent)}
+  .conv-field input{width:100%;background:#0f1317;border:1px solid var(--border-strong);border-radius:6px;color:var(--display);font-family:var(--mono);font-size:15px;padding:10px 12px;min-height:42px}
+  .conv-field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .code-field{grid-column:1/-1}.code-field input{font-size:18px;letter-spacing:.08em;text-align:center}
+  .code-hint{font-size:12px;color:var(--text-faint);margin-top:4px}
+  .code-hint code{font-family:var(--mono);color:var(--text-dim);background:var(--panel-2);padding:1px 5px;border-radius:4px}
+  .table-wrap{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  .cap-table{width:100%;border-collapse:collapse;font-size:13px}
+  .cap-table+.cap-table{border-left:1px solid var(--border)}
+  .cap-table thead th{background:var(--panel-2);color:var(--accent);font-weight:600;text-align:right;padding:8px 10px;border-bottom:1px solid var(--border-strong);font-size:12px;position:sticky;top:0}
+  .cap-table thead th:first-child{text-align:left}
+  .cap-table tbody td{padding:6px 10px;border-bottom:1px solid var(--border);font-family:var(--mono);text-align:right}
+  .cap-table tbody td:first-child{text-align:left;color:var(--display);font-weight:600}
+  .cap-table tbody td:last-child{color:var(--accent);font-weight:600}
+  .cap-table tbody tr:hover{background:var(--accent-soft)}
+  .table-scroll{max-height:520px;overflow-y:auto}
+  .foot{margin-top:18px;color:var(--text-faint);font-size:12.5px;border-top:1px dashed var(--border);padding-top:12px}
+  .foot code{font-family:var(--mono);color:var(--text-dim);background:var(--panel-2);padding:1px 5px;border-radius:4px}
+  @media(max-width:640px){.conv-grid{grid-template-columns:1fr}.table-wrap{grid-template-columns:1fr}.cap-table+.cap-table{border-left:none;border-top:1px solid var(--border)}}
+</style>
+</head>
+<body>
+<main class="tool">
+  <header class="head">
+    <div class="head-kicker">Embedded Utility</div>
+    <h1>电容换算器</h1>
+    <p class="head-sub">pF / nF / µF / F 四单位实时换算，支持三位数电容代码（如 104 = 0.1µF）互转，附常用电容值换算对照表。</p>
+  </header>
+  <section class="panel">
+    <h2 class="panel-title">单位换算</h2>
+    <div class="conv-grid">
+      <div class="conv-field"><label>皮法 <span class="unit-tag">pF</span></label><input type="number" id="pfIn" step="any" min="0" placeholder="例如 100000"></div>
+      <div class="conv-field"><label>纳法 <span class="unit-tag">nF</span></label><input type="number" id="nfIn" step="any" min="0" placeholder="例如 100"></div>
+      <div class="conv-field"><label>微法 <span class="unit-tag">µF</span></label><input type="number" id="ufIn" step="any" min="0" placeholder="例如 0.1"></div>
+      <div class="conv-field"><label>法拉 <span class="unit-tag">F</span></label><input type="number" id="fIn" step="any" min="0" placeholder="例如 0.0000001"></div>
+      <div class="conv-field code-field">
+        <label>三位数代码 <span class="unit-tag">Code</span></label>
+        <input type="text" id="codeIn" inputmode="numeric" maxlength="3" placeholder="例如 104">
+        <div class="code-hint">前两位为 pF 有效数字，第三位为 10 的乘数。如 <code>104</code> = 10 × 10⁴ pF = 100nF = 0.1µF</div>
+      </div>
+    </div>
+  </section>
+  <section class="panel">
+    <h2 class="panel-title">常用电容值换算表</h2>
+    <div class="table-scroll"><div class="table-wrap">
+      <table class="cap-table" id="tL"><thead><tr><th>pF</th><th>nF</th><th>µF</th><th>Code</th></tr></thead><tbody></tbody></table>
+      <table class="cap-table" id="tR"><thead><tr><th>pF</th><th>nF</th><th>µF</th><th>Code</th></tr></thead><tbody></tbody></table>
+    </div></div>
+  </section>
+  <footer class="foot">三位数代码规则：<code>ABC</code> = <code>AB</code> × 10^<code>C</code> pF。代码范围 100–999。所有换算在浏览器本地完成，数据不上传。</footer>
+</main>
+<script>
+(function(){"use strict";
+var $=function(id){return document.getElementById(id)};
+function codeToPf(c){if(typeof c==="string")c=parseInt(c,10);if(!isFinite(c)||c<100||c>999)return NaN;return Math.floor(c/10)*Math.pow(10,c%10)}
+function pfToCode(p){if(!isFinite(p)||p<10)return"";var n=0,v=p;while(v>=100&&n<9){v/=10;n++}var b=Math.round(v);if(b<10||b>99)return"";return String(b*10+n)}
+function sf(num,f){if(!isFinite(num))return"";if(num===0)return"0";var d=Math.floor(Math.log10(Math.abs(num)))+1;return Number(num.toFixed(Math.max(0,f-d))).toString()}
+function fg(v){if(!isFinite(v)||v<0)return"";return v>=1?sf(v,6):sf(v,4)}
+function ff(f){if(!isFinite(f)||f<0)return"";if(f===0)return"0";return f>=0.001?sf(f,6):f.toExponential(4)}
+var up=false,inp={pf:$("pfIn"),nf:$("nfIn"),uf:$("ufIn"),f:$("fIn"),code:$("codeIn")};
+function upd(p,src){if(!isFinite(p)||p<0)p=NaN;up=true;
+if(src!=="pf")inp.pf.value=isFinite(p)?fg(p):"";
+if(src!=="nf")inp.nf.value=isFinite(p)?fg(p/1e3):"";
+if(src!=="uf")inp.uf.value=isFinite(p)?fg(p/1e6):"";
+if(src!=="f")inp.f.value=isFinite(p)?ff(p/1e12):"";
+if(src!=="code")inp.code.value=isFinite(p)?pfToCode(p):"";
+up=false}
+inp.pf.addEventListener("input",function(){if(up)return;var v=parseFloat(inp.pf.value);upd(isNaN(v)?NaN:v,"pf")});
+inp.nf.addEventListener("input",function(){if(up)return;var v=parseFloat(inp.nf.value);upd(isNaN(v)?NaN:v*1e3,"nf")});
+inp.uf.addEventListener("input",function(){if(up)return;var v=parseFloat(inp.uf.value);upd(isNaN(v)?NaN:v*1e6,"uf")});
+inp.f.addEventListener("input",function(){if(up)return;var v=parseFloat(inp.f.value);upd(isNaN(v)?NaN:v*1e12,"f")});
+inp.code.addEventListener("input",function(){if(up)return;var r=inp.code.value.replace(/[^0-9]/g,"");inp.code.value=r;if(r.length===3){var p=codeToPf(r);upd(isFinite(p)?p:NaN,"code")}else if(r.length===0)upd(NaN,"code")});
+var D=[
+[10,.01,.00001,100],[15,.015,.000015,150],[22,.022,.000022,220],[33,.033,.000033,330],[47,.047,.000047,470],
+[100,.1,.0001,101],[120,.12,.00012,121],[130,.13,.00013,131],[150,.15,.00015,151],[180,.18,.00018,181],
+[220,.22,.00022,221],[330,.33,.00033,331],[470,.47,.00047,471],[560,.56,.00056,561],[680,.68,.00068,681],
+[750,.75,.00075,751],[820,.82,.00082,821],[1000,1,.001,102],[1500,1.5,.0015,152],[2000,2,.002,202],
+[2200,2.2,.0022,222],[3300,3.3,.0033,332],[4700,4.7,.0047,472],[5000,5,.005,502],[5600,5.6,.0056,562],
+[6800,6.8,.0068,682],[10000,10,.01,103],[15000,15,.015,153],[22000,22,.022,223],[33000,33,.033,333],
+[47000,47,.047,473],[68000,68,.068,683],[100000,100,.1,104],[150000,150,.15,154],[200000,200,.2,204],
+[220000,220,.22,224],[330000,330,.33,334],[470000,470,.47,474],[680000,680,.68,684],[1000000,1000,1,105],
+[1500000,1500,1.5,155],[2000000,2000,2,205],[2200000,2200,2.2,225],[3300000,3300,3.3,335]
+];
+function bt(tb,rows){var f=document.createDocumentFragment();for(var i=0;i<rows.length;i++){var r=rows[i],tr=document.createElement("tr");
+["pf","nf","uf","code"].forEach(function(k,i){var td=document.createElement("td");td.textContent=i===3?String(r[3]):(i===0?String(r[0]):Number(r[i].toPrecision(6)).toString());if(i===0)td.style.textAlign="left";tr.appendChild(td)});f.appendChild(tr)}tb.appendChild(f)}
+var h=Math.ceil(D.length/2);
+bt($("tL").querySelector("tbody"),D.slice(0,h));
+bt($("tR").querySelector("tbody"),D.slice(h));
+inp.uf.value="0.1";upd(1e5,"uf");
+})();
+</script>
+</body>
+</html>
