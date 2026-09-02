@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 400" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
   <rect width="780" height="400" fill="#fbfcfd"/>
-  <text x="390" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1f2d3d">Boost 升压变换器拓扑 · 非同步整流（整流二极管 D）</text>
+  <text x="390" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1f2d3d">Boost 升压变换器拓扑 · 同步整流（Q2 替代输出整流二极管）</text>
 
   <!-- Vin -->
   <circle cx="60" cy="120" r="5" fill="none" stroke="#27ae60" stroke-width="2"/>
@@ -18,20 +18,22 @@
   <circle cx="330" cy="120" r="4.5" fill="#1f2d3d"/>
   <text x="312" y="106" text-anchor="middle" font-size="12" fill="#1f2d3d" font-weight="700">SW</text>
 
-  <!-- 向下开关 S -->
+  <!-- 向下主开关 Q1 -->
   <line x1="330" y1="120" x2="330" y2="168" stroke="#5a6b7b" stroke-width="2"/>
-  <rect x="300" y="168" width="60" height="30" rx="4" fill="#eef4fb" stroke="#2980b9" stroke-width="2"/>
-  <text x="330" y="188" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2980b9">开关 S</text>
-  <line x1="330" y1="198" x2="330" y2="250" stroke="#5a6b7b" stroke-width="2"/>
+  <rect x="298" y="168" width="64" height="32" rx="4" fill="#eef4fb" stroke="#2980b9" stroke-width="2"/>
+  <text x="330" y="188" text-anchor="middle" font-size="12" font-weight="700" fill="#2980b9">Q1 主开关</text>
+  <line x1="330" y1="200" x2="330" y2="250" stroke="#5a6b7b" stroke-width="2"/>
 
-  <!-- 向右二极管：阳极 SW，阴极朝 Vout -->
-  <line x1="330" y1="120" x2="400" y2="120" stroke="#5a6b7b" stroke-width="2"/>
-  <polygon points="400,108 400,132 428,120" fill="#fdecea" stroke="#c0392b" stroke-width="2"/>
-  <line x1="428" y1="108" x2="428" y2="132" stroke="#c0392b" stroke-width="2.5"/>
-  <text x="414" y="96" text-anchor="middle" font-size="12" font-weight="700" fill="#c0392b">整流管 D</text>
-  <line x1="428" y1="120" x2="560" y2="120" stroke="#5a6b7b" stroke-width="2"/>
+  <!-- 向右同步整流管 Q2（替代二极管，串联在输出路径） -->
+  <line x1="330" y1="120" x2="392" y2="120" stroke="#5a6b7b" stroke-width="2"/>
+  <rect x="392" y="104" width="68" height="32" rx="4" fill="#eef4fb" stroke="#2980b9" stroke-width="2"/>
+  <text x="426" y="124" text-anchor="middle" font-size="11.5" font-weight="700" fill="#2980b9">Q2 同步整流管</text>
+  <line x1="460" y1="120" x2="560" y2="120" stroke="#5a6b7b" stroke-width="2"/>
+  <!-- Q2 互补驱动说明 -->
+  <line x1="426" y1="104" x2="426" y2="86" stroke="#8a97a5" stroke-width="1.4" stroke-dasharray="3 2"/>
+  <text x="426" y="78" text-anchor="middle" font-size="10.5" fill="#8a97a5">与 Q1 互补·带死区</text>
 
-  <!-- Vout 节点 -->
+  <!-- Vout -->
   <circle cx="560" cy="120" r="4.5" fill="#1f2d3d"/>
   <line x1="560" y1="120" x2="640" y2="120" stroke="#5a6b7b" stroke-width="2"/>
   <circle cx="646" cy="120" r="5" fill="none" stroke="#2980b9" stroke-width="2"/>
@@ -57,9 +59,9 @@
   <line x1="272" y1="266" x2="288" y2="266" stroke="#5a6b7b" stroke-width="2"/>
   <text x="240" y="255" font-size="11" fill="#8a97a5">GND</text>
 
-  <!-- 公式 -->
+  <!-- 公式/说明 -->
   <rect x="60" y="300" width="660" height="78" rx="8" fill="#1f2d3d"/>
-  <text x="80" y="326" font-family="Consolas,monospace" font-size="13.5" fill="#f0c878">D = 1 − Vin/Vout ；ILavg = Iout·Vout/(Vin·η) ；ΔIL = r × ILavg</text>
-  <text x="80" y="352" font-family="Consolas,monospace" font-size="13.5" fill="#a7e8ba">L = Vin·D / (ΔIL·fsw) = Vin²(Vout−Vin) / (r·Iout·Vout²·fsw)（η=1 时）</text>
-  <text x="80" y="372" font-family="Consolas,monospace" font-size="12" fill="#98a4b1">导通时 Vin 加在 L 上储能、二极管截止；关断时 L 电动势抬升，经二极管向输出供能</text>
+  <text x="80" y="326" font-family="Consolas,monospace" font-size="13" fill="#f0c878">D = 1 − Vin/Vout；Q1 导通储能时 Q2 关断，Q1 关断时 Q2 导通把能量送至输出</text>
+  <text x="80" y="350" font-family="Consolas,monospace" font-size="13" fill="#a7e8ba">输出通路压降由二极管 Vf 降为 Q2 的 I·Rds(on)，高升压比/大电流下效率提升明显</text>
+  <text x="80" y="372" font-family="Consolas,monospace" font-size="12" fill="#98a4b1">Q1、Q2 互补并插入死区防止直通；死区期间由 Q2 寄生体二极管临时续流</text>
 </svg>

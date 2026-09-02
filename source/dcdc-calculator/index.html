@@ -129,6 +129,18 @@ title: DC-DC 升降压电感计算器
   .err-msg { color: var(--err); font-size: 14px; margin-top: 10px; font-family: var(--mono); }
 
   .topo-img { width: 100%; height: auto; display: block; border-radius: 6px; }
+  .rect-toggle { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .rect-btn {
+    appearance: none; border: 1px solid var(--border-strong); background: var(--panel-2);
+    color: var(--text-dim); font-family: var(--sans); font-size: 12px; padding: 4px 11px;
+    min-height: 28px; border-radius: 5px; cursor: pointer;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .rect-btn:hover { color: var(--text); border-color: var(--accent); }
+  .rect-btn.is-active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .rect-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .topo-note { margin: 12px 2px 0; font-size: 12.5px; color: var(--text-dim); line-height: 1.7; }
+  .topo-note code { font-family: var(--mono); color: var(--text); background: var(--panel-2); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
   .formula-main { background: var(--display-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }
   .formula-main .fm-text { font-family: var(--mono); font-size: 15px; color: var(--display); font-weight: 600; line-height: 1.9; word-break: break-all; }
   .formula-main .fm-text .var { color: var(--accent); }
@@ -257,8 +269,14 @@ title: DC-DC 升降压电感计算器
 
   <!-- 拓扑示意图 -->
   <section class="panel" aria-label="拓扑示意图">
-      <h2 class="panel-title">拓扑示意图</h2>
-      <img id="topoImg" class="topo-img" src="/images/dcdc-calculator/buck-topology.svg" alt="DC-DC 拓扑示意图">
+      <h2 class="panel-title">拓扑示意图
+        <span class="rect-toggle" role="tablist" aria-label="整流方式">
+          <button type="button" class="rect-btn is-active" data-rect="async" role="tab" aria-selected="true">非同步整流（二极管）</button>
+          <button type="button" class="rect-btn" data-rect="sync" role="tab" aria-selected="false">同步整流（MOSFET）</button>
+        </span>
+      </h2>
+      <img id="topoImg" class="topo-img" src="/images/dcdc-calculator/buck-topology.svg" alt="Buck 非同步整流拓扑示意图">
+      <p class="topo-note" id="topoNote"></p>
     </section>
     <section class="panel" aria-label="公式推导">
       <h2 class="panel-title">公式与推导</h2>
@@ -274,6 +292,7 @@ title: DC-DC 升降压电感计算器
     <section class="panel" aria-label="选型要点">
       <h2 class="panel-title">功率电感选型要点</h2>
       <ul class="select-tips">
+        <li><span>整流方式选择：<code>非同步</code>用二极管续流，简单便宜、无直通风险，但有 Vf 损耗、效率较低；<code>同步整流</code>用 MOSFET 低阻续流，低压大电流效率高，但需互补驱动+死区防直通、成本略高。可用上方拓扑图按钮切换对比。</span></li>
         <li><span>纹波率 <code>r = ΔIL / ILavg</code> 一般取 <code>0.2~0.4</code>（Boost 可放宽到 0.3~0.5）；r 越小纹波越小但电感体积越大。</span></li>
         <li><span>饱和电流 <code>Isat</code> 必须大于峰值电流并留余量，建议 <code>Isat ≥ (1.2~1.5) × Ipeak</code>，饱和后感量骤降会导致电流失控。</span></li>
         <li><span>温升电流 <code>Irms</code>（额定电流）应大于电感电流有效值；三角波有效值 <code>Irms = √(ILavg² + ΔIL²/12)</code>。</span></li>
@@ -354,7 +373,18 @@ title: DC-DC 升降压电感计算器
 
   /* ===== 核心计算 =====
      fsw 输入 kHz；公式中统一用 MHz，结果直接为 µH（V/(A·MHz)=µH） */
-  var state = { mode: "buck" };
+  var state = { mode: "buck", rect: "async" };
+  /* 拓扑图与说明：按 升降压模式 × 整流方式 组合 */
+  var TOPO = {
+    buck: {
+      async: ["buck-topology.svg", "非同步整流：Q1 关断期间，电感经续流二极管 D 续流；结构简单、成本低、无需互补驱动，但二极管存在正向压降 Vf（肖特基约 0.3~0.5V），导通损耗大、效率偏低。"],
+      sync:  ["buck-sync.svg", "同步整流：用下管 Q2（MOSFET）替代续流二极管，以 I·Rds(on) 低阻通道续流，压降与损耗大幅下降；Q1/Q2 互补 PWM 并插入死区防止上下管直通，死区内由 Q2 寄生体二极管临时续流。"]
+    },
+    boost: {
+      async: ["boost-topology.svg", "非同步整流：Q1 关断、电感释放能量时，经输出整流二极管 D 向负载供能；电路简单，但二极管 Vf 压降在高升压比下损耗明显。"],
+      sync:  ["boost-sync.svg", "同步整流：用 Q2（MOSFET）替代输出整流二极管，导通压降降为 I·Rds(on)，高升压比/大电流时效率提升显著；Q1、Q2 互补导通并带死区防直通。"]
+    }
+  };
   var DEFAULTS = {
     buck:  { vin: "12", vout: "5",  iout: "2", fsw: "400", rmin: "0.2", rmax: "0.4" },
     boost: { vin: "5",  vout: "12", iout: "1", fsw: "400", rmin: "0.1", rmax: "0.3" }
@@ -451,7 +481,10 @@ title: DC-DC 升降压电感计算器
     $("deriveList").innerHTML = f.steps.map(function (s) {
       return "<li><span class='step-num'>" + s[0] + "</span><span class='step-formula'>" + s[1] + "</span></li>";
     }).join("");
-    $("topoImg").src = "/images/dcdc-calculator/" + (state.mode === "buck" ? "buck-topology.svg" : "boost-topology.svg");
+    var t = TOPO[state.mode][state.rect];
+    $("topoImg").src = "/images/dcdc-calculator/" + t[0];
+    $("topoImg").alt = (state.mode === "buck" ? "Buck" : "Boost") + (state.rect === "sync" ? " 同步" : " 非同步") + "整流拓扑示意图";
+    $("topoNote").textContent = t[1];
     $("cinItem").style.display = state.mode === "buck" ? "" : "none";
   }
 
@@ -518,6 +551,19 @@ title: DC-DC 升降压电感计算器
       $("fsw").value = d.fsw; $("rmin").value = d.rmin; $("rmax").value = d.rmax;
       renderFormula();
       render();
+    });
+  });
+  document.querySelectorAll(".rect-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var rect = btn.getAttribute("data-rect");
+      if (state.rect === rect) return;
+      state.rect = rect;
+      document.querySelectorAll(".rect-btn").forEach(function (b) {
+        var active = b === btn;
+        b.classList.toggle("is-active", active);
+        b.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      renderFormula();
     });
   });
   ["vin","vout","iout","fsw","rmin","rmax","eta","kmar"].forEach(function (id) {
