@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 330" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <rect x="0" y="0" width="880" height="330" rx="10" fill="#1b2026"/>
+  <text x="28" y="40" font-size="19" font-weight="700" fill="#e9edf2">进制原理：按位权展开（以二进制 1101 为例）</text>
+  <text x="28" y="66" font-size="13" fill="#98a4b1">每一位数字乘以其位权（基数的 i 次幂）后求和，即得到对应的十进制值；其他进制同理，只需把基数 2 换成 8 / 16</text>
+
+  <!-- 列：x = 70,220,370,520 ; 方块 w=110 -->
+  <!-- 第一行：数位 -->
+  <g font-family="Consolas,monospace" font-size="26" font-weight="700" text-anchor="middle">
+    <rect x="70"  y="92" width="110" height="60" rx="7" fill="#21272e" stroke="#e0a34b" stroke-width="1.6"/>
+    <text x="125" y="132" fill="#a7e8ba">1</text>
+    <rect x="220" y="92" width="110" height="60" rx="7" fill="#21272e" stroke="#e0a34b" stroke-width="1.6"/>
+    <text x="275" y="132" fill="#a7e8ba">1</text>
+    <rect x="370" y="92" width="110" height="60" rx="7" fill="#21272e" stroke="#3a444f" stroke-width="1.6"/>
+    <text x="425" y="132" fill="#6b7683">0</text>
+    <rect x="520" y="92" width="110" height="60" rx="7" fill="#21272e" stroke="#e0a34b" stroke-width="1.6"/>
+    <text x="575" y="132" fill="#a7e8ba">1</text>
+  </g>
+  <text x="28" y="128" font-size="13" fill="#98a4b1">数位 dᵢ</text>
+
+  <!-- 乘号与位权 -->
+  <g font-family="Consolas,monospace" font-size="17" text-anchor="middle" fill="#98a4b1">
+    <text x="125" y="182">× 2³ = 8</text>
+    <text x="275" y="182">× 2² = 4</text>
+    <text x="425" y="182">× 2¹ = 2</text>
+    <text x="575" y="182">× 2⁰ = 1</text>
+  </g>
+  <text x="28" y="182" font-size="13" fill="#98a4b1">位权</text>
+
+  <!-- 乘积 -->
+  <g font-family="Consolas,monospace" font-size="20" text-anchor="middle">
+    <text x="125" y="228" fill="#e9edf2">8</text>
+    <text x="275" y="228" fill="#e9edf2">4</text>
+    <text x="425" y="228" fill="#6b7683">0</text>
+    <text x="575" y="228" fill="#e9edf2">1</text>
+    <text x="200" y="228" fill="#6b7683" font-size="18">+</text>
+    <text x="350" y="228" fill="#6b7683" font-size="18">+</text>
+    <text x="500" y="228" fill="#6b7683" font-size="18">+</text>
+  </g>
+
+  <!-- 汇总箭头与结果 -->
+  <line x1="640" y1="210" x2="700" y2="210" stroke="#e0a34b" stroke-width="2"/>
+  <polygon points="700,210 691,205 691,215" fill="#e0a34b"/>
+  <rect x="706" y="176" width="146" height="70" rx="8" fill="#21272e" stroke="#a7e8ba" stroke-width="1.8"/>
+  <text x="779" y="206" text-anchor="middle" font-family="Consolas,monospace" font-size="22" font-weight="700" fill="#a7e8ba">= 13₁₀</text>
+  <text x="779" y="232" text-anchor="middle" font-family="Consolas,monospace" font-size="14" fill="#98a4b1">= 0xD₁₆ = 015₈</text>
+
+  <!-- 底部对照条 -->
+  <rect x="28" y="258" width="824" height="50" rx="8" fill="#21272e" stroke="#2b333c"/>
+  <text x="48" y="289" font-size="13.5" fill="#98a4b1">推广：N = Σ dᵢ × baseⁱ ｜ 1 位十六进制 = 4 位二进制（1101₂ = D₁₆）｜ 1 位八进制 = 3 位二进制 ｜ 十进制转其他进制用「除基取余法」</text>
+</svg>

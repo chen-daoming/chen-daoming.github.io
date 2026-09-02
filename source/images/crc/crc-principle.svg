@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 470" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <rect x="0" y="0" width="880" height="470" rx="10" fill="#1b2026"/>
+  <text x="28" y="40" font-size="19" font-weight="700" fill="#e9edf2">CRC 计算原理：线性反馈移位寄存器（LFSR）做模 2 除法</text>
+  <text x="28" y="66" font-size="13" fill="#98a4b1">数据位逐位异或移入寄存器，多项式 Poly 中为 1 的位（抽头）反馈到输入端；全部位移完后，寄存器中的余数就是 CRC</text>
+
+  <!-- 反馈总线 -->
+  <path d="M 151 180 L 151 120 L 241 120 M 241 180 L 241 120 M 331 180 L 331 120 M 151 120 L 108 120 L 108 196"
+        fill="none" stroke="#e0a34b" stroke-width="1.8"/>
+  <circle cx="151" cy="120" r="3.2" fill="#e0a34b"/>
+  <circle cx="241" cy="120" r="3.2" fill="#e0a34b"/>
+  <circle cx="331" cy="120" r="3.2" fill="#e0a34b"/>
+  <text x="345" y="112" font-size="12.5" fill="#e0a34b">反馈抽头：Poly 对应位 = 1（示例 Poly=0x07 → bit0/bit1/bit2）</text>
+
+  <!-- 输入 -->
+  <text x="20" y="172" font-size="13" fill="#98a4b1">数据位</text>
+  <text x="20" y="190" font-size="12" fill="#6b7683" font-family="Consolas,monospace">MSB→LSB</text>
+  <line x1="62" y1="208" x2="94" y2="208" stroke="#98a4b1" stroke-width="1.8"/>
+  <polygon points="94,208 87,204 87,212" fill="#98a4b1"/>
+
+  <!-- XOR -->
+  <circle cx="108" cy="208" r="13" fill="none" stroke="#a7e8ba" stroke-width="1.8"/>
+  <text x="108" y="213" text-anchor="middle" font-size="15" fill="#a7e8ba">⊕</text>
+
+  <!-- 寄存器链 D0..D7 -->
+  <!-- step 90, w=66, first x=118,y=180,h=56 -->
+  <g font-family="Consolas,monospace" font-size="15" fill="#e9edf2">
+    <rect x="118" y="180" width="66" height="56" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
+    <text x="151" y="205" text-anchor="middle">D0</text><text x="151" y="225" text-anchor="middle" font-size="11" fill="#6b7683">bit0</text>
+    <rect x="208" y="180" width="66" height="56" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
+    <text x="241" y="205" text-anchor="middle">D1</text><text x="241" y="225" text-anchor="middle" font-size="11" fill="#6b7683">bit1</text>
+    <rect x="298" y="180" width="66" height="56" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
+    <text x="331" y="205" text-anchor="middle">D2</text><text x="331" y="225" text-anchor="middle" font-size="11" fill="#6b7683">bit2</text>
+    <rect x="388" y="180" width="66" height="56" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
+    <text x="421" y="205" text-anchor="middle">D3</text><text x="421" y="225" text-anchor="middle" font-size="11" fill="#6b7683">bit3</text>
+    <rect x="478" y="180" width="66" height="56" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
+    <text x="511" y="205" text-anchor="middle">D4</text><text x="511" y="225" text-anchor="middle" font-size="11" fill="#6b7683">bit4</text>
+    <rect x="568" y="180" width="66" height="56" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
+    <text x="601" y="205" text-anchor="middle">D5</text><text x="601" y="225" text-anchor="middle" font-size="11" fill="#6b7683">bit5</text>
+    <rect x="658" y="180" width="66" height="56" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
+    <text x="691" y="205" text-anchor="middle">D6</text><text x="691" y="225" text-anchor="middle" font-size="11" fill="#6b7683">bit6</text>
+    <rect x="748" y="180" width="66" height="56" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
+    <text x="781" y="205" text-anchor="middle">D7</text><text x="781" y="225" text-anchor="middle" font-size="11" fill="#6b7683">bit7</text>
+  </g>
+  <!-- 级联箭头 -->
+  <g stroke="#98a4b1" stroke-width="1.6">
+    <line x1="184" y1="208" x2="206" y2="208"/><polygon points="206,208 200,204.5 200,211.5" fill="#98a4b1" stroke="none"/>
+    <line x1="274" y1="208" x2="296" y2="208"/><polygon points="296,208 290,204.5 290,211.5" fill="#98a4b1" stroke="none"/>
+    <line x1="364" y1="208" x2="386" y2="208"/><polygon points="386,208 380,204.5 380,211.5" fill="#98a4b1" stroke="none"/>
+    <line x1="454" y1="208" x2="476" y2="208"/><polygon points="476,208 470,204.5 470,211.5" fill="#98a4b1" stroke="none"/>
+    <line x1="544" y1="208" x2="566" y2="208"/><polygon points="566,208 560,204.5 560,211.5" fill="#98a4b1" stroke="none"/>
+    <line x1="634" y1="208" x2="656" y2="208"/><polygon points="656,208 650,204.5 650,211.5" fill="#98a4b1" stroke="none"/>
+    <line x1="724" y1="208" x2="746" y2="208"/><polygon points="746,208 740,204.5 740,211.5" fill="#98a4b1" stroke="none"/>
+  </g>
+  <!-- XOR 到 D0 -->
+  <line x1="121" y1="208" x2="116" y2="208" stroke="#98a4b1" stroke-width="1.8"/>
+  <!-- 输出 -->
+  <line x1="814" y1="208" x2="852" y2="208" stroke="#a7e8ba" stroke-width="1.8"/>
+  <polygon points="852,208 845,204 845,212" fill="#a7e8ba"/>
+  <text x="848" y="246" text-anchor="end" font-size="13" fill="#a7e8ba">CRC 余数</text>
+  <text x="466" y="268" text-anchor="middle" font-size="12" fill="#6b7683">移位方向（每个时钟整寄存器右移一位）→</text>
+
+  <!-- 三步流程 -->
+  <g>
+    <rect x="28" y="296" width="262" height="146" rx="8" fill="#21272e" stroke="#2b333c"/>
+    <text x="46" y="324" font-size="14" font-weight="700" fill="#e0a34b">① 逐位计算</text>
+    <text x="46" y="350" font-size="12.5" fill="#98a4b1">RefIn=1：最低位先算，右移</text>
+    <text x="46" y="372" font-size="12.5" fill="#98a4b1">RefIn=0：最高位先算，左移</text>
+    <text x="46" y="402" font-family="Consolas,monospace" font-size="12" fill="#a7e8ba">crc ^= bit; 逐 bit 移位</text>
+    <text x="46" y="424" font-family="Consolas,monospace" font-size="12" fill="#a7e8ba">遇 1 则异或 Poly</text>
+
+    <rect x="309" y="296" width="262" height="146" rx="8" fill="#21272e" stroke="#2b333c"/>
+    <text x="327" y="324" font-size="14" font-weight="700" fill="#e0a34b">② 输出位序</text>
+    <text x="327" y="350" font-size="12.5" fill="#98a4b1">RefOut=1：结果整体位反转</text>
+    <text x="327" y="372" font-size="12.5" fill="#98a4b1">RefIn 与 RefOut 通常成对</text>
+    <text x="327" y="402" font-family="Consolas,monospace" font-size="12" fill="#a7e8ba">MODBUS/USB 都为 1</text>
+    <text x="327" y="424" font-family="Consolas,monospace" font-size="12" fill="#a7e8ba">CCITT-FALSE 都为 0</text>
+
+    <rect x="590" y="296" width="262" height="146" rx="8" fill="#21272e" stroke="#2b333c"/>
+    <text x="608" y="324" font-size="14" font-weight="700" fill="#e0a34b">③ 最终异或</text>
+    <text x="608" y="350" font-size="12.5" fill="#98a4b1">CRC = 寄存器余数 XOR XorOut</text>
+    <text x="608" y="372" font-size="12.5" fill="#98a4b1">CRC-32 的 Init/XorOut 为全 1</text>
+    <text x="608" y="402" font-family="Consolas,monospace" font-size="12" fill="#a7e8ba">校验：123456789 →</text>
+    <text x="608" y="424" font-family="Consolas,monospace" font-size="12" fill="#a7e8ba">CRC-32 = 0xCBF43926</text>
+  </g>
+</svg>

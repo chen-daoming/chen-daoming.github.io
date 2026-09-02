@@ -229,6 +229,7 @@ title: CRC 在线计算器
     padding-top: 12px;
   }
   .foot code { font-family: var(--mono); color: var(--text-dim); background: var(--panel-2); padding: 1px 5px; border-radius: 4px; }
+  .principle-img { width: 100%; display: block; border: 1px solid var(--border); border-radius: 8px; }
 
   @media (max-width: 560px) {
     body { padding: 20px 12px 32px; }
@@ -318,8 +319,13 @@ title: CRC 在线计算器
     <button id="copyBtn" class="btn">复制结果 (HEX)</button>
   </section>
 
+  <section class="panel" aria-label="计算原理">
+    <h2 class="panel-title">CRC 计算原理</h2>
+    <img class="principle-img" src="/images/crc/crc-principle.svg" alt="CRC 线性反馈移位寄存器 LFSR 计算原理图" width="880" height="470">
+  </section>
+
   <footer class="foot">
-    验证向量：以 ASCII <code>123456789</code> 为输入，CRC-32 应为 <code>0xCBF43926</code>，CRC-16/MODBUS 应为 <code>0x4B37</code>，CRC-8/MAXIM 应为 <code>0xA1</code>。
+    验证向量：以 ASCII <code>123456789</code> 为输入，CRC-32 应为 <code>0xCBF43926</code>，CRC-16/MODBUS 应为 <code>0x4B37</code>，CRC-8/MAXIM 应为 <code>0xA1</code>。ASCII 文本（含中文）按 UTF-8 编码逐字节计算。
   </footer>
 </main>
 
@@ -358,6 +364,12 @@ title: CRC 在线计算器
   };
 
   /* ===== 工具函数 ===== */
+  /* 文本转字节：优先按 UTF-8 编码（中文等多字节字符正确），老环境兜底取低 8 位 */
+  function textToBytes(s) {
+    if (typeof TextEncoder !== "undefined") return Array.prototype.slice.call(new TextEncoder().encode(s));
+    return Array.prototype.map.call(s, function (ch) { return ch.charCodeAt(0) & 0xFF; });
+  }
+
   function reflect(v, bits) {
     var r = 0, i;
     for (i = 0; i < bits; i++) {
@@ -465,6 +477,7 @@ title: CRC 在线计算器
   function applyPreset(key) {
     var p = PRESETS[key];
     state.preset = key;
+    presetSelect.value = key;
     pWidth.value = String(p.width);
     pPoly.value = p.poly;
     pInit.value = p.init;
@@ -482,7 +495,7 @@ title: CRC 在线计算器
       if (r.ok) { bytes = r.bytes; errInfo.textContent = ""; }
       else { err = r.msg; errInfo.textContent = r.msg; }
     } else {
-      bytes = Array.prototype.map.call(asciiInput.value, function (c) { return c.charCodeAt(0) & 0xFF; });
+      bytes = textToBytes(asciiInput.value);
       errInfo.textContent = "";
     }
     byteInfo.textContent = bytes ? bytes.length + " 字节" : "0 字节";
