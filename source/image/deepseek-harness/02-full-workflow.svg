@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 380" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="980" height="380" fill="#fbfcfd"/>
+  <text x="490" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">从零到运行：DeepSeek Harness 完整使用流程</text>
+
+  <!-- 6 步主流程 -->
+  <g>
+    <!-- 卡片 x: 20,180,340,500,660,820 宽140 -->
+    <g>
+      <rect x="20" y="70" width="140" height="110" rx="9" fill="#eef4fb" stroke="#2980b9" stroke-width="2"/>
+      <circle cx="48" cy="96" r="13" fill="#2980b9"/>
+      <text x="48" y="101" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">1</text>
+      <text x="90" y="101" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2d3d">装环境</text>
+      <text x="90" y="128" text-anchor="middle" font-size="11" fill="#5a6b7b">Node.js LTS</text>
+      <text x="90" y="146" text-anchor="middle" font-size="11" fill="#5a6b7b">node -v 验证</text>
+      <text x="90" y="164" text-anchor="middle" font-size="10.5" fill="#8a97a5">前置教程</text>
+    </g>
+    <g>
+      <rect x="180" y="70" width="140" height="110" rx="9" fill="#fdf3e3" stroke="#d35400" stroke-width="2"/>
+      <circle cx="208" cy="96" r="13" fill="#d35400"/>
+      <text x="208" y="101" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">2</text>
+      <text x="250" y="101" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2d3d">启动</text>
+      <text x="250" y="128" text-anchor="middle" font-size="10.5" fill="#5a6b7b" font-family="Consolas,monospace">npx @deepseek-ai/dsh web</text>
+      <text x="250" y="146" text-anchor="middle" font-size="11" fill="#5a6b7b">首次自动拉包</text>
+      <text x="250" y="164" text-anchor="middle" font-size="10.5" fill="#8a97a5">见下方三种方式</text>
+    </g>
+    <g>
+      <rect x="340" y="70" width="140" height="110" rx="9" fill="#eef4fb" stroke="#2980b9" stroke-width="2"/>
+      <circle cx="368" cy="96" r="13" fill="#2980b9"/>
+      <text x="368" y="101" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">3</text>
+      <text x="410" y="101" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2d3d">配模型</text>
+      <text x="410" y="128" text-anchor="middle" font-size="11" fill="#5a6b7b">Settings → Models</text>
+      <text x="410" y="146" text-anchor="middle" font-size="11" fill="#5a6b7b">填 sk- 开头 Key</text>
+      <text x="410" y="164" text-anchor="middle" font-size="10.5" fill="#8a97a5">近 40 家厂商</text>
+    </g>
+    <g>
+      <rect x="500" y="70" width="140" height="110" rx="9" fill="#eef4fb" stroke="#2980b9" stroke-width="2"/>
+      <circle cx="528" cy="96" r="13" fill="#2980b9"/>
+      <text x="528" y="101" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">4</text>
+      <text x="570" y="101" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2d3d">选工作区</text>
+      <text x="570" y="128" text-anchor="middle" font-size="11" fill="#5a6b7b">Choose workspace</text>
+      <text x="570" y="146" text-anchor="middle" font-size="11" fill="#5a6b7b">绑定项目目录</text>
+    </g>
+    <g>
+      <rect x="660" y="70" width="140" height="110" rx="9" fill="#e8f6ec" stroke="#27ae60" stroke-width="2"/>
+      <circle cx="688" cy="96" r="13" fill="#27ae60"/>
+      <text x="688" y="101" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">5</text>
+      <text x="730" y="101" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2d3d">跑任务</text>
+      <text x="730" y="128" text-anchor="middle" font-size="11" fill="#5a6b7b">自然语言下指令</text>
+      <text x="730" y="146" text-anchor="middle" font-size="11" fill="#5a6b7b">读写文件/执行命令</text>
+    </g>
+    <g>
+      <rect x="820" y="70" width="140" height="110" rx="9" fill="#e8f6ec" stroke="#27ae60" stroke-width="2"/>
+      <circle cx="848" cy="96" r="13" fill="#27ae60"/>
+      <text x="848" y="101" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">6</text>
+      <text x="890" y="101" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2d3d">复盘</text>
+      <text x="890" y="128" text-anchor="middle" font-size="11" fill="#5a6b7b">Trajectory 轨迹</text>
+      <text x="890" y="146" text-anchor="middle" font-size="11" fill="#5a6b7b">恢复/分支/回放</text>
+    </g>
+  </g>
+  <!-- 箭头 -->
+  <g stroke="#1f2d3d" stroke-width="1.8" fill="none">
+    <path d="M160 125 L178 125 M172 120 L178 125 L172 130"/>
+    <path d="M320 125 L338 125 M332 120 L338 125 L332 130"/>
+    <path d="M480 125 L498 125 M492 120 L498 125 L492 130"/>
+    <path d="M640 125 L658 125 M652 120 L658 125 L652 130"/>
+    <path d="M800 125 L818 125 M812 120 L818 125 L812 130"/>
+  </g>
+
+  <!-- 分隔 -->
+  <line x1="20" y1="215" x2="960" y2="215" stroke="#dfe5ec" stroke-width="1.5" stroke-dasharray="8 6"/>
+  <text x="30" y="242" font-size="14" font-weight="700" fill="#1f2d3d">第 2 步的三种启动方式（任选其一）</text>
+
+  <g font-size="12">
+    <rect x="30" y="258" width="295" height="96" rx="8" fill="#fff" stroke="#27ae60" stroke-width="1.8"/>
+    <text x="48" y="282" font-weight="700" fill="#27ae60">方式 A：npx 免安装（推荐新手）</text>
+    <text x="48" y="306" font-family="Consolas,monospace" fill="#1f2d3d">npx @deepseek-ai/dsh web</text>
+    <text x="48" y="328" fill="#5a6b7b">不污染全局，首次自动下载，用完即走</text>
+
+    <rect x="342" y="258" width="295" height="96" rx="8" fill="#fff" stroke="#2980b9" stroke-width="1.8"/>
+    <text x="360" y="282" font-weight="700" fill="#2980b9">方式 B：全局安装（常用推荐）</text>
+    <text x="360" y="306" font-family="Consolas,monospace" fill="#1f2d3d">npm install -g @deepseek-ai/dsh</text>
+    <text x="360" y="328" font-family="Consolas,monospace" fill="#1f2d3d">dsh web</text>
+
+    <rect x="655" y="258" width="305" height="96" rx="8" fill="#fff" stroke="#8e44ad" stroke-width="1.8"/>
+    <text x="673" y="282" font-weight="700" fill="#8e44ad">方式 C：源码运行（开发者）</text>
+    <text x="673" y="304" font-family="Consolas,monospace" font-size="11" fill="#1f2d3d">git clone … &amp;&amp; pnpm i &amp;&amp; pnpm build</text>
+    <text x="673" y="326" font-family="Consolas,monospace" fill="#1f2d3d">pnpm dsh web</text>
+  </g>
+</svg>

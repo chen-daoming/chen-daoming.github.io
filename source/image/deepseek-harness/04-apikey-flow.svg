@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 430" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="940" height="430" fill="#fbfcfd"/>
+  <text x="470" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">前置二：获取 DeepSeek API Key 全流程</text>
+
+  <!-- 5 步 -->
+  <g>
+    <!-- x: 20,200,380,560,740 宽160 -->
+    <rect x="20" y="66" width="160" height="120" rx="9" fill="#eef4fb" stroke="#2980b9" stroke-width="2"/>
+    <text x="100" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#2980b9">① 注册登录</text>
+    <text x="100" y="120" text-anchor="middle" font-size="11" fill="#1f2d3d" font-family="Consolas,monospace">platform.deepseek.com</text>
+    <text x="100" y="142" text-anchor="middle" font-size="11" fill="#5a6b7b">手机号注册</text>
+    <text x="100" y="162" text-anchor="middle" font-size="11" fill="#5a6b7b">DeepSeek 开放平台</text>
+
+    <rect x="200" y="66" width="160" height="120" rx="9" fill="#eef4fb" stroke="#2980b9" stroke-width="2"/>
+    <text x="280" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#2980b9">② 实名认证</text>
+    <text x="280" y="124" text-anchor="middle" font-size="11" fill="#5a6b7b">个人开发者按提示</text>
+    <text x="280" y="144" text-anchor="middle" font-size="11" fill="#5a6b7b">完成实名</text>
+    <text x="280" y="164" text-anchor="middle" font-size="11" fill="#5a6b7b">（调用 API 前提）</text>
+
+    <rect x="380" y="66" width="160" height="120" rx="9" fill="#eef4fb" stroke="#2980b9" stroke-width="2"/>
+    <text x="460" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#2980b9">③ 账户充值</text>
+    <text x="460" y="124" text-anchor="middle" font-size="11" fill="#5a6b7b">按 token 用量计费</text>
+    <text x="460" y="144" text-anchor="middle" font-size="11" fill="#5a6b7b">先充 5~10 元</text>
+    <text x="460" y="164" text-anchor="middle" font-size="11" fill="#5a6b7b">即可长期体验</text>
+
+    <rect x="560" y="66" width="160" height="120" rx="9" fill="#fdf3e3" stroke="#d35400" stroke-width="2"/>
+    <text x="640" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#d35400">④ 创建 Key</text>
+    <text x="640" y="124" text-anchor="middle" font-size="11" fill="#5a6b7b">左侧菜单「API keys」</text>
+    <text x="640" y="144" text-anchor="middle" font-size="11" fill="#5a6b7b">创建密钥、起备注名</text>
+
+    <rect x="740" y="66" width="180" height="120" rx="9" fill="#fdecea" stroke="#c0392b" stroke-width="2"/>
+    <text x="830" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#c0392b">⑤ 立即复制</text>
+    <text x="830" y="124" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="700">Key 只完整显示一次</text>
+    <text x="830" y="144" text-anchor="middle" font-size="11" fill="#5a6b7b">关闭后无法再查看</text>
+    <text x="830" y="164" text-anchor="middle" font-size="11" fill="#5a6b7b">请当场妥善保存</text>
+  </g>
+  <g stroke="#1f2d3d" stroke-width="1.8" fill="none">
+    <path d="M180 126 L198 126 M192 121 L198 126 L192 131"/>
+    <path d="M360 126 L378 126 M372 121 L378 126 L372 131"/>
+    <path d="M540 126 L558 126 M552 121 L558 126 L552 131"/>
+    <path d="M720 126 L738 126 M732 121 L738 126 L732 131"/>
+  </g>
+
+  <!-- Key 样式 -->
+  <text x="30" y="226" font-size="13.5" font-weight="700" fill="#1f2d3d">拿到的 Key 形如（以 sk- 开头的一长串）：</text>
+  <rect x="30" y="240" width="880" height="44" rx="6" fill="#1a2530"/>
+  <text x="50" y="268" font-family="Consolas,monospace" font-size="14" fill="#a7e8ba">sk-9f7a3c2e8b4d4f60a1c5e7d9b2f80a3c</text>
+
+  <!-- 安全提示 -->
+  <rect x="30" y="302" width="880" height="108" rx="8" fill="#fdecea" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="50" y="330" font-size="13.5" font-weight="700" fill="#c0392b">安全红线（务必遵守）</text>
+  <g font-size="12.5" fill="#1f2d3d">
+    <text x="50" y="356">• 绝不要把 Key 写进会上传 Git 的代码/配置里；Harness 中保存在仅当前用户可读的 .credentials.yaml</text>
+    <text x="50" y="378">• 推荐用环境变量 DEEPSEEK_API_KEY 保存；怀疑泄露立刻在平台删除并重建</text>
+    <text x="50" y="400">• Key 只与你的账户余额绑定，调用 DeepSeek 模型按 token 从此余额扣费；Harness 软件本身免费</text>
+  </g>
+</svg>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="900" height="500" fill="#fbfcfd"/>
+  <text x="450" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">Web 界面配置模型：Settings → Models</text>
+
+  <!-- 浏览器外框 -->
+  <rect x="50" y="52" width="800" height="420" rx="10" fill="#ffffff" stroke="#3a444f" stroke-width="1.8"/>
+  <!-- 标题栏 -->
+  <rect x="50" y="52" width="800" height="40" rx="10" fill="#2b333c"/>
+  <rect x="50" y="78" width="800" height="14" fill="#2b333c"/>
+  <circle cx="74" cy="72" r="5" fill="#d9685f"/>
+  <circle cx="92" cy="72" r="5" fill="#d9a85f"/>
+  <circle cx="110" cy="72" r="5" fill="#58c67c"/>
+  <rect x="150" y="61" width="500" height="22" rx="11" fill="#1b2026" stroke="#3a444f"/>
+  <text x="166" y="76" font-family="Consolas,monospace" font-size="12" fill="#a7e8ba">http://127.0.0.1:3080</text>
+
+  <!-- 左侧导航 -->
+  <rect x="50" y="92" width="170" height="380" fill="#f4f6f9"/>
+  <line x1="220" y1="92" x2="220" y2="472" stroke="#dfe5ec"/>
+  <rect x="62" y="112" width="146" height="36" rx="6" fill="#ffffff" stroke="#dfe5ec"/>
+  <text x="78" y="135" font-size="13" fill="#5a6b7b">Chat 会话</text>
+  <rect x="62" y="156" width="146" height="36" rx="6" fill="#fdf3e3" stroke="#d35400"/>
+  <text x="78" y="179" font-size="13" font-weight="700" fill="#d35400">Settings 设置</text>
+  <text x="78" y="216" font-size="12" fill="#98a4b1">› Models</text>
+  <text x="78" y="240" font-size="12" fill="#98a4b1">› Profiles</text>
+  <text x="78" y="264" font-size="12" fill="#98a4b1">› Plugins</text>
+
+  <!-- 右侧面板 -->
+  <text x="246" y="128" font-size="16" font-weight="700" fill="#1f2d3d">Models 模型配置</text>
+  <line x1="246" y1="140" x2="820" y2="140" stroke="#e6ebf1"/>
+
+  <!-- Provider -->
+  <text x="246" y="172" font-size="13" fill="#5a6b7b">① 模型提供方 Provider</text>
+  <rect x="246" y="182" width="560" height="36" rx="6" fill="#ffffff" stroke="#3a444f" stroke-width="1.5"/>
+  <text x="262" y="205" font-size="13" fill="#1f2d3d" font-family="Consolas,monospace">DeepSeek</text>
+  <path d="M788 196 L796 196 L792 202 Z" fill="#5a6b7b"/>
+  <text x="620" y="172" font-size="11" fill="#8a97a5">可选 Kimi/OpenAI/Anthropic/Google 等近 40 家</text>
+
+  <!-- API Key -->
+  <text x="246" y="244" font-size="13" fill="#5a6b7b">② API Key</text>
+  <rect x="246" y="254" width="560" height="36" rx="6" fill="#fbfcfd" stroke="#3a444f" stroke-width="1.5"/>
+  <text x="262" y="277" font-size="13" fill="#1f2d3d" font-family="Consolas,monospace">sk-••••••••••••••••••••••••••••</text>
+
+  <!-- Base URL -->
+  <text x="246" y="316" font-size="13" fill="#5a6b7b">③ Base URL（默认即可，第三方/中转才需改）</text>
+  <rect x="246" y="326" width="560" height="36" rx="6" fill="#fbfcfd" stroke="#c9d4df" stroke-width="1.5"/>
+  <text x="262" y="349" font-size="12.5" fill="#5a6b7b" font-family="Consolas,monospace">https://api.deepseek.com</text>
+
+  <!-- Model -->
+  <text x="246" y="388" font-size="13" fill="#5a6b7b">④ 默认模型</text>
+  <rect x="246" y="398" width="260" height="34" rx="6" fill="#ffffff" stroke="#3a444f" stroke-width="1.5"/>
+  <text x="262" y="420" font-size="12.5" fill="#1f2d3d" font-family="Consolas,monospace">deepseek-chat</text>
+  <!-- Save -->
+  <rect x="666" y="398" width="140" height="34" rx="6" fill="#27ae60"/>
+  <text x="736" y="420" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">⑤ Save 保存</text>
+  <text x="520" y="420" font-size="11" fill="#8a97a5">保存即时生效，无需重启</text>
+</svg>
