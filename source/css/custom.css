@@ -9,3 +9,17 @@
     color: #30a9de;
   }
 }
+
+/* 下拉菜单宽度修正：主题默认 min-width 仅 8rem，较长的工具名（如
+   “DC-DC升降压电感”）会被窄触发按钮约束而显示不全，这里加宽并禁止换行，
+   宽度按最长菜单项自适应；移动端走九宫格菜单，不受此规则影响 */
+@media (min-width: 992px) {
+  .navbar .dropdown-menu {
+    min-width: 12rem;
+    width: max-content;
+    max-width: 80vw;
+  }
+  .navbar .dropdown-menu .dropdown-item {
+    white-space: nowrap;
+  }
+}
