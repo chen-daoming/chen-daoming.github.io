@@ -19,6 +19,7 @@ navbar:
         - { key: 'led', name: 'LED 串联电阻', link: '/led-resistor/' }
         - { key: 'base', name: '进制转换器', link: '/base-converter/' }
         - { key: 'pcb', name: 'PCB走线宽度', link: '/pcb-trace/' }
+        - { key: 'dcdc', name: 'DC-DC升降压电感', link: '/dcdc-calculator/' }
 
         # 以后新增工具：- { key: 'xxx', name: '工具名', link: '/xxx/' }
     - { key: 'about', link: '/about/', icon: 'icon-info-circle-fill' }
