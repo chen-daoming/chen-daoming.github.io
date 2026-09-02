@@ -19,7 +19,7 @@ DeepSeek Harness 于 2026 年 8 月发布开发者预览版（v0.1），源代�
 
 Harness 原意为"马具、缰绳"，在 AI 架构中指连接模型与真实执行环境的工程层：模型是负责推理的"大脑"，Harness 是负责调度上下文、工具、任务状态与反馈的"执行层"。缺少 Harness 的模型只能对话回答问题，加上 Harness 才能读写文件、执行命令、完成多步骤真实任务。
 
-![Model + Harness = Agent 架构图](/image/deepseek-harness/01-agent-arch.svg)
+![Model + Harness = Agent 架构图](/images/deepseek-harness/01-agent-arch.svg)
 
 核心功能一览：
 
@@ -45,7 +45,7 @@ Harness 原意为"马具、缰绳"，在 AI 架构中指连接模型与真实执
 
 完整链路如下，本文按此顺序展开：**安装 Node.js/npm → 获取 API Key → 安装启动 dsh → 配置模型 → 选择工作区 → 运行任务 → 会话复盘**。
 
-![DeepSeek Harness 完整使用流程图](/image/deepseek-harness/02-full-workflow.svg)
+![DeepSeek Harness 完整使用流程图](/images/deepseek-harness/02-full-workflow.svg)
 
 环境要求：
 
@@ -97,7 +97,7 @@ node --version         # 例如 v22.23.2
 npm --version          # 例如 10.9.8
 ```
 
-![Node.js 与 npm 安装路径图](/image/deepseek-harness/03-nodejs-npm-install.svg)
+![Node.js 与 npm 安装路径图](/images/deepseek-harness/03-nodejs-npm-install.svg)
 
 **国内网络强烈建议先切换 npm 镜像源**，否则后续安装 dsh 可能很慢甚至超时：
 
@@ -132,7 +132,7 @@ Harness 本身免费开源，但它调用云端模型时需要一个模型服务
 4. **创建密钥**：左侧菜单进入「API keys」，点击创建，给它起个备注名（如 `harness-local`）；
 5. **立即复制保存**：生成的 Key 以 `sk-` 开头，**完整内容只显示这一次**，关闭弹窗后无法再查看，丢了只能重新创建。
 
-![DeepSeek API Key 获取流程图](/image/deepseek-harness/04-apikey-flow.svg)
+![DeepSeek API Key 获取流程图](/images/deepseek-harness/04-apikey-flow.svg)
 
 ### 3.2 安全红线
 
@@ -215,7 +215,7 @@ http://127.0.0.1:3080
 4. 选择默认模型（如 `deepseek-chat`）；
 5. 点击 **Save** 保存，**即时生效，无需重启服务器**。
 
-![Web 界面配置模型线框图](/image/deepseek-harness/05-webui-models.svg)
+![Web 界面配置模型线框图](/images/deepseek-harness/05-webui-models.svg)
 
 ### 5.2 凭据文件
 
@@ -300,7 +300,7 @@ Harness 采用 everything is a plugin 设计：模型、工具、技能、会话
 3. 用户主目录 `$DSH_HOME/cordis.patch.yml`（对所有 profile 生效）；
 4. 命令行 `--patch` 指定的临时覆盖层（最高优先级）。
 
-![配置树叠加层次图](/image/deepseek-harness/06-config-layers.svg)
+![配置树叠加层次图](/images/deepseek-harness/06-config-layers.svg)
 
 ### 7.3 会话日志与回放
 
