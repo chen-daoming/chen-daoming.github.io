@@ -214,35 +214,47 @@ title: PCB 走线宽度计算器
     </section>
     <section class="panel">
       <h2 class="panel-title">走线横截面示意</h2>
-      <svg class="pcb-svg" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PCB走线横截面示意图">
-        <!-- 基板顶面 -->
-        <polygon points="40,110 280,110 250,180 10,180" fill="#2b333c" stroke="#6b7683" stroke-width="1.5"/>
-        <!-- 基板侧面 -->
-        <polygon points="10,180 250,180 250,200 10,200" fill="#21272e" stroke="#6b7683" stroke-width="1.5"/>
-        <polygon points="250,180 280,110 280,130 250,200" fill="#1b2026" stroke="#6b7683" stroke-width="1.5"/>
-        <!-- 铜走线顶面 -->
-        <polygon points="110,110 210,110 195,80 95,80" fill="#e0a34b" stroke="#f0c878" stroke-width="1.5"/>
-        <!-- 铜走线侧面 -->
-        <polygon points="210,110 195,80 195,95 210,125" fill="#b07d2e" stroke="#f0c878" stroke-width="1.2"/>
-        <polygon points="95,80 195,80 195,95 95,95" fill="#c8923a" stroke="#f0c878" stroke-width="1.2"/>
-        <!-- W 标注 -->
-        <line x1="110" y1="140" x2="210" y2="140" stroke="#a7e8ba" stroke-width="1.5"/>
-        <path d="M 110 140 L 116 136 M 110 140 L 116 144" stroke="#a7e8ba" stroke-width="1.5" fill="none"/>
-        <path d="M 210 140 L 204 136 M 210 140 L 204 144" stroke="#a7e8ba" stroke-width="1.5" fill="none"/>
-        <text x="160" y="156" text-anchor="middle" fill="#a7e8ba" font-family="ui-monospace,monospace" font-size="14" font-weight="700">W（宽度）</text>
-        <!-- t 标注 -->
-        <line x1="225" y1="110" x2="225" y2="125" stroke="#e0a34b" stroke-width="1.5"/>
-        <path d="M 225 110 L 221 116 M 225 110 L 229 116" stroke="#e0a34b" stroke-width="1.5" fill="none"/>
-        <path d="M 225 125 L 221 119 M 225 125 L 229 119" stroke="#e0a34b" stroke-width="1.5" fill="none"/>
-        <text x="248" y="122" fill="#e0a34b" font-family="ui-monospace,monospace" font-size="13" font-weight="700">t</text>
-        <!-- FR4 标注 -->
-        <text x="130" y="175" fill="#98a4b1" font-family="ui-monospace,monospace" font-size="11">FR-4 基板</text>
-        <!-- 电流方向 -->
-        <line x1="60" y1="60" x2="100" y2="60" stroke="#a7e8ba" stroke-width="1.5"/>
-        <path d="M 94 56 L 100 60 L 94 64" stroke="#a7e8ba" stroke-width="1.5" fill="none"/>
-        <line x1="200" y1="60" x2="240" y2="60" stroke="#a7e8ba" stroke-width="1.5"/>
-        <path d="M 234 56 L 240 60 L 234 64" stroke="#a7e8ba" stroke-width="1.5" fill="none"/>
-        <text x="150" y="52" text-anchor="middle" fill="#a7e8ba" font-family="ui-monospace,monospace" font-size="12">电流 I</text>
+      <svg class="pcb-svg" viewBox="0 0 340 244" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PCB走线横截面示意图">
+        <!-- 标题 -->
+        <text x="28" y="26" fill="#e9edf2" font-family="'Microsoft YaHei',sans-serif" font-size="13" font-weight="700">走线横截面（垂直于走线方向切开）</text>
+        <text x="28" y="46" fill="#a7e8ba" font-family="'Microsoft YaHei',sans-serif" font-size="11">铜箔中 ⊗ 表示电流 I 沿走线方向流入纸面</text>
+
+        <!-- W：水平尺寸标注（铜箔上方） -->
+        <line x1="90" y1="86" x2="90" y2="78" stroke="#6b7683" stroke-width="1" stroke-dasharray="3 2"/>
+        <line x1="250" y1="86" x2="250" y2="78" stroke="#6b7683" stroke-width="1" stroke-dasharray="3 2"/>
+        <line x1="90" y1="74" x2="250" y2="74" stroke="#a7e8ba" stroke-width="1.5"/>
+        <path d="M 90 74 L 97 70 L 97 78 Z" fill="#a7e8ba"/>
+        <path d="M 250 74 L 243 70 L 243 78 Z" fill="#a7e8ba"/>
+        <text x="170" y="68" text-anchor="middle" fill="#a7e8ba" font-family="ui-monospace,monospace" font-size="13" font-weight="700">W 走线宽度</text>
+
+        <!-- FR-4 基板 -->
+        <rect x="30" y="112" width="280" height="84" fill="#2b333c" stroke="#3a444f" stroke-width="1.5"/>
+        <text x="170" y="160" text-anchor="middle" fill="#98a4b1" font-family="'Microsoft YaHei',sans-serif" font-size="12">FR-4 基板（介质层）</text>
+
+        <!-- 铜箔截面 W×t -->
+        <rect x="90" y="86" width="160" height="26" fill="#e0a34b" stroke="#f0c878" stroke-width="1.5"/>
+        <!-- 电流流入纸面符号 -->
+        <g stroke="#7a5410" stroke-width="1.6" fill="none">
+          <circle cx="135" cy="99" r="7"/>
+          <line x1="130" y1="94" x2="140" y2="104"/>
+          <line x1="140" y1="94" x2="130" y2="104"/>
+          <circle cx="205" cy="99" r="7"/>
+          <line x1="200" y1="94" x2="210" y2="104"/>
+          <line x1="210" y1="94" x2="200" y2="104"/>
+        </g>
+
+        <!-- t：垂直尺寸标注（铜箔右侧） -->
+        <line x1="250" y1="86" x2="262" y2="86" stroke="#6b7683" stroke-width="1" stroke-dasharray="3 2"/>
+        <line x1="250" y1="112" x2="262" y2="112" stroke="#6b7683" stroke-width="1" stroke-dasharray="3 2"/>
+        <line x1="266" y1="86" x2="266" y2="112" stroke="#e0a34b" stroke-width="1.5"/>
+        <path d="M 266 86 L 262 93 L 270 93 Z" fill="#e0a34b"/>
+        <path d="M 266 112 L 262 105 L 270 105 Z" fill="#e0a34b"/>
+        <text x="300" y="103" text-anchor="middle" fill="#e0a34b" font-family="ui-monospace,monospace" font-size="12" font-weight="700">t 铜厚</text>
+
+        <!-- 公式条 -->
+        <rect x="20" y="206" width="300" height="28" rx="6" fill="#21272e" stroke="#2b333c"/>
+        <text x="38" y="225" fill="#a7e8ba" font-family="ui-monospace,monospace" font-size="12">截面积 A = W × t</text>
+        <text x="302" y="225" text-anchor="end" fill="#a7e8ba" font-family="ui-monospace,monospace" font-size="12">1 oz：35 µm = 1.378 mil</text>
       </svg>
     </section>
   </div>
