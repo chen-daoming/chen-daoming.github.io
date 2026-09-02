@@ -28,7 +28,7 @@ title: PCB 走线宽度计算器
   .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px}
   .panel-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text-dim);letter-spacing:.06em;margin:0 0 14px}
   .panel-title::before{content:"";width:6px;height:14px;background:var(--accent);border-radius:1px;flex:none}
-  .field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .field-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:12px}
   .field{display:flex;flex-direction:column;gap:6px}
   .field label{font-size:13px;color:var(--text-dim);font-weight:500}
   .field-input{display:flex;gap:0}
