@@ -43,7 +43,7 @@ post:
       awl: 2
       wpm: 60
     views:
-      enable: false
+      enable: true
       source: "busuanzi"
   highlight:
     theme: github
@@ -70,4 +70,5 @@ footer:
     - '© 2026 chen-daoming'
     - 'Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank">Fluid</a>'
   statistics:
-    enable: false
+    enable: true
+    source: "busuanzi"
