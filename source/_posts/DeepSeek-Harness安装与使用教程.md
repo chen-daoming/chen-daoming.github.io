@@ -1,6 +1,6 @@
 ---
 title: DeepSeek Harness 安装与使用教程（含 Node.js/npm 与 API Key 前置教程）
-date: 2026-09-02 14:00:00
+date: 2026-08-15 14:00:00
 tags:
   - AI Agent
   - DeepSeek
