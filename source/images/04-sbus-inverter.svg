@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 560" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="720" height="560" fill="#fbfcfd"/>
+  <text x="360" y="34" text-anchor="middle" font-size="19" font-weight="700" fill="#1f2d3d">SBUS 负逻辑硬件取反电路（NPN 三极管共射反相器）</text>
+
+  <!-- 导线统一样式 -->
+  <g stroke="#1f2d3d" stroke-width="2" fill="none">
+    <!-- VCC 母线 -->
+    <line x1="360" y1="70" x2="440" y2="70"/>
+    <line x1="400" y1="70" x2="400" y2="95"/>
+    <!-- 10K 上下引线 -->
+    <line x1="400" y1="185" x2="400" y2="268"/>
+    <!-- 集电极->RXD -->
+    <line x1="400" y1="215" x2="560" y2="215"/>
+    <!-- 发射极->GND -->
+    <line x1="400" y1="352" x2="400" y2="470"/>
+    <!-- 基极向左 -->
+    <line x1="358" y1="310" x2="235" y2="310"/>
+    <line x1="145" y1="310" x2="60" y2="310"/>
+  </g>
+
+  <!-- VCC 标注 -->
+  <text x="400" y="62" text-anchor="middle" font-size="15" font-weight="700" fill="#c0392b" font-family="Consolas,monospace">VCC3V3_MCU</text>
+
+  <!-- 10K 电阻（矩形） -->
+  <rect x="386" y="95" width="28" height="90" fill="#eef4fb" stroke="#2980b9" stroke-width="2"/>
+  <text x="452" y="145" font-size="15" font-weight="700" fill="#2980b9" font-family="Consolas,monospace">10k</text>
+  <text x="452" y="164" font-size="11" fill="#5a6b7b">上拉电阻</text>
+
+  <!-- 集电极节点 -->
+  <circle cx="400" cy="215" r="5" fill="#1f2d3d"/>
+  <text x="408" y="205" font-size="13" fill="#1f2d3d" font-family="Consolas,monospace">Q1.C</text>
+
+  <!-- RXD 输出 -->
+  <circle cx="560" cy="215" r="4" fill="none" stroke="#1f2d3d" stroke-width="2"/>
+  <text x="560" y="198" text-anchor="middle" font-size="15" font-weight="700" fill="#c0392b" font-family="Consolas,monospace">RXD</text>
+  <text x="560" y="240" text-anchor="middle" font-size="11" fill="#5a6b7b">接 MCU 串口接收脚</text>
+
+  <!-- ===== NPN 三极管 ===== -->
+  <circle cx="400" cy="310" r="44" fill="#ffffff" stroke="#1f2d3d" stroke-width="2"/>
+  <!-- 基极竖杠 -->
+  <line x1="372" y1="286" x2="372" y2="334" stroke="#1f2d3d" stroke-width="3"/>
+  <!-- 集电极斜线 -->
+  <line x1="372" y1="296" x2="400" y2="268" stroke="#1f2d3d" stroke-width="2"/>
+  <!-- 发射极斜线 -->
+  <line x1="372" y1="324" x2="400" y2="352" stroke="#1f2d3d" stroke-width="2"/>
+  <!-- 发射极箭头（NPN：箭头向外/向下） -->
+  <path d="M 392 343 L 400 352 L 389 350" fill="none" stroke="#1f2d3d" stroke-width="2"/>
+  <!-- 引脚标注 -->
+  <text x="414" y="276" font-size="12" fill="#5a6b7b" font-family="Consolas,monospace">C</text>
+  <text x="330" y="304" font-size="12" fill="#5a6b7b" font-family="Consolas,monospace">B</text>
+  <text x="414" y="348" font-size="12" fill="#5a6b7b" font-family="Consolas,monospace">E</text>
+  <text x="400" y="314" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2d3d">Q1</text>
+
+  <!-- 1K 基极电阻 -->
+  <rect x="145" y="296" width="90" height="28" fill="#eef4fb" stroke="#2980b9" stroke-width="2"/>
+  <text x="190" y="288" text-anchor="middle" font-size="15" font-weight="700" fill="#2980b9" font-family="Consolas,monospace">1k</text>
+
+  <!-- 输入 RC_SBUS -->
+  <circle cx="60" cy="310" r="4" fill="none" stroke="#1f2d3d" stroke-width="2"/>
+  <text x="60" y="292" text-anchor="middle" font-size="14" font-weight="700" fill="#c0392b" font-family="Consolas,monospace">RC_SBUS</text>
+  <text x="60" y="338" text-anchor="middle" font-size="11" fill="#5a6b7b">接收机 SBUS 输出</text>
+
+  <!-- GND 符号 -->
+  <g stroke="#1f2d3d" stroke-width="2">
+    <line x1="380" y1="470" x2="420" y2="470"/>
+    <line x1="387" y1="480" x2="413" y2="480"/>
+    <line x1="393" y1="490" x2="407" y2="490"/>
+  </g>
+  <text x="430" y="476" font-size="13" fill="#1f2d3d" font-family="Consolas,monospace">GND</text>
+
+  <!-- 真值表说明 -->
+  <rect x="60" y="510" width="600" height="36" rx="6" fill="#fdf3e3" stroke="#d35400" stroke-width="1"/>
+  <text x="76" y="533" font-size="12" fill="#1f2d3d" font-family="Consolas,monospace">输入 RC_SBUS=低(0) → Q1 截止 → RXD 被上拉为高(1)；输入=高(1) → Q1 导通 → RXD 拉低(0)，实现硬件取反</text>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 480" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="920" height="480" fill="#fbfcfd"/>
+  <text x="460" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">接收机输出协议连接关系：PWM 一线一通道 vs PPM/SBUS 一线多通道</text>
+
+  <!-- 遥控器 -->
+  <rect x="50" y="200" width="150" height="90" rx="10" fill="#eef4fb" stroke="#2980b9" stroke-width="2"/>
+  <text x="125" y="240" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2d3d">遥控器</text>
+  <text x="125" y="264" text-anchor="middle" font-size="12" fill="#5a6b7b">发射机（TX）</text>
+
+  <!-- 无线链路 -->
+  <path d="M 205 235 Q 250 205 295 235" fill="none" stroke="#7f8c9b" stroke-width="2" stroke-dasharray="6 4"/>
+  <path d="M 205 255 Q 250 285 295 255" fill="none" stroke="#7f8c9b" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="250" y="200" text-anchor="middle" font-size="11" fill="#7f8c9b">2.4G 无线（厂牌私有协议）</text>
+
+  <!-- 接收机 -->
+  <rect x="300" y="180" width="170" height="130" rx="10" fill="#fdf3e3" stroke="#d35400" stroke-width="2"/>
+  <text x="385" y="235" text-anchor="middle" font-size="16" font-weight="700" fill="#1f2d3d">接收机</text>
+  <text x="385" y="260" text-anchor="middle" font-size="12" fill="#5a6b7b">RX（本文讨论范围）</text>
+  <text x="385" y="284" text-anchor="middle" font-size="11" fill="#a05a12">输出通行标准信号</text>
+
+  <!-- ===== 上半部分：PWM 多线 ===== -->
+  <text x="640" y="70" text-anchor="middle" font-size="14" font-weight="700" fill="#2980b9">PWM：每通道一根信号线</text>
+  <!-- 4条线到4个舵机 -->
+  <g stroke="#2980b9" stroke-width="2" fill="none">
+    <path d="M 470 200 L 540 200 L 540 110 L 590 110"/>
+    <path d="M 470 220 L 560 220 L 560 150 L 590 150"/>
+    <path d="M 470 270 L 560 270 L 560 190 L 590 190"/>
+    <path d="M 470 290 L 540 290 L 540 230 L 590 230"/>
+  </g>
+  <g font-size="11" fill="#2980b9" font-family="Consolas,monospace">
+    <text x="495" y="193">ch1</text>
+    <text x="495" y="214">ch2</text>
+    <text x="495" y="264">ch3</text>
+    <text x="495" y="284">ch4</text>
+  </g>
+  <!-- 舵机方框 -->
+  <g>
+    <rect x="590" y="92" width="90" height="34" rx="5" fill="#eef4fb" stroke="#2980b9" stroke-width="1.5"/>
+    <text x="635" y="113" text-anchor="middle" font-size="12" fill="#1f2d3d">舵机 1</text>
+    <rect x="590" y="132" width="90" height="34" rx="5" fill="#eef4fb" stroke="#2980b9" stroke-width="1.5"/>
+    <text x="635" y="153" text-anchor="middle" font-size="12" fill="#1f2d3d">舵机 2</text>
+    <rect x="590" y="172" width="90" height="34" rx="5" fill="#eef4fb" stroke="#2980b9" stroke-width="1.5"/>
+    <text x="635" y="193" text-anchor="middle" font-size="12" fill="#1f2d3d">电调 3</text>
+    <rect x="590" y="212" width="90" height="34" rx="5" fill="#eef4fb" stroke="#2980b9" stroke-width="1.5"/>
+    <text x="635" y="233" text-anchor="middle" font-size="12" fill="#1f2d3d">舵机 4</text>
+  </g>
+  <text x="730" y="165" font-size="11" fill="#5a6b7b">通道越多</text>
+  <text x="730" y="182" font-size="11" fill="#5a6b7b">连线越繁琐</text>
+
+  <!-- ===== 下半部分：PPM/SBUS 单线 ===== -->
+  <path d="M 385 310 L 385 380 L 590 380" fill="none" stroke="#d35400" stroke-width="2.5"/>
+  <text x="430" y="355" font-size="11" fill="#d35400" font-family="Consolas,monospace">1 根信号线</text>
+  <rect x="590" y="356" width="130" height="48" rx="5" fill="#fdf3e3" stroke="#d35400" stroke-width="1.5"/>
+  <text x="655" y="378" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2d3d">飞控 FC</text>
+  <text x="655" y="396" text-anchor="middle" font-size="10.5" fill="#5a6b7b">PPM ≤10ch / SBUS 16+2ch</text>
+  <text x="640" y="440" text-anchor="middle" font-size="14" font-weight="700" fill="#d35400">PPM / SBUS：一根线传输全部通道</text>
+
+  <!-- 分隔虚线 -->
+  <line x1="40" y1="320" x2="880" y2="320" stroke="#dfe5ec" stroke-width="1.5" stroke-dasharray="8 6"/>
+</svg>

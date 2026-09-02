@@ -20,7 +20,7 @@ PWM、PPM、PCM、SBUS、XBUS、DSM 都是**接收机与其他设备（舵机、
 
 注意不要和**遥控器 ↔ 接收机之间的协议**混淆：遥控器和接收机之间采用什么协议沟通，往往各厂牌自有一套、互不兼容；而**接收机输出给后端设备的信号是有通行标准的**，本文讨论的正是后者。
 
-![航模接收机实物](https://p3-doubao-search-sign.byteimg.com/isp-i18n-media/image/1eea5a691e88c403459e27511e7d36ca~tplv-be4g95zd3a-896x896.jpeg?lk3s=0ed4045e&x-expires=1803861710&x-signature=7BDLlohISo3ha4W9VbSLsldB%2BCg%3D)
+![航模接收机实物](/images/01-receiver-protocols.svg)
 
 六种协议总览对比：
 
@@ -42,7 +42,7 @@ PWM、PPM、PCM、SBUS、XBUS、DSM 都是**接收机与其他设备（舵机、
 
 PWM（Pulse Width Modulation，脉宽调制）在航模中主要用于**舵机控制**，是一种古老而通用的工业信号。原理是通过周期性跳变的高低电平组成方波，进行连续数据输出。
 
-![PWM 波形示意图：周期约 2ms 的方波，高电平宽度即信号量](https://p11-doubao-search-sign.byteimg.com/isp-i18n-media/image/83541fbe7d582bce24ab0a58644dcb47~tplv-be4g95zd3a-896x896.jpeg?lk3s=0ed4045e&x-expires=1803861710&x-signature=sqg%2BpF7BAwauRalOOB8Pjsi83%2FY%3D)
+![PWM 波形示意图：周期约 2ms 的方波，高电平宽度即信号量](/images/02-pwm-waveform.svg)
 
 航模常用的 PWM 信号只使用了 PWM 的一部分功能：**只用高电平宽度承载信息，周期固定，忽略占空比参数**。
 
@@ -79,7 +79,7 @@ PWM **每条物理连线只传 1 路信号**——需要几个通道就要几组
 
 PPM（Pulse Position Modulation，脉冲位置调制，又称脉位调制）。航模 PWM 信号的高电平在整个时间轴上占比很小，绝大部分时间是空白；PPM 简单地把**多个通道的数值一个接一个合并进一根线，用两个相邻上升沿（高电平脉冲）之间的宽度表示一个通道的值**。
 
-![PPM 帧波形与解码：一帧内 t1~t6 为 6 个通道脉宽，尾部 Synchro Blank Time 为同步空白](https://p11-doubao-search-sign.byteimg.com/isp-i18n-media/image/3afc3e3e3ed81ff00200454dd9af2e6c~tplv-be4g95zd3a-896x896.jpeg?lk3s=0ed4045e&x-expires=1803861710&x-signature=Sn52pwvptcUfpT%2BPs3rdzQZsrmE%3D)
+![PPM 帧波形与解码：一帧内 t1~t6 为 6 个通道脉宽，尾部 Synchro Blank Time 为同步空白](/images/03-ppm-frame.svg)
 
 ### 2.2 帧结构
 
@@ -196,7 +196,7 @@ SBUS 一帧固定 **25 字节**：
 
 SBUS 采用负逻辑，**无论接收还是发送都必须硬件取反**（注意：要硬件取反，不是软件取反）。经典三极管取反电路：SBUS 信号经 1 kΩ 基极电阻驱动 NPN 三极管（Q1），集电极 10 kΩ 上拉至 3.3 V 后接 MCU 的 RXD。
 
-![SBUS 硬件取反电路：RC_SBUS 经 1K 接三极管基极，集电极 10K 上拉 VCC3V3 后输出 RXD](https://p3-doubao-search-sign.byteimg.com/isp-i18n-media/image/b1e18980d63bf31fd78b552ce758ba68~tplv-be4g95zd3a-896x896.jpeg?lk3s=0ed4045e&x-expires=1803861714&x-signature=beYlkehgfx96y%2B3diBnVhHjzARg%3D)
+![SBUS 硬件取反电路：RC_SBUS 经 1K 接三极管基极，集电极 10K 上拉 VCC3V3 后输出 RXD](/images/04-sbus-inverter.svg)
 
 多数支持 SBUS 的飞控已板载反相器，接收机直接接飞控即可；**STM32F0 系列芯片内置反相电路，外围不用再加**。
 
@@ -389,7 +389,7 @@ extern "C" {
 
 用 Saleae Logic 接 PC13 抓取波形：单个高电平脉冲宽度 0.500 ms、周期 1.5 ms 处占空比 66.67%、频率约 666.67 Hz，时序准确，说明动态修改 ARR 的方式输出 PPM 可行。
 
-![Saleae Logic 抓取的 PPM 输出波形](https://p11-doubao-search-sign.byteimg.com/isp-i18n-media/image/7f4e51b55b7778b762affb809cbf33f2~tplv-be4g95zd3a-896x896.jpeg?lk3s=0ed4045e&x-expires=1803861717&x-signature=tyD2WQOj3Zx9z4M4LqZBk8g%2FnvA%3D)
+![Saleae Logic 抓取的 PPM 输出波形](/images/05-ppm-logic-analyzer.svg)
 
 ---
 

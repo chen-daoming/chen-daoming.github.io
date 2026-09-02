@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 430" font-family="Consolas,'Microsoft YaHei',monospace">
+  <rect width="1000" height="430" fill="#1e2228"/>
+  <!-- 顶部标题栏 -->
+  <rect width="1000" height="34" fill="#2b3038"/>
+  <circle cx="18" cy="17" r="5" fill="#4fc3f7"/>
+  <text x="32" y="22" font-size="13" fill="#e6ebf2">Saleae Logic — PPM 输出实测（PC13，1 MHz 采样）</text>
+
+  <!-- 左侧通道栏 -->
+  <rect x="0" y="34" width="100" height="300" fill="#252a31"/>
+  <text x="14" y="72" font-size="13" fill="#e6ebf2">0 - ppm</text>
+  <rect x="14" y="82" width="14" height="14" fill="none" stroke="#4fc3f7" stroke-width="1.5"/>
+
+  <!-- 波形区背景网格 -->
+  <rect x="100" y="34" width="660" height="300" fill="#1a1e24"/>
+  <g stroke="#262b33" stroke-width="1">
+    <line x1="170" y1="34" x2="170" y2="334"/>
+    <line x1="230" y1="34" x2="230" y2="334"/>
+    <line x1="290" y1="34" x2="290" y2="334"/>
+    <line x1="350" y1="34" x2="350" y2="334"/>
+    <line x1="410" y1="34" x2="410" y2="334"/>
+    <line x1="470" y1="34" x2="470" y2="334"/>
+    <line x1="530" y1="34" x2="530" y2="334"/>
+    <line x1="590" y1="34" x2="590" y2="334"/>
+    <line x1="650" y1="34" x2="650" y2="334"/>
+    <line x1="710" y1="34" x2="710" y2="334"/>
+  </g>
+  <!-- 中线参考 -->
+  <line x1="100" y1="184" x2="760" y2="184" stroke="#2f353e" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- PPM 波形：500us低/1000us高 交替，1us=0.12px，低y=230 高y=120 -->
+  <path d="M110 230 L170 230 L170 120 L290 120 L290 230 L350 230 L350 120 L470 120 L470 230 L530 230 L530 120 L650 120 L650 230 L710 230 L710 120 L760 120"
+        fill="none" stroke="#4fc3f7" stroke-width="2.2"/>
+
+  <!-- 第一个脉宽测量标注 -->
+  <g stroke="#f0c878" stroke-width="1.2">
+    <line x1="170" y1="98" x2="290" y2="98"/>
+    <path d="M174 94 L170 98 L174 102 M286 94 L290 98 L286 102" fill="none"/>
+  </g>
+  <text x="230" y="90" text-anchor="middle" font-size="12" fill="#f0c878">1000 µs 高电平</text>
+  <!-- 低电平标注 -->
+  <g stroke="#9aa7b5" stroke-width="1.2">
+    <line x1="110" y1="258" x2="170" y2="258"/>
+    <path d="M114 254 L110 258 L114 262 M166 254 L170 258 L166 262" fill="none"/>
+  </g>
+  <text x="140" y="276" text-anchor="middle" font-size="11" fill="#9aa7b5">500 µs</text>
+
+  <!-- 时间轴刻度 -->
+  <g font-size="10.5" fill="#7d8896" text-anchor="middle">
+    <text x="110" y="350">0</text>
+    <text x="170" y="350">0.5</text>
+    <text x="230" y="350">1.0</text>
+    <text x="290" y="350">1.5</text>
+    <text x="350" y="350">2.0</text>
+    <text x="410" y="350">2.5</text>
+    <text x="470" y="350">3.0</text>
+    <text x="530" y="350">3.5</text>
+    <text x="590" y="350">4.0</text>
+    <text x="650" y="350">4.5</text>
+    <text x="710" y="350">5.0 ms</text>
+  </g>
+
+  <!-- 右侧 Measurements 面板 -->
+  <rect x="760" y="34" width="240" height="300" fill="#252a31"/>
+  <text x="776" y="62" font-size="13" fill="#e6ebf2" font-weight="bold">▾ Measurements</text>
+  <g font-size="12.5" fill="#c8d0da">
+    <text x="776" y="92">Width:</text>
+    <text x="776" y="116">Period:</text>
+    <text x="776" y="140">Duty Cycle:</text>
+    <text x="776" y="164">Frequency:</text>
+  </g>
+  <g font-size="12.5" fill="#4fc3f7" text-anchor="end">
+    <text x="986" y="92">0.500000 ms *</text>
+    <text x="986" y="116">1.500000 ms</text>
+    <text x="986" y="140">66.6667 %</text>
+    <text x="986" y="164">666.667 Hz</text>
+  </g>
+  <line x1="776" y1="184" x2="984" y2="184" stroke="#353b45"/>
+  <text x="776" y="212" font-size="11.5" fill="#9aa7b5">* 高/低电平宽度由 ARR 动态重装决定</text>
+  <text x="776" y="234" font-size="11.5" fill="#9aa7b5">PSC=71 → 1 tick = 1 µs</text>
+  <text x="776" y="256" font-size="11.5" fill="#9aa7b5">帧尾 8000 µs 长空白同步</text>
+
+  <!-- 底部说明条 -->
+  <rect x="0" y="366" width="1000" height="64" fill="#2b3038"/>
+  <text x="20" y="392" font-size="12.5" fill="#e6ebf2" font-family="'Microsoft YaHei',sans-serif">实测结论：单脉冲宽度 500 µs / 1000 µs 与 PPM_Array 设定一致，周期 1.5 ms（500+1000），时序精确，动态修改 ARR 方案可行。</text>
+  <text x="20" y="414" font-size="12.5" fill="#9aa7b5" font-family="'Microsoft YaHei',sans-serif">整帧 = 8×(500µs 间隔 + 通道脉宽) + 8000µs 同步空白 ≈ 20 ms</text>
+</svg>

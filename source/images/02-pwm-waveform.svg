@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="920" height="460" fill="#fbfcfd"/>
+  <text x="460" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1f2d3d">航模 PWM 信号：周期固定 20 ms（50 Hz），高电平宽度 1000~2000 µs 承载控制量</text>
+
+  <!-- 时间轴参数：x0=110, 1ms=36px, 20ms=720px -->
+  <!-- 网格刻度 -->
+  <g stroke="#e6ebf1" stroke-width="1">
+    <line x1="110" y1="70" x2="110" y2="400"/>
+    <line x1="146" y1="70" x2="146" y2="400"/>
+    <line x1="182" y1="70" x2="182" y2="400"/>
+    <line x1="290" y1="70" x2="290" y2="400"/>
+    <line x1="470" y1="70" x2="470" y2="400"/>
+    <line x1="650" y1="70" x2="650" y2="400"/>
+    <line x1="830" y1="70" x2="830" y2="400"/>
+  </g>
+  <g font-size="11" fill="#8a97a5" font-family="Consolas,monospace" text-anchor="middle">
+    <text x="110" y="418">0</text>
+    <text x="146" y="418">1</text>
+    <text x="182" y="418">2</text>
+    <text x="290" y="418">5</text>
+    <text x="470" y="418">10</text>
+    <text x="650" y="418">15</text>
+    <text x="830" y="418">20 ms</text>
+  </g>
+
+  <!-- ===== 波形1：1000us ===== -->
+  <text x="30" y="100" font-size="13" font-weight="700" fill="#2980b9">1000 µs</text>
+  <text x="30" y="118" font-size="10.5" fill="#5a6b7b">一端极限</text>
+  <path d="M 110 130 L 110 80 L 146 80 L 146 130 L 830 130 M 830 80 L 866 80 L 866 130" fill="none" stroke="#2980b9" stroke-width="2.2"/>
+  <!-- 高电平宽度标注 -->
+  <line x1="110" y1="62" x2="146" y2="62" stroke="#d35400" stroke-width="1.2"/>
+  <path d="M110 58 L114 62 L110 66 M146 58 L142 62 L146 66" stroke="#d35400" stroke-width="1.2" fill="none"/>
+  <text x="128" y="56" text-anchor="middle" font-size="10.5" fill="#d35400" font-family="Consolas,monospace">1.0ms</text>
+
+  <!-- ===== 波形2：1500us ===== -->
+  <text x="30" y="210" font-size="13" font-weight="700" fill="#27ae60">1500 µs</text>
+  <text x="30" y="228" font-size="10.5" fill="#5a6b7b">舵机中位</text>
+  <path d="M 110 240 L 110 190 L 164 190 L 164 240 L 830 240 M 830 190 L 884 190 L 884 240" fill="none" stroke="#27ae60" stroke-width="2.2"/>
+  <line x1="110" y1="172" x2="164" y2="172" stroke="#d35400" stroke-width="1.2"/>
+  <path d="M110 168 L114 172 L110 176 M164 168 L160 172 L164 176" stroke="#d35400" stroke-width="1.2" fill="none"/>
+  <text x="137" y="166" text-anchor="middle" font-size="10.5" fill="#d35400" font-family="Consolas,monospace">1.5ms</text>
+
+  <!-- ===== 波形3：2000us ===== -->
+  <text x="30" y="320" font-size="13" font-weight="700" fill="#c0392b">2000 µs</text>
+  <text x="30" y="338" font-size="10.5" fill="#5a6b7b">另一端/满油</text>
+  <path d="M 110 350 L 110 300 L 182 300 L 182 350 L 830 350 M 830 300 L 902 300 L 902 350" fill="none" stroke="#c0392b" stroke-width="2.2"/>
+  <line x1="110" y1="282" x2="182" y2="282" stroke="#d35400" stroke-width="1.2"/>
+  <path d="M110 278 L114 282 L110 286 M182 278 L178 282 L182 286" stroke="#d35400" stroke-width="1.2" fill="none"/>
+  <text x="146" y="276" text-anchor="middle" font-size="10.5" fill="#d35400" font-family="Consolas,monospace">2.0ms</text>
+
+  <!-- 周期标注 -->
+  <g stroke="#1f2d3d" stroke-width="1">
+    <line x1="110" y1="385" x2="830" y2="385"/>
+    <path d="M114 381 L110 385 L114 389 M826 381 L830 385 L826 389" fill="none"/>
+  </g>
+  <text x="470" y="402" text-anchor="middle" font-size="12" fill="#1f2d3d" font-family="Consolas,monospace">周期 T = 20 ms（刷新频率 50 Hz）</text>
+
+  <!-- 电平标注 -->
+  <text x="96" y="84" text-anchor="end" font-size="10.5" fill="#8a97a5" font-family="Consolas,monospace">高</text>
+  <text x="96" y="134" text-anchor="end" font-size="10.5" fill="#8a97a5" font-family="Consolas,monospace">低</text>
+</svg>
