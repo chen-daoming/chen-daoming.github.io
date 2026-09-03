@@ -54,7 +54,7 @@ title: LC 谐振与滤波器计算器
   .tab.is-active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
   .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  .field-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .field-grid { display: grid;  repeat(auto-fit, minmax(240px, 1fr); gap: 14px; }
   .field { display: flex; flex-direction: column; gap: 6px; }
   .field label { font-size: 13px; color: var(--text-dim); font-weight: 500; }
   .field label .hint { color: var(--text-faint); font-size: 11px; font-weight: 400; }
@@ -69,7 +69,7 @@ title: LC 谐振与滤波器计算器
   .readout .cap { font-family: var(--mono); font-size: 14px; color: var(--text-dim); }
   .err-msg { color: var(--err); font-family: var(--mono); font-size: 13px; margin-top: 10px; min-height: 18px; }
 
-  .detail-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 14px; }
+  .detail-grid { display: grid;  repeat(auto-fit, minmax(240px, 1fr); gap: 12px; margin-top: 14px; }
   .detail-item { background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; }
   .detail-item .k { font-size: 11px; color: var(--text-faint); letter-spacing: .04em; margin-bottom: 4px; }
   .detail-item .v { font-family: var(--mono); font-size: 15px; color: var(--text); font-weight: 600; }
