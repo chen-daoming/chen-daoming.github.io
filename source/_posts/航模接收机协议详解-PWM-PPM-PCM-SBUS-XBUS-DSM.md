@@ -1,6 +1,6 @@
 ---
 title: 一文打尽 PWM、PPM、PCM、SBUS、XBUS、DSM 接收机协议（附 STM32 TIM3 实现 PPM 输出）
-date: 2026-09-02 10:00:00
+date: 2025-05-02 10:00:00
 tags:
   - 航模
   - STM32
