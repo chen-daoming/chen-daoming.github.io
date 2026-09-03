@@ -68,7 +68,7 @@ custom_css:
 # ==================== 页脚 ====================
 footer:
   content:
-    - '© 2026 chen-daoming'
+    - '© 2025 chen-daoming'
     - 'Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank">Fluid</a>'
   statistics:
     enable: true
