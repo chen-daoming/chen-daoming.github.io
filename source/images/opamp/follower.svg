@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" font-family="ui-monospace,monospace">
+<!-- 电压跟随器(缓冲器)。输出直连 −端; 无 R1/R2 -->
+<rect width="600" height="320" rx="10" fill="#1b2026"/>
+<text x="300" y="32" text-anchor="middle" font-size="17" font-weight="700" fill="#e9edf2" font-family="'Microsoft YaHei','PingFang SC',sans-serif">电压跟随器(缓冲器)</text>
+<text x="300" y="54" text-anchor="middle" font-size="11.5" fill="#6b7683">Av = 1　·　输入阻抗极高 / 输出阻抗极低</text>
+
+<!-- Vcc -->
+<line x1="210" y1="132" x2="210" y2="92" stroke="#98a4b1" stroke-width="1.8"/>
+<text x="218" y="90" font-size="11" fill="#6b7683">Vcc +5V</text>
+
+<!-- Vin → +端(210,142) -->
+<circle cx="66" cy="142" r="4.5" fill="none" stroke="#e0a34b" stroke-width="1.8"/>
+<text x="40" y="120" font-size="12" font-weight="700" fill="#e0a34b">Vin</text>
+<line x1="66" y1="142" x2="210" y2="142" stroke="#98a4b1" stroke-width="1.8"/>
+<circle cx="210" cy="142" r="3" fill="#a7e8ba"/>
+
+<!-- 运放三角 -->
+<polygon points="210,132 210,192 284,162" fill="#202b35" stroke="#8fa6b8" stroke-width="2"/>
+<text x="222" y="148" font-size="13" fill="#e0a34b">+</text>
+<text x="222" y="186" font-size="13" fill="#e0a34b">−</text>
+
+<!-- 输出 -->
+<line x1="284" y1="162" x2="360" y2="162" stroke="#98a4b1" stroke-width="1.8"/>
+<circle cx="360" cy="162" r="4.5" fill="none" stroke="#a7e8ba" stroke-width="1.8"/>
+<text x="372" y="166" font-size="12" font-weight="700" fill="#a7e8ba">Vout</text>
+
+<!-- 反馈: −端(210,182) 直连输出线 (284..360 处下方) 取 (284,162) 下方? 
+     标准: −端(210,182) → 下 (210,232) → 右 (310,232) → 上 (310,162) 接输出? 但 310 不在输出线(284..360)。
+     直接: −端(210,182) → 右 (284,182)? 输出线在 y=162, 需连。
+     取简单闭环: −端(210,182)↓(210,240)→(322,240)↑(322,162) 接到输出线 -->
+<line x1="210" y1="182" x2="210" y2="240" stroke="#98a4b1" stroke-width="1.8"/>
+<line x1="210" y1="240" x2="322" y2="240" stroke="#98a4b1" stroke-width="1.8"/>
+<line x1="322" y1="240" x2="322" y2="162" stroke="#98a4b1" stroke-width="1.8"/>
+<circle cx="322" cy="162" r="3" fill="#a7e8ba"/>
+<circle cx="322" cy="240" r="3" fill="#a7e8ba"/>
+
+<!-- 底部说明 -->
+<text x="60" y="290" font-size="13.5" fill="#a7e8ba">Vout = Vin</text>
+<text x="220" y="290" font-size="11.5" fill="#6b7683">单位增益负反馈 · 缓冲隔离 / 驱动后级</text>
+</svg>

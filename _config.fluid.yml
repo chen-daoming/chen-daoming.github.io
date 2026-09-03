@@ -20,6 +20,9 @@ navbar:
         - { key: 'base', name: '进制转换器', link: '/base-converter/' }
         - { key: 'pcb', name: 'PCB走线宽度', link: '/pcb-trace/' }
         - { key: 'dcdc', name: 'DC-DC升降压电感', link: '/dcdc-calculator/' }
+        - { key: 'resistor-color', name: '电阻色环', link: '/resistor-color/' }
+        - { key: 'opamp', name: '运放计算器', link: '/opamp/' }
+        - { key: 'lc', name: 'LC谐振/滤波', link: '/lc/' }
 
         # 以后新增工具：- { key: 'xxx', name: '工具名', link: '/xxx/' }
     - { key: 'about', link: '/about/', icon: 'icon-info-circle-fill' }

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 400" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+<!-- 电阻色环编码规则示意：4/5/6 环结构与乘法关系。画布 880x400，白底 #fbfcfd，符合工具页配色。 -->
+<rect width="880" height="400" fill="#fbfcfd"/>
+<text x="440" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">电阻色环编码规则 · 4 环 / 5 环 / 6 环</text>
+
+<!-- ============ 图例：色环→值映射条 ============ -->
+<text x="48" y="72" font-size="13" fill="#8a97a5" font-family="Consolas,monospace">颜色 → 数值</text>
+<!-- 数字色环（黑0~白9） -->
+<g font-family="Consolas,monospace" font-size="12" text-anchor="middle">
+  <rect x="48" y="80" width="46" height="26" rx="4" fill="#26262a"/><text x="71" y="97" fill="#e9edf2">0</text>
+  <rect x="100" y="80" width="46" height="26" rx="4" fill="#7a4a21"/><text x="123" y="97" fill="#fff">1</text>
+  <rect x="152" y="80" width="46" height="26" rx="4" fill="#c0392b"/><text x="175" y="97" fill="#fff">2</text>
+  <rect x="204" y="80" width="46" height="26" rx="4" fill="#d35400"/><text x="227" y="97" fill="#fff">3</text>
+  <rect x="256" y="80" width="46" height="26" rx="4" fill="#d9a85f"/><text x="279" y="97" fill="#1f2d3d">4</text>
+  <rect x="308" y="80" width="46" height="26" rx="4" fill="#2e8b57"/><text x="331" y="97" fill="#fff">5</text>
+  <rect x="360" y="80" width="46" height="26" rx="4" fill="#2f6f9f"/><text x="383" y="97" fill="#fff">6</text>
+  <rect x="412" y="80" width="46" height="26" rx="4" fill="#8e44ad"/><text x="435" y="97" fill="#fff">7</text>
+  <rect x="464" y="80" width="46" height="26" rx="4" fill="#6e7681"/><text x="487" y="97" fill="#fff">8</text>
+  <rect x="516" y="80" width="46" height="26" rx="4" fill="#dfe3e8"/><text x="539" y="97" fill="#1f2d3d">9</text>
+  <rect x="596" y="80" width="46" height="26" rx="4" fill="#d4a017"/><text x="619" y="97" fill="#1f2d3d">×0.1</text>
+  <rect x="648" y="80" width="46" height="26" rx="4" fill="#b8bec4"/><text x="671" y="97" fill="#1f2d3d">×0.01</text>
+</g>
+<text x="760" y="90" font-size="12" fill="#8a97a5">金/银仅作倍率</text>
+<text x="760" y="107" font-size="12" fill="#8a97a5">或误差环</text>
+
+<!-- 误差与温漂 -->
+<text x="48" y="140" font-size="13" fill="#8a97a5" font-family="Consolas,monospace">误差环</text>
+<g font-family="Consolas,monospace" font-size="11.5" text-anchor="middle">
+  <rect x="48" y="148" width="58" height="24" rx="4" fill="#7a4a21"/><text x="77" y="164" fill="#fff">±1%</text>
+  <rect x="112" y="148" width="58" height="24" rx="4" fill="#c0392b"/><text x="141" y="164" fill="#fff">±2%</text>
+  <rect x="176" y="148" width="58" height="24" rx="4" fill="#2e8b57"/><text x="205" y="164" fill="#fff">±0.5%</text>
+  <rect x="240" y="148" width="58" height="24" rx="4" fill="#2f6f9f"/><text x="269" y="164" fill="#fff">±0.25%</text>
+  <rect x="304" y="148" width="58" height="24" rx="4" fill="#8e44ad"/><text x="333" y="164" fill="#fff">±0.1%</text>
+  <rect x="368" y="148" width="58" height="24" rx="4" fill="#6e7681"/><text x="397" y="164" fill="#fff">±0.05%</text>
+  <rect x="432" y="148" width="58" height="24" rx="4" fill="#d4a017"/><text x="461" y="164" fill="#fff">±5%</text>
+  <rect x="496" y="148" width="58" height="24" rx="4" fill="#b8bec4"/><text x="525" y="164" fill="#fff">±10%</text>
+</g>
+<text x="596" y="160" font-size="12" fill="#8a97a5">误差环禁止黑/白/金</text>
+<text x="596" y="176" font-size="12" fill="#8a97a5">(6 环时末环为温漂)</text>
+
+<!-- ============ 三根电阻示意 ============ -->
+<!-- 通用：电阻条画在 y=216~252；每个上方有小标题 -->
+<g id="bars">
+  <!-- 4 环：棕 黑 红 金 = 10×100 = 1kΩ ±5% -->
+  <rect x="70" y="210" width="230" height="42" rx="21" fill="#efe5d8"/>
+  <rect x="70" y="210" width="230" height="42" rx="21" fill="none" stroke="#d8cbb8" stroke-width="1"/>
+  <rect x="82" y="212" width="30" height="38" rx="6" fill="#7a4a21"/>
+  <rect x="118" y="212" width="30" height="38" rx="6" fill="#26262a"/>
+  <rect x="154" y="212" width="30" height="38" rx="6" fill="#c0392b"/>
+  <rect x="236" y="212" width="30" height="38" rx="6" fill="#d4a017"/>
+  <text x="70" y="202" font-size="12.5" fill="#1f2d3d" font-family="Consolas,monospace">4 环</text>
+  <text x="316" y="228" font-size="14" fill="#1f2d3d" font-family="Consolas,monospace">棕 黑 红 金 = 10 × 10² = 1 kΩ ±5%</text>
+  <text x="316" y="248" font-size="12" fill="#8a97a5">两位有效数字 · 倍率 · 误差</text>
+
+  <!-- 5 环：棕 黑 黑 棕 棕 = 100×10 = 1kΩ ±1% -->
+  <rect x="70" y="266" width="230" height="42" rx="21" fill="#efe5d8"/>
+  <rect x="70" y="266" width="230" height="42" rx="21" fill="none" stroke="#d8cbb8" stroke-width="1"/>
+  <rect x="82" y="268" width="26" height="38" rx="6" fill="#7a4a21"/>
+  <rect x="114" y="268" width="26" height="38" rx="6" fill="#26262a"/>
+  <rect x="146" y="268" width="26" height="38" rx="6" fill="#26262a"/>
+  <rect x="178" y="268" width="26" height="38" rx="6" fill="#7a4a21"/>
+  <rect x="250" y="268" width="26" height="38" rx="6" fill="#7a4a21"/>
+  <text x="70" y="258" font-size="12.5" fill="#1f2d3d" font-family="Consolas,monospace">5 环</text>
+  <text x="316" y="284" font-size="14" fill="#1f2d3d" font-family="Consolas,monospace">棕 黑 黑 棕 棕 = 100 × 10¹ = 1 kΩ ±1%</text>
+  <text x="316" y="304" font-size="12" fill="#8a97a5">三位有效数字 · 倍率 · 误差(精密电阻)</text>
+
+  <!-- 6 环：棕 黑 黑 棕 棕 棕 = 100×10 = 1kΩ ±1% 100ppm/℃ -->
+  <rect x="70" y="322" width="230" height="42" rx="21" fill="#efe5d8"/>
+  <rect x="70" y="322" width="230" height="42" rx="21" fill="none" stroke="#d8cbb8" stroke-width="1"/>
+  <rect x="82" y="324" width="22" height="38" rx="6" fill="#7a4a21"/>
+  <rect x="110" y="324" width="22" height="38" rx="6" fill="#26262a"/>
+  <rect x="138" y="324" width="22" height="38" rx="6" fill="#26262a"/>
+  <rect x="166" y="324" width="22" height="38" rx="6" fill="#7a4a21"/>
+  <rect x="194" y="324" width="22" height="38" rx="6" fill="#7a4a21"/>
+  <rect x="254" y="324" width="22" height="38" rx="6" fill="#7a4a21"/>
+  <text x="70" y="314" font-size="12.5" fill="#1f2d3d" font-family="Consolas,monospace">6 环</text>
+  <text x="316" y="340" font-size="14" fill="#1f2d3d" font-family="Consolas,monospace">棕 黑 黑 棕 棕 棕 = 100×10¹ = 1 kΩ ±1% 100ppm/℃</text>
+  <text x="316" y="360" font-size="12" fill="#8a97a5">末环温漂：棕100 红50 橙15 黄25 绿20 蓝10 紫5 灰1 (ppm/℃)</text>
+</g>
+
+<!-- ============ 底部说明条 ============ -->
+<rect x="48" y="372" width="784" height="20" rx="4" fill="none"/>
+</svg>

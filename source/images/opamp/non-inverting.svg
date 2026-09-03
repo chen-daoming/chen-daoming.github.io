@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" font-family="ui-monospace,monospace">
+<!-- 同相放大器(深色,对齐工具页主题)。+端(210,142)接 Vin；−端(210,182)；输出 y=162 -->
+<rect width="600" height="340" rx="10" fill="#1b2026"/>
+<text x="300" y="34" text-anchor="middle" font-size="17" font-weight="700" fill="#e9edf2" font-family="'Microsoft YaHei','PingFang SC',sans-serif">同相放大器</text>
+<text x="300" y="56" text-anchor="middle" font-size="11.5" fill="#6b7683">增益 Av = 1 + R2 / R1　·　输入阻抗极高</text>
+
+<!-- Vcc 供电 -->
+<line x1="210" y1="132" x2="210" y2="92" stroke="#98a4b1" stroke-width="1.8"/>
+<text x="218" y="90" font-size="11" fill="#6b7683">Vcc +5V</text>
+
+<!-- Vin → +端(210,142) -->
+<circle cx="66" cy="142" r="4.5" fill="none" stroke="#e0a34b" stroke-width="1.8"/>
+<text x="40" y="120" font-size="12" font-weight="700" fill="#e0a34b">Vin</text>
+<line x1="66" y1="142" x2="210" y2="142" stroke="#98a4b1" stroke-width="1.8"/>
+<circle cx="210" cy="142" r="3" fill="#a7e8ba"/>
+
+<!-- 运放三角 -->
+<polygon points="210,132 210,192 284,162" fill="#202b35" stroke="#8fa6b8" stroke-width="2"/>
+<text x="222" y="148" font-size="13" fill="#e0a34b">+</text>
+<text x="222" y="186" font-size="13" fill="#e0a34b">−</text>
+
+<!-- 输出 -->
+<line x1="284" y1="162" x2="360" y2="162" stroke="#98a4b1" stroke-width="1.8"/>
+<circle cx="360" cy="162" r="4.5" fill="none" stroke="#a7e8ba" stroke-width="1.8"/>
+<text x="372" y="166" font-size="12" font-weight="700" fill="#a7e8ba">Vout</text>
+
+<!-- 反馈回路: 输出(360,162)↓(360,252)←(300,252); R2竖(300,214..252); 分压中点(300,182) -->
+<line x1="360" y1="162" x2="360" y2="252" stroke="#98a4b1" stroke-width="1.8"/>
+<line x1="360" y1="252" x2="300" y2="252" stroke="#98a4b1" stroke-width="1.8"/>
+<circle cx="360" cy="252" r="3" fill="#a7e8ba"/>
+
+<!-- −端(210,182) 向右到分压中点(300,182) -->
+<line x1="210" y1="182" x2="300" y2="182" stroke="#98a4b1" stroke-width="1.8"/>
+<circle cx="300" cy="182" r="3" fill="#a7e8ba"/>
+
+<!-- R2: 竖 (300,182→214..252), 上端接中点, 下端接反馈 300,252 -->
+<line x1="300" y1="182" x2="300" y2="214" stroke="#98a4b1" stroke-width="1.8"/>
+<rect x="293" y="214" width="14" height="32" rx="2" fill="rgba(224,163,75,0.08)" stroke="#e9edf2" stroke-width="1.6"/>
+<text x="315" y="228" font-size="12" font-weight="600" fill="#e9edf2">R2</text>
+<line x1="300" y1="246" x2="300" y2="252" stroke="#98a4b1" stroke-width="1.8"/>
+
+<!-- R1: 从中点(300,182) 向下经 R1 到 GND -->
+<line x1="300" y1="182" x2="300" y2="214" stroke="#98a4b1" stroke-width="0" opacity="0"/>
+<!-- R1 放到另一侧 x=246? 中点(300,182)下方已是 R2 下段重叠。R1 改放 −端引线(210..300 之 y=182)下方 x=246 -->
+<line x1="246" y1="182" x2="246" y2="214" stroke="#98a4b1" stroke-width="1.8"/>
+<rect x="239" y="214" width="14" height="32" rx="2" fill="rgba(224,163,75,0.08)" stroke="#e9edf2" stroke-width="1.6"/>
+<text x="218" y="228" font-size="12" font-weight="600" fill="#e9edf2">R1</text>
+<line x1="246" y1="246" x2="246" y2="252" stroke="#98a4b1" stroke-width="1.8"/>
+<line x1="246" y1="252" x2="300" y2="252" stroke="#98a4b1" stroke-width="1.8"/>
+<circle cx="246" cy="182" r="3" fill="#a7e8ba"/>
+<!-- 公共地线: 300,252 已接 360 反馈; 246 下接地 -->
+<line x1="246" y1="252" x2="246" y2="272" stroke="#98a4b1" stroke-width="1.8"/>
+<line x1="232" y1="272" x2="260" y2="272" stroke="#98a4b1" stroke-width="2"/>
+<line x1="236" y1="279" x2="256" y2="279" stroke="#98a4b1" stroke-width="2"/>
+<line x1="240" y1="286" x2="252" y2="286" stroke="#98a4b1" stroke-width="2"/>
+<text x="268" y="275" font-size="10.5" fill="#6b7683">GND</text>
+
+<!-- 底部公式 -->
+<text x="60" y="308" font-size="13.5" fill="#a7e8ba">Vout = (1 + R2 / R1) × Vin</text>
+<text x="360" y="308" font-size="11.5" fill="#6b7683">负反馈使 V− 跟随 Vin，增益 ≥ 1</text>
+</svg>

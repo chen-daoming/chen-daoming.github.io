@@ -1,0 +1,307 @@
+---
+title: LC 谐振与滤波器计算器
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LC 谐振与滤波器计算器</title>
+<style>
+  :root {
+    --bg: #121518;
+    --panel: #1b2026;
+    --panel-2: #21272e;
+    --border: #2b333c;
+    --border-strong: #3a444f;
+    --text: #e9edf2;
+    --text-dim: #98a4b1;
+    --text-faint: #6b7683;
+    --accent: #e0a34b;
+    --accent-soft: rgba(224, 163, 75, 0.14);
+    --accent-ink: #211b12;
+    --display-bg: #0c120e;
+    --display: #a7e8ba;
+    --display-dim: #4c7a5e;
+    --ok: #58c67c;
+    --ok-soft: rgba(88, 198, 124, 0.15);
+    --err: #d9685f;
+    --err-soft: rgba(217, 104, 95, 0.14);
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Consolas, "Courier New", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: var(--sans); line-height: 1.55;
+    -webkit-font-smoothing: antialiased; padding: 28px 16px 40px;
+  }
+  .tool { max-width: 960px; margin: 0 auto; }
+
+  .head { margin-bottom: 22px; }
+  .head-kicker { font-family: var(--mono); font-size: 11px; letter-spacing: .22em; color: var(--accent); text-transform: uppercase; margin: 0 0 8px; }
+  .head h1 { margin: 0 0 6px; font-size: 26px; font-weight: 700; }
+  .head-sub { margin: 0; color: var(--text-dim); font-size: 14px; max-width: 70ch; }
+
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 16px; }
+  .panel-title { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text-dim); letter-spacing: .06em; margin: 0 0 14px; }
+  .panel-title::before { content: ""; width: 6px; height: 14px; background: var(--accent); border-radius: 1px; flex: none; }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tab { appearance: none; border: 1px solid var(--border-strong); background: var(--panel-2); color: var(--text-dim); font-family: var(--sans); font-size: 14px; padding: 9px 16px; min-height: 40px; border-radius: 6px; cursor: pointer; transition: background .15s ease, color .15s ease, border-color .15s ease; }
+  .tab:hover { color: var(--text); border-color: var(--accent); }
+  .tab.is-active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .field-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 13px; color: var(--text-dim); font-weight: 500; }
+  .field label .hint { color: var(--text-faint); font-size: 11px; font-weight: 400; }
+  .field-input { display: flex; }
+  .field-input input { flex: 1; min-width: 0; background: #0f1317; border: 1px solid var(--border-strong); border-right: none; border-radius: 6px 0 0 6px; color: var(--display); font-family: var(--mono); font-size: 15px; padding: 10px 12px; min-height: 42px; }
+  .field-input input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .field-input .unit-tag { display: flex; align-items: center; background: var(--panel-2); border: 1px solid var(--border-strong); border-left: none; border-radius: 0 6px 6px 0; padding: 0 10px; font-family: var(--mono); font-size: 12px; color: var(--text-dim); }
+
+  .readout { background: var(--display-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; }
+  .readout .big { font-family: var(--mono); font-size: 28px; font-weight: 700; color: var(--display); }
+  .readout .big .unit { font-size: 15px; color: var(--display-dim); font-weight: 600; margin-left: 3px; }
+  .readout .cap { font-family: var(--mono); font-size: 14px; color: var(--text-dim); }
+  .err-msg { color: var(--err); font-family: var(--mono); font-size: 13px; margin-top: 10px; min-height: 18px; }
+
+  .detail-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 14px; }
+  .detail-item { background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; }
+  .detail-item .k { font-size: 11px; color: var(--text-faint); letter-spacing: .04em; margin-bottom: 4px; }
+  .detail-item .v { font-family: var(--mono); font-size: 15px; color: var(--text); font-weight: 600; }
+  .detail-item .v small { color: var(--text-dim); font-weight: 400; }
+  .detail-item.hl { border-color: var(--accent); background: var(--accent-soft); }
+  .detail-item.hl .k { color: var(--accent); }
+
+  .img-box { margin: 4px 0 2px; }
+  .img-box img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid var(--border); }
+  .fig-cap { font-size: 12px; color: var(--text-faint); text-align: center; margin-top: 8px; }
+
+  .formula-main { background: var(--display-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; font-family: var(--mono); font-size: 15px; color: var(--display); text-align: center; margin: 6px 0 4px; }
+  .formula-main .var { color: var(--accent); }
+  .derive-list { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+  .derive-list li { display: flex; gap: 10px; align-items: baseline; font-size: 13.5px; color: var(--text-dim); }
+  .derive-list .step-num { font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 600; flex: none; width: 26px; text-align: right; }
+  .derive-list .step-formula { font-family: var(--mono); color: var(--text); font-size: 13px; }
+
+  .foot { font-size: 12.5px; color: var(--text-faint); border-top: 1px dashed var(--border); padding-top: 12px; margin-top: 4px; line-height: 1.8; }
+  .foot code { font-family: var(--mono); background: var(--panel-2); border-radius: 4px; padding: 1px 5px; font-size: 11.5px; color: var(--text-dim); }
+
+  @media (max-width: 820px) { .field-grid { grid-template-columns: repeat(2, 1fr); } .detail-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { body { padding: 20px 12px 32px; } .head h1 { font-size: 22px; } .field-grid { grid-template-columns: 1fr; } .detail-grid { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<main class="tool">
+  <header class="head">
+    <div class="head-kicker">Analog Design Utility · Resonance &amp; Filter</div>
+    <h1>LC 谐振与滤波器计算器</h1>
+    <p class="head-sub">计算 RLC 串联/并联谐振频率、Q 值与带宽；也可把 LC 当作一阶/二阶滤波器，求截止频率。支持“给定频率反求 L/C”与标准值推荐。</p>
+  </header>
+
+  <section class="panel" aria-label="电路类型">
+    <h2 class="panel-title">电路类型</h2>
+    <div class="tabs" role="tablist" id="typeTabs">
+      <button type="button" class="tab is-active" id="type-rlc-s" role="tab" aria-selected="true">串联谐振 RLC</button>
+      <button type="button" class="tab" id="type-rlc-p" role="tab" aria-selected="false">并联谐振 RLC</button>
+      <button type="button" class="tab" id="type-lc" role="tab" aria-selected="false">LC 滤波器</button>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="参数输入">
+    <h2 class="panel-title">参数输入</h2>
+    <div class="field-grid">
+      <div class="field"><label>电感 L</label>
+        <div class="field-input"><input type="text" id="inL" value="100u" inputmode="decimal" spellcheck="false"><span class="unit-tag">H</span></div>
+      </div>
+      <div class="field"><label>电容 C</label>
+        <div class="field-input"><input type="text" id="inC" value="100p" inputmode="decimal" spellcheck="false"><span class="unit-tag">F</span></div>
+      </div>
+      <div class="field" id="fRes"><label>电阻 R <span class="hint" id="resHint">(串联等效)</span></label>
+        <div class="field-input"><input type="text" id="inR" value="10" inputmode="decimal" spellcheck="false"><span class="unit-tag">Ω</span></div>
+      </div>
+      <div class="field" id="fFreq"><label>目标频率 f <span class="hint">(反求 L/C 用)</span></label>
+        <div class="field-input"><input type="text" id="inF" value="1M" inputmode="decimal" spellcheck="false"><span class="unit-tag">Hz</span></div>
+      </div>
+    </div>
+    <div class="err-msg" id="inErr"></div>
+  </section>
+
+  <section class="panel" aria-label="计算结果">
+    <h2 class="panel-title">计算结果</h2>
+    <div class="readout" id="readout"></div>
+    <div class="err-msg" id="calcErr"></div>
+    <div class="detail-grid">
+      <div class="detail-item"><div class="k">谐振频率 f0</div><div class="v" id="dF0">—</div></div>
+      <div class="detail-item"><div class="k">Q 值</div><div class="v" id="dQ">—</div></div>
+      <div class="detail-item"><div class="k">带宽 BW</div><div class="v" id="dBW">—</div></div>
+      <div class="detail-item hl"><div class="k">特性阻抗 Z0 / 阻抗</div><div class="v" id="dZ">—</div></div>
+    </div>
+    <div id="recRef"></div>
+  </section>
+
+  <section class="panel" aria-label="电路与波形">
+    <h2 class="panel-title">电路与谐振说明</h2>
+    <div class="img-box">
+      <img id="circImg" src="/images/lc/rlc-series.svg" alt="串联谐振 RLC 电路图">
+      <div class="fig-cap" id="circCap">串联 RLC：谐振时阻抗最小、电流最大</div>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="公式">
+    <h2 class="panel-title">公式</h2>
+    <div class="formula-main" id="formulaMain"></div>
+    <ol class="derive-list" id="deriveList"></ol>
+  </section>
+
+  <footer class="foot">
+    谐振 f0 = 1/(2π√(LC))；串联 Q = (1/R)·√(L/C)，并联 Q = R·√(C/L)；带宽 BW = f0/Q。RLC 谐振适用于选频/陷波，LC 二阶滤波的 -3dB 截止点同样由 f0 决定(无阻尼时)。所有计算在浏览器本地完成，数据不上传。
+  </footer>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { type: "rlc-s" };
+
+  var TYPE = {
+    "rlc-s": { name: "串联谐振 RLC", resHint: "(线圈等效串联电阻 ESR)", img: "rlc-series.svg", cap: "串联 RLC：谐振时感抗=容抗，阻抗最小(Z=R)，电流最大" },
+    "rlc-p": { name: "并联谐振 RLC", resHint: "(线圈等效并联电阻/损耗)", img: "rlc-parallel.svg", cap: "并联 RLC：谐振时阻抗最大，回路电流最小、环路电流最大" },
+    "lc": { name: "LC 滤波(二阶)", resHint: "(可选阻尼电阻)", img: "lc-filter.svg", cap: "LC 低通滤波：转折频率 f0 处 -3dB，二阶滚降 -40dB/十倍频" }
+  };
+
+  function parseEng(txt) {
+    if (txt === null || txt === undefined) return NaN;
+    var s = String(txt).replace(/[\sΩH]/g, "").replace(/欧|亨/g, "");
+    s = s.toLowerCase().replace(/[µμ]/g, "u");
+    var m = s.match(/^([0-9]*\.?[0-9]+)\s*([a-z]?)$/);
+    if (!m) return NaN;
+    var v = parseFloat(m[1]);
+    var t = { "": 1, k: 1e3, m: 1e6, g: 1e9, u: 1e-6, n: 1e-9, p: 1e-12, f: 1e-15 };
+    return (m[2] in t) ? v * t[m[2]] : NaN;
+  }
+  function sigFigs(num, f) {
+    if (!isFinite(num)) return "—";
+    if (num === 0) return "0";
+    var d = Math.floor(Math.log10(Math.abs(num))) + 1;
+    return Number(num.toFixed(Math.max(0, f - d))).toString();
+  }
+  function fmtEng(v, unit) {
+    var a = Math.abs(v);
+    if (a >= 1e9) return sigFigs(v / 1e9, 4) + " G" + unit;
+    if (a >= 1e6) return sigFigs(v / 1e6, 4) + " M" + unit;
+    if (a >= 1e3) return sigFigs(v / 1e3, 4) + " k" + unit;
+    if (a >= 1) return sigFigs(v, 5) + " " + unit;
+    if (a >= 1e-3) return sigFigs(v * 1e3, 4) + " m" + unit;
+    if (a >= 1e-6) return sigFigs(v * 1e6, 4) + " µ" + unit;
+    if (a >= 1e-9) return sigFigs(v * 1e9, 4) + " n" + unit;
+    if (a >= 1e-12) return sigFigs(v * 1e12, 4) + " p" + unit;
+    return v.toExponential(3) + " " + unit;
+  }
+  function fmtHz(v) {
+    var a = Math.abs(v);
+    if (a >= 1e9) return sigFigs(v / 1e9, 5) + " GHz";
+    if (a >= 1e6) return sigFigs(v / 1e6, 5) + " MHz";
+    if (a >= 1e3) return sigFigs(v / 1e3, 5) + " kHz";
+    return sigFigs(v, 5) + " Hz";
+  }
+
+  function compute() {
+    var L = parseEng($("inL").value);
+    var C = parseEng($("inC").value);
+    var R = parseEng($("inR").value);
+    var F = parseEng($("inF").value);
+    if (!(L > 0)) return { err: "电感 L 需大于 0。" };
+    if (!(C > 0)) return { err: "电容 C 需大于 0。" };
+    var f0 = 1 / (2 * Math.PI * Math.sqrt(L * C));
+    var res = { f0: f0 };
+    if (state.type === "lc") {
+      var Q = null;
+      if (R > 0) Q = 1 / R * Math.sqrt(L / C);
+      res.Q = Q; res.bw = (Q > 0 && Q !== Infinity) ? f0 / Q : null;
+      res.z0 = Math.sqrt(L / C);
+      return res;
+    }
+    /* rlc-s / rlc-p 需要 R */
+    if (!(R > 0)) return { err: "请输入 R 以计算 Q 与带宽(串联用 ESR，并联用等效并联电阻)。" };
+    if (state.type === "rlc-s") {
+      res.Q = (1 / R) * Math.sqrt(L / C);
+      res.z0 = Math.sqrt(L / C);
+    } else {
+      res.Q = R * Math.sqrt(C / L);
+      res.z0 = Math.sqrt(L / C);
+    }
+    res.bw = res.Q > 0 ? f0 / res.Q : null;
+    return res;
+  }
+
+  function renderDerive() {
+    var lis = [];
+    function note(html) { lis.push('<li><span class="step-num">' + String(lis.length + 1).padStart(2, "0") + '</span><span class="step-note">' + html + "</span></li>"); }
+    function formula(html) { lis.push('<li><span class="step-num">' + String(lis.length + 1).padStart(2, "0") + '</span><span class="step-formula">' + html + "</span></li>"); }
+    var fMain = "";
+    if (state.type === "rlc-s") {
+      fMain = "f<sub>0</sub> = 1/(2π√(LC))　·　Q = (1/R)·√(L/C)　·　BW = f<sub>0</sub>/Q";
+      note("串联谐振：感抗与容抗相消，电路呈纯阻性，阻抗最小为 R。");
+      formula("Z<sub>min</sub> = R　，　电流最大 I = V<sub>in</sub>/R");
+      note("Q 越高，谐振曲线越尖锐、带宽越窄，选频能力越强。");
+    } else if (state.type === "rlc-p") {
+      fMain = "f<sub>0</sub> = 1/(2π√(LC))　·　Q = R·√(C/L)　·　BW = f<sub>0</sub>/Q";
+      note("并联谐振：LC 回路阻抗最大(≈R·Q)，总电流最小，但环路内电流是外部的 Q 倍。");
+      formula("Z<sub>max</sub> ≈ R·Q = L/(C·R)");
+      note("用于选频放大器负载、陷波器；R 代表回路损耗(越大 Q 越高)。");
+    } else {
+      fMain = "f<sub>c</sub> = 1/(2π√(LC))　·　二阶 −40dB/十倍频";
+      note("LC 二阶低通：转折频率处幅频 −3dB(有阻尼)，之后以 −40dB/十倍频 滚降。");
+      formula("f<sub>c</sub> = 1 / (2π√(LC))");
+      note("阻尼由负载/串联 R 决定；Q≈0.5~0.7(临界阻尼)时最平坦无振铃。");
+    }
+    $("formulaMain").innerHTML = fMain;
+    $("deriveList").innerHTML = lis.join("");
+  }
+
+  function render() {
+    var t = TYPE[state.type];
+    $("circImg").src = "/images/lc/" + t.img;
+    $("circImg").alt = t.name + "电路图";
+    $("circCap").textContent = t.cap;
+    $("resHint").textContent = t.resHint;
+    var showRes = state.type !== "lc";
+    $("fRes").style.display = showRes ? "" : "none";
+    renderDerive();
+
+    var res = compute();
+    if (res.err) { $("calcErr").textContent = res.err; $("readout").innerHTML = ""; ["dF0","dQ","dBW","dZ"].forEach(function (id) { $(id).textContent = "—"; }); return; }
+    $("calcErr").textContent = "";
+    $("readout").innerHTML = '<span class="big">' + fmtHz(res.f0).split(" ")[0] + '<span class="unit">' + fmtHz(res.f0).split(" ")[1] + "</span></span>" +
+      '<span class="cap">' + (state.type === "lc" ? "截止频率 fc" : "谐振频率 f0") + "</span>";
+    $("dF0").textContent = fmtHz(res.f0);
+    $("dQ").textContent = (res.Q === null || res.Q === undefined || !isFinite(res.Q)) ? (state.type === "lc" ? "— (未给R)" : "—") : sigFigs(res.Q, 4);
+    $("dBW").textContent = (res.bw === null || !isFinite(res.bw)) ? "—" : fmtHz(res.bw);
+    $("dZ").textContent = fmtEng(res.z0, "Ω");
+    $("recRef").innerHTML = '<div class="rec-box" style="margin-top:12px;border:1px solid var(--accent);background:var(--accent-soft);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text-dim)">' +
+      "反求提示：固定 L=100µH，C = 1/(4π²f²L)。</div>";
+  }
+
+  ["type-rlc-s","type-rlc-p","type-lc"].forEach(function (id) {
+    $(id).addEventListener("click", function () {
+      ["type-rlc-s","type-rlc-p","type-lc"].forEach(function (x) {
+        var b = $(x); b.classList.toggle("is-active", x === id); b.setAttribute("aria-selected", x === id ? "true" : "false");
+      });
+      state.type = id.replace("type-", "");
+      render();
+    });
+  });
+  ["inL","inC","inR","inF"].forEach(function (id) { $(id).addEventListener("input", render); });
+
+  render();
+})();
+</script>
+</body>
+</html>

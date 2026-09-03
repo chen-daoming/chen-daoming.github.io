@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" font-family="ui-monospace,monospace">
+<!-- 反相放大器(深色,对齐工具页主题)。运放三角 (210,132)(210,192)(284,162)；−端(210,142) +端(210,182) -->
+<rect width="600" height="340" rx="10" fill="#1b2026"/>
+<text x="300" y="34" text-anchor="middle" font-size="17" font-weight="700" fill="#e9edf2" font-family="'Microsoft YaHei','PingFang SC',sans-serif">反相放大器</text>
+<text x="300" y="56" text-anchor="middle" font-size="11.5" fill="#6b7683">增益 Av = − R2 / R1　·　输入阻抗 ≈ R1</text>
+
+<!-- Vcc 供电 -->
+<line x1="210" y1="132" x2="210" y2="92" stroke="#98a4b1" stroke-width="1.8"/>
+<text x="218" y="90" font-size="11" fill="#6b7683">Vcc +5V</text>
+
+<!-- Vin → R1 → −端 -->
+<circle cx="66" cy="142" r="4.5" fill="none" stroke="#e0a34b" stroke-width="1.8"/>
+<text x="40" y="120" font-size="12" font-weight="700" fill="#e0a34b">Vin</text>
+<line x1="66" y1="142" x2="126" y2="142" stroke="#98a4b1" stroke-width="1.8"/>
+<rect x="126" y="126" width="14" height="32" rx="2" fill="rgba(224,163,75,0.08)" stroke="#e9edf2" stroke-width="1.6"/>
+<text x="148" y="140" font-size="12" font-weight="600" fill="#e9edf2">R1</text>
+<line x1="140" y1="142" x2="210" y2="142" stroke="#98a4b1" stroke-width="1.8"/>
+
+<!-- 运放三角 -->
+<polygon points="210,132 210,192 284,162" fill="#202b35" stroke="#8fa6b8" stroke-width="2"/>
+<text x="222" y="148" font-size="13" fill="#e0a34b">−</text>
+<text x="222" y="186" font-size="13" fill="#e0a34b">+</text>
+
+<!-- +端(210,182) → GND -->
+<line x1="210" y1="182" x2="210" y2="214" stroke="#98a4b1" stroke-width="1.8"/>
+<line x1="196" y1="214" x2="224" y2="214" stroke="#98a4b1" stroke-width="2"/>
+<line x1="200" y1="221" x2="220" y2="221" stroke="#98a4b1" stroke-width="2"/>
+<line x1="204" y1="228" x2="216" y2="228" stroke="#98a4b1" stroke-width="2"/>
+<text x="232" y="217" font-size="10.5" fill="#6b7683">GND</text>
+
+<!-- 输出 -->
+<line x1="284" y1="162" x2="360" y2="162" stroke="#98a4b1" stroke-width="1.8"/>
+<circle cx="360" cy="162" r="4.5" fill="none" stroke="#a7e8ba" stroke-width="1.8"/>
+<text x="372" y="166" font-size="12" font-weight="700" fill="#a7e8ba">Vout</text>
+
+<!-- R2 反馈: −端(210,142)→(300,142)→R2竖(300,142..252)→(300,252)→(360,252)→(360,162) -->
+<line x1="210" y1="142" x2="300" y2="142" stroke="#98a4b1" stroke-width="1.8"/>
+<circle cx="300" cy="142" r="3" fill="#a7e8ba"/>
+<line x1="300" y1="142" x2="300" y2="174" stroke="#98a4b1" stroke-width="1.8"/>
+<rect x="293" y="174" width="14" height="32" rx="2" fill="rgba(224,163,75,0.08)" stroke="#e9edf2" stroke-width="1.6"/>
+<text x="315" y="188" font-size="12" font-weight="600" fill="#e9edf2">R2</text>
+<line x1="300" y1="206" x2="300" y2="252" stroke="#98a4b1" stroke-width="1.8"/>
+<line x1="300" y1="252" x2="360" y2="252" stroke="#98a4b1" stroke-width="1.8"/>
+<line x1="360" y1="252" x2="360" y2="162" stroke="#98a4b1" stroke-width="1.8"/>
+<circle cx="300" cy="252" r="3" fill="#a7e8ba"/>
+
+<!-- 底部公式 -->
+<text x="60" y="300" font-size="13.5" fill="#a7e8ba">Vout = −(R2 / R1) × Vin</text>
+<text x="340" y="300" font-size="11.5" fill="#6b7683">虚地：反相端 ≈ 0 V，信号反相放大</text>
+</svg>

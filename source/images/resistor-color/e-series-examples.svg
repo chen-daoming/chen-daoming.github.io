@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 480" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+<!-- 常用标称阻值 4 环 / 5 环色环对照表(E24 系列节选)。4 环误差=金±5%,5 环误差=棕±1%。 -->
+<rect width="880" height="480" fill="#fbfcfd"/>
+<text x="440" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">常用标称阻值 · 4 环 / 5 环色环对照(E24 节选)</text>
+<text x="440" y="54" text-anchor="middle" font-size="12.5" fill="#8a97a5">4 环 = 两位有效数字 + 倍率 + 金(±5%)；5 环 = 三位有效数字 + 倍率 + 棕(±1%)</text>
+
+<!-- ===== 表头 ===== -->
+<rect x="40" y="70" width="388" height="24" rx="4" fill="#1f2d3d"/>
+<text x="50" y="86" fill="#f0c878" font-weight="600" font-size="12">阻值</text>
+<text x="112" y="86" fill="#f0c878" font-weight="600" font-size="12">4 环色环</text>
+<text x="332" y="86" fill="#f0c878" font-weight="600" font-size="12" font-family="Consolas,monospace">读法</text>
+
+<rect x="452" y="70" width="388" height="24" rx="4" fill="#1f2d3d"/>
+<text x="462" y="86" fill="#f0c878" font-weight="600" font-size="12">阻值</text>
+<text x="524" y="86" fill="#f0c878" font-weight="600" font-size="12">5 环色环</text>
+<text x="744" y="86" fill="#f0c878" font-weight="600" font-size="12" font-family="Consolas,monospace">读法</text>
+
+<!-- 色环小矩形: r(宽20高26 rx4) 左起点固定 -->
+<g font-family="Consolas,monospace">
+  <!-- ========== 左列 4 环 (色条 x 起 105, 4 块 x=105/129/153/177) ========== -->
+  <!-- 1Ω: 棕黑金金 -->
+  <text x="50" y="127" font-size="13" fill="#1f2d3d">1 Ω</text>
+  <rect x="105" y="112" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="129" y="112" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="153" y="112" width="20" height="26" rx="4" fill="#d4a017"/>
+  <rect x="177" y="112" width="20" height="26" rx="4" fill="#d4a017"/>
+  <text x="208" y="129" font-size="12.5" fill="#1f2d3d">棕黑金金</text>
+
+  <!-- 10Ω: 棕黑黑金 -->
+  <text x="50" y="167" font-size="13" fill="#1f2d3d">10 Ω</text>
+  <rect x="105" y="152" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="129" y="152" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="153" y="152" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="177" y="152" width="20" height="26" rx="4" fill="#d4a017"/>
+  <text x="208" y="169" font-size="12.5" fill="#1f2d3d">棕黑黑金</text>
+
+  <!-- 100Ω: 棕黑棕金 -->
+  <text x="50" y="207" font-size="13" fill="#1f2d3d">100 Ω</text>
+  <rect x="105" y="192" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="129" y="192" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="153" y="192" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="177" y="192" width="20" height="26" rx="4" fill="#d4a017"/>
+  <text x="208" y="209" font-size="12.5" fill="#1f2d3d">棕黑棕金</text>
+
+  <!-- 1kΩ: 棕黑红金 -->
+  <text x="50" y="247" font-size="13" fill="#1f2d3d">1 kΩ</text>
+  <rect x="105" y="232" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="129" y="232" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="153" y="232" width="20" height="26" rx="4" fill="#c0392b"/>
+  <rect x="177" y="232" width="20" height="26" rx="4" fill="#d4a017"/>
+  <text x="208" y="249" font-size="12.5" fill="#1f2d3d">棕黑红金</text>
+
+  <!-- 4.7kΩ: 黄紫红金 -->
+  <text x="50" y="287" font-size="13" fill="#1f2d3d">4.7 kΩ</text>
+  <rect x="105" y="272" width="20" height="26" rx="4" fill="#d9a85f"/>
+  <rect x="129" y="272" width="20" height="26" rx="4" fill="#8e44ad"/>
+  <rect x="153" y="272" width="20" height="26" rx="4" fill="#c0392b"/>
+  <rect x="177" y="272" width="20" height="26" rx="4" fill="#d4a017"/>
+  <text x="208" y="289" font-size="12.5" fill="#1f2d3d">黄紫红金</text>
+
+  <!-- 10kΩ: 棕黑橙金 -->
+  <text x="50" y="327" font-size="13" fill="#1f2d3d">10 kΩ</text>
+  <rect x="105" y="312" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="129" y="312" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="153" y="312" width="20" height="26" rx="4" fill="#d35400"/>
+  <rect x="177" y="312" width="20" height="26" rx="4" fill="#d4a017"/>
+  <text x="208" y="329" font-size="12.5" fill="#1f2d3d">棕黑橙金</text>
+
+  <!-- 100kΩ: 棕黑黄金 -->
+  <text x="50" y="367" font-size="13" fill="#1f2d3d">100 kΩ</text>
+  <rect x="105" y="352" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="129" y="352" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="153" y="352" width="20" height="26" rx="4" fill="#d9a85f"/>
+  <rect x="177" y="352" width="20" height="26" rx="4" fill="#d4a017"/>
+  <text x="208" y="369" font-size="12.5" fill="#1f2d3d">棕黑黄金</text>
+
+  <!-- 1MΩ: 棕黑绿金 -->
+  <text x="50" y="407" font-size="13" fill="#1f2d3d">1 MΩ</text>
+  <rect x="105" y="392" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="129" y="392" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="153" y="392" width="20" height="26" rx="4" fill="#2e8b57"/>
+  <rect x="177" y="392" width="20" height="26" rx="4" fill="#d4a017"/>
+  <text x="208" y="409" font-size="12.5" fill="#1f2d3d">棕黑绿金</text>
+
+  <!-- ========== 右列 5 环 (色条 x 起 517, 5 块 x=517/541/565/589/613) ========== -->
+  <!-- 1Ω: 棕黑黑银棕 -->
+  <text x="462" y="127" font-size="13" fill="#1f2d3d">1 Ω</text>
+  <rect x="517" y="112" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="541" y="112" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="565" y="112" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="589" y="112" width="20" height="26" rx="4" fill="#b8bec4"/>
+  <rect x="613" y="112" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <text x="642" y="129" font-size="12.5" fill="#1f2d3d">棕黑黑银棕</text>
+
+  <!-- 10Ω: 棕黑黑金棕 -->
+  <text x="462" y="167" font-size="13" fill="#1f2d3d">10 Ω</text>
+  <rect x="517" y="152" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="541" y="152" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="565" y="152" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="589" y="152" width="20" height="26" rx="4" fill="#d4a017"/>
+  <rect x="613" y="152" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <text x="642" y="169" font-size="12.5" fill="#1f2d3d">棕黑黑金棕</text>
+
+  <!-- 100Ω: 棕黑黑黑棕 -->
+  <text x="462" y="207" font-size="13" fill="#1f2d3d">100 Ω</text>
+  <rect x="517" y="192" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="541" y="192" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="565" y="192" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="589" y="192" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="613" y="192" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <text x="642" y="209" font-size="12.5" fill="#1f2d3d">棕黑黑黑棕</text>
+
+  <!-- 1kΩ: 棕黑黑棕棕 -->
+  <text x="462" y="247" font-size="13" fill="#1f2d3d">1 kΩ</text>
+  <rect x="517" y="232" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="541" y="232" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="565" y="232" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="589" y="232" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="613" y="232" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <text x="642" y="249" font-size="12.5" fill="#1f2d3d">棕黑黑棕棕</text>
+
+  <!-- 4.7kΩ: 黄紫黑棕棕 -->
+  <text x="462" y="287" font-size="13" fill="#1f2d3d">4.7 kΩ</text>
+  <rect x="517" y="272" width="20" height="26" rx="4" fill="#d9a85f"/>
+  <rect x="541" y="272" width="20" height="26" rx="4" fill="#8e44ad"/>
+  <rect x="565" y="272" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="589" y="272" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="613" y="272" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <text x="642" y="289" font-size="12.5" fill="#1f2d3d">黄紫黑棕棕</text>
+
+  <!-- 10kΩ: 棕黑黑红棕 -->
+  <text x="462" y="327" font-size="13" fill="#1f2d3d">10 kΩ</text>
+  <rect x="517" y="312" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="541" y="312" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="565" y="312" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="589" y="312" width="20" height="26" rx="4" fill="#c0392b"/>
+  <rect x="613" y="312" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <text x="642" y="329" font-size="12.5" fill="#1f2d3d">棕黑黑红棕</text>
+
+  <!-- 100kΩ: 棕黑黑橙棕 -->
+  <text x="462" y="367" font-size="13" fill="#1f2d3d">100 kΩ</text>
+  <rect x="517" y="352" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="541" y="352" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="565" y="352" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="589" y="352" width="20" height="26" rx="4" fill="#d35400"/>
+  <rect x="613" y="352" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <text x="642" y="369" font-size="12.5" fill="#1f2d3d">棕黑黑橙棕</text>
+
+  <!-- 1MΩ: 棕黑黑黄棕 -->
+  <text x="462" y="407" font-size="13" fill="#1f2d3d">1 MΩ</text>
+  <rect x="517" y="392" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <rect x="541" y="392" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="565" y="392" width="20" height="26" rx="4" fill="#26262a"/>
+  <rect x="589" y="392" width="20" height="26" rx="4" fill="#d9a85f"/>
+  <rect x="613" y="392" width="20" height="26" rx="4" fill="#7a4a21"/>
+  <text x="642" y="409" font-size="12.5" fill="#1f2d3d">棕黑黑黄棕</text>
+</g>
+</svg>
