@@ -1,45 +1,59 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 320" font-family="ui-monospace,monospace">
-<!-- 并联谐振 RLC 电路。LC 并联支路在中间, R 并联表示损耗 -->
-<rect width="560" height="320" rx="10" fill="#1b2026"/>
-<text x="280" y="34" text-anchor="middle" font-size="17" font-weight="700" fill="#e9edf2" font-family="'Microsoft YaHei','PingFang SC',sans-serif">并联谐振 RLC 电路</text>
-<text x="280" y="56" text-anchor="middle" font-size="11.5" fill="#6b7683">谐振时总阻抗最大(Z≈R·Q)，回路电流是总电流的 Q 倍</text>
-
-<!-- 上下母线 y=96 与 y=224; LC 并排竖跨两条母线 -->
-<line x1="120" y1="96" x2="380" y2="96" stroke="#98a4b1" stroke-width="2"/>
-<line x1="120" y1="224" x2="380" y2="224" stroke="#98a4b1" stroke-width="2"/>
-
-<!-- LC 并排竖跨两条母线: L(x=180)、C(x=300)、R(x=245 之间) -->
-<!-- L 竖放: x=180, y 96..224 -->
-<path d="M180 96 q8 -18 18 0 q8 -18 18 0 q8 -18 18 0 q8 -18 18 0" fill="none" stroke="#e0a34b" stroke-width="2.4"/>
-<text x="210" y="116" font-size="12" font-weight="600" fill="#e0a34b">L</text>
-
-<!-- C 竖放: x=300, y 96..224 -->
-<line x1="300" y1="96" x2="300" y2="112" stroke="#98a4b1" stroke-width="2"/>
-<line x1="290" y1="112" x2="310" y2="112" stroke="#98a4b1" stroke-width="2.6"/>
-<line x1="290" y1="208" x2="310" y2="208" stroke="#98a4b1" stroke-width="2.6"/>
-<line x1="300" y1="208" x2="300" y2="224" stroke="#98a4b1" stroke-width="2"/>
-<text x="322" y="160" font-size="12" font-weight="600" fill="#e9edf2">C</text>
-
-<!-- R 并联: x=245 位于 L、C 之间 -->
-<rect x="235" y="144" width="20" height="32" rx="3" fill="rgba(224,163,75,0.08)" stroke="#e9edf2" stroke-width="1.6"/>
-<line x1="245" y1="96" x2="245" y2="144" stroke="#98a4b1" stroke-width="2"/>
-<line x1="245" y1="176" x2="245" y2="224" stroke="#98a4b1" stroke-width="2"/>
-<text x="258" y="132" font-size="12" font-weight="600" fill="#e9edf2">R</text>
-
-<!-- Vin 左母线 -->
-<line x1="80" y1="96" x2="120" y2="96" stroke="#98a4b1" stroke-width="2"/>
-<circle cx="80" cy="96" r="4.5" fill="none" stroke="#e0a34b" stroke-width="1.8"/>
-<text x="60" y="80" font-size="12" font-weight="700" fill="#e0a34b">Vin</text>
-
-<!-- Vout 右母线 -->
-<line x1="310" y1="96" x2="470" y2="96" stroke="#98a4b1" stroke-width="2"/>
-<line x1="310" y1="224" x2="470" y2="224" stroke="#98a4b1" stroke-width="2"/>
-<circle cx="470" cy="96" r="4.5" fill="none" stroke="#a7e8ba" stroke-width="1.8"/>
-<text x="478" y="80" font-size="12" font-weight="700" fill="#a7e8ba">Vout</text>
-
-<!-- 底部公式 -->
-<rect x="50" y="250" width="460" height="44" rx="8" fill="#0c120e" stroke="#2b333c"/>
-<text x="70" y="270" font-size="13.5" fill="#a7e8ba">f0 = 1/(2π√(LC))</text>
-<text x="250" y="270" font-size="12" fill="#f0c878">Q = R·√(C/L)</text>
-<text x="70" y="288" font-size="11.5" fill="#6b7683">并联谐振 Zmax ≈ R·Q = L/(C·R)</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" font-family="'Segoe UI',system-ui,sans-serif">
+  <defs>
+    <linearGradient id="bg6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1f2e"/>
+      <stop offset="100%" style="stop-color:#0f1318"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="640" height="400" rx="12" fill="url(#bg6)"/>
+  
+  <!-- 标题 -->
+  <text x="320" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#e8ecf1">并联谐振 RLC 电路</text>
+  <text x="320" y="58" text-anchor="middle" font-size="12" fill="#7a8594">谐振时总阻抗最大(Z≈R·Q)，回路电流是总电流的Q倍</text>
+  
+  <!-- 上下母线 -->
+  <line x1="140" y1="120" x2="500" y2="120" stroke="#95a5b6" stroke-width="2.5"/>
+  <line x1="140" y1="300" x2="500" y2="300" stroke="#95a5b6" stroke-width="2.5"/>
+  
+  <!-- Vin 输入 -->
+  <line x1="80" y1="120" x2="140" y2="120" stroke="#95a5b6" stroke-width="2"/>
+  <circle cx="80" cy="120" r="6" fill="none" stroke="#f39c12" stroke-width="2"/>
+  <text x="50" y="96" font-size="14" font-weight="700" fill="#f39c12">Vin</text>
+  
+  <!-- L 电感支路 -->
+  <line x1="220" y1="120" x2="220" y2="150" stroke="#95a5b6" stroke-width="2"/>
+  <path d="M220 150 C230 150, 230 130, 240 130 C250 130, 250 150, 260 150 C270 150, 270 130, 280 130 C290 130, 290 150, 300 150 C310 150, 310 130, 320 130 C330 130, 330 150, 340 150" fill="none" stroke="#e74c3c" stroke-width="2.5"/>
+  <text x="320" y="140" text-anchor="middle" font-size="14" font-weight="600" fill="#e74c3c">L</text>
+  <line x1="220" y1="150" x2="220" y2="300" stroke="#95a5b6" stroke-width="2"/>
+  
+  <!-- R 电阻支路 -->
+  <line x1="340" y1="120" x2="340" y2="170" stroke="#95a5b6" stroke-width="2"/>
+  <rect x="327" y="170" width="26" height="60" rx="4" fill="#2c3e50" stroke="#3498db" stroke-width="2"/>
+  <text x="340" y="204" text-anchor="middle" font-size="14" font-weight="600" fill="#ecf0f1">R</text>
+  <line x1="340" y1="230" x2="340" y2="300" stroke="#95a5b6" stroke-width="2"/>
+  
+  <!-- C 电容支路 -->
+  <line x1="440" y1="120" x2="440" y2="190" stroke="#95a5b6" stroke-width="2"/>
+  <line x1="420" y1="190" x2="460" y2="190" stroke="#2ecc71" stroke-width="3"/>
+  <line x1="420" y1="230" x2="460" y2="230" stroke="#2ecc71" stroke-width="3"/>
+  <text x="470" y="214" font-size="14" font-weight="600" fill="#2ecc71">C</text>
+  <line x1="440" y1="230" x2="440" y2="300" stroke="#95a5b6" stroke-width="2"/>
+  
+  <!-- Vout 输出 -->
+  <line x1="500" y1="120" x2="560" y2="120" stroke="#95a5b6" stroke-width="2"/>
+  <circle cx="560" cy="120" r="6" fill="none" stroke="#2ecc71" stroke-width="2"/>
+  <text x="576" y="125" font-size="14" font-weight="700" fill="#2ecc71">Vout</text>
+  
+  <!-- 连接点 -->
+  <circle cx="220" cy="120" r="4" fill="#2ecc71"/>
+  <circle cx="340" cy="120" r="4" fill="#2ecc71"/>
+  <circle cx="440" cy="120" r="4" fill="#2ecc71"/>
+  
+  <!-- 底部公式 -->
+  <rect x="40" y="340" width="560" height="44" rx="8" fill="#0d1117" stroke="#21262d"/>
+  <text x="70" y="360" font-size="14" font-weight="600" fill="#2ecc71">f0 = 1/(2π√(L·C))</text>
+  <text x="280" y="360" font-size="13" fill="#f39c12">Q = R·√(C/L)</text>
+  <text x="70" y="378" font-size="11" fill="#7a8594">并联谐振 Zmax ≈ R·Q = L/(C·R)</text>
 </svg>
