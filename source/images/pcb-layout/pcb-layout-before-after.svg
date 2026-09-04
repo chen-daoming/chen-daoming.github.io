@@ -1,59 +1,127 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 440" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
-  <rect width="820" height="440" fill="#fbfcfd"/>
-  <text x="410" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#1f2d3d">PCB 美学对比：缺乏规划 vs 栅格对齐</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <defs>
+    <pattern id="grid3" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#d2e9dc" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="820" height="480" fill="#fbfcfd"/>
+  <text x="410" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">PCB 美学对比：缺乏规划 vs 对齐 · 一致 · 有序 · 简洁</text>
 
-  <!-- 左：凌乱 -->
-  <rect x="40" y="56" width="340" height="350" rx="10" fill="#fdf0ef" stroke="#c0392b" stroke-width="1.8"/>
-  <text x="210" y="82" text-anchor="middle" font-size="15" font-weight="700" fill="#c0392b">✗ 缺乏规划：乱、挤、绕</text>
-  <!-- 元件方向不一、间距不等 -->
-  <g stroke="#7a4a47" stroke-width="1.6" fill="#f3d9d7">
-    <rect x="80" y="120" width="46" height="22" transform="rotate(12 103 131)"/>
-    <rect x="150" y="116" width="46" height="22" transform="rotate(-8 173 127)"/>
-    <rect x="210" y="138" width="46" height="22" transform="rotate(20 233 149)"/>
-    <rect x="270" y="118" width="46" height="22"/>
+  <!-- ================= 左：凌乱 ================= -->
+  <rect x="40" y="56" width="340" height="376" rx="10" fill="#fdf0ef" stroke="#c0392b" stroke-width="1.8"/>
+  <text x="210" y="84" text-anchor="middle" font-size="15" font-weight="700" fill="#c0392b">✗ 缺乏规划：乱 · 挤 · 绕</text>
+
+  <!-- 方向杂乱的元件 -->
+  <g fill="#f3d9d7" stroke="#7a4a47" stroke-width="1.6">
+    <rect x="70" y="104" width="46" height="20" transform="rotate(12 93 114)"/>
+    <rect x="134" y="100" width="46" height="20" transform="rotate(-9 157 110)"/>
+    <rect x="198" y="120" width="46" height="20" transform="rotate(18 221 130)"/>
+    <rect x="258" y="100" width="46" height="20" transform="rotate(4 281 110)"/>
+    <rect x="170" y="232" width="46" height="20" transform="rotate(-15 193 242)"/>
+    <rect x="242" y="226" width="46" height="20" transform="rotate(10 265 236)"/>
   </g>
-  <g stroke="#7a4a47" stroke-width="1.6" fill="#f3d9d7">
-    <rect x="86" y="210" width="22" height="46"/>
-    <rect x="150" y="200" width="46" height="22" transform="rotate(6 173 211)"/>
-    <rect x="232" y="214" width="22" height="46" transform="rotate(-14 243 237)"/>
-    <rect x="286" y="206" width="46" height="22" transform="rotate(16 309 217)"/>
+  <!-- 极性朝向各异的电解电容 -->
+  <g fill="#f3d9d7" stroke="#7a4a47" stroke-width="1.6">
+    <circle cx="92" cy="176" r="14"/>
+    <circle cx="152" cy="170" r="14"/>
+    <circle cx="216" cy="180" r="14"/>
   </g>
-  <!-- 斜绕锐角走线 -->
-  <polyline points="90,160 120,190 100,250 180,280 160,330 300,320" fill="none" stroke="#c0392b" stroke-width="2"/>
-  <polyline points="250,160 300,200 260,250 320,300" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="4 3"/>
-  <text x="210" y="360" text-anchor="middle" font-size="12" fill="#7a4a47">方向不一·间距不等·斜绕锐角·疏密失衡·丝印乱</text>
-  <text x="210" y="382" text-anchor="middle" font-size="12" fill="#7a4a47">→ 难焊接、易出错、EMC 与可维护性都差</text>
+  <g stroke="#7a4a47" stroke-width="1.6">
+    <line x1="87" y1="169" x2="97" y2="169"/><line x1="92" y1="164" x2="92" y2="174"/>
+    <line x1="147" y1="180" x2="157" y2="180"/><line x1="152" y1="175" x2="152" y2="185"/>
+    <line x1="221" y1="180" x2="229" y2="180"/><line x1="225" y1="176" x2="225" y2="184"/>
+  </g>
+  <!-- 丝印东倒西歪的 IC -->
+  <rect x="262" y="152" width="70" height="34" fill="#f3d9d7" stroke="#7a4a47" stroke-width="1.6"/>
+  <text x="297" y="174" text-anchor="middle" font-size="13" font-weight="700" fill="#7a4a47" transform="rotate(30 297 169)">U1</text>
+  <rect x="76" y="228" width="70" height="34" fill="#f3d9d7" stroke="#7a4a47" stroke-width="1.6"/>
+  <text x="111" y="250" text-anchor="middle" font-size="13" font-weight="700" fill="#7a4a47" transform="rotate(-18 111 245)">U2</text>
+
+  <!-- 锐角绕线 -->
+  <polyline points="100,148 170,128 162,206 270,196 252,268 330,258 322,320" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <polyline points="250,160 310,210 270,262 330,300" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="4 3"/>
+
+  <!-- 空洞区 -->
+  <ellipse cx="300" cy="340" rx="52" ry="34" fill="none" stroke="#c0392b" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <circle cx="300" cy="340" r="10" fill="#c0392b"/>
+  <text x="300" y="344" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">4</text>
+
+  <!-- 缺陷编号标注 -->
+  <circle cx="64" cy="98" r="10" fill="#c0392b"/>
+  <text x="64" y="102" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">1</text>
+  <line x1="73" y1="103" x2="126" y2="109" stroke="#c0392b" stroke-width="1"/>
+  <circle cx="60" cy="206" r="10" fill="#c0392b"/>
+  <text x="60" y="210" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">2</text>
+  <line x1="68" y1="200" x2="82" y2="188" stroke="#c0392b" stroke-width="1"/>
+  <circle cx="352" cy="250" r="10" fill="#c0392b"/>
+  <text x="352" y="254" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">3</text>
+  <line x1="342" y1="250" x2="328" y2="256" stroke="#c0392b" stroke-width="1"/>
+
+  <text x="210" y="398" text-anchor="middle" font-size="11.5" fill="#7a4a47">① 方向不一 ② 极性丝印乱 ③ 锐角大环路 ④ 疏密失衡</text>
+  <text x="210" y="418" text-anchor="middle" font-size="11.5" fill="#7a4a47">→ 难焊接、易出错，EMC 与可维护性差</text>
 
   <!-- 中间箭头 -->
-  <g fill="#27ae60">
-    <path d="M392 215 L428 215 L428 200 L452 225 L428 250 L428 235 L392 235 z"/>
+  <path d="M392 220 L424 220 L424 205 L450 230 L424 255 L424 240 L392 240 z" fill="#27ae60"/>
+
+  <!-- ================= 右：整齐 ================= -->
+  <rect x="460" y="56" width="340" height="376" rx="10" fill="#eefaf2" stroke="#27ae60" stroke-width="1.8"/>
+  <text x="630" y="84" text-anchor="middle" font-size="15" font-weight="700" fill="#1e8449">✓ 栅格对齐：齐 · 匀 · 顺</text>
+
+  <!-- 栅格 -->
+  <rect x="478" y="96" width="316" height="232" fill="url(#grid3)"/>
+
+  <!-- 等间距元件行 -->
+  <g fill="#d8f0e1" stroke="#1e8449" stroke-width="1.6">
+    <rect x="484" y="118" width="36" height="20"/>
+    <rect x="574" y="118" width="36" height="20"/>
+    <rect x="664" y="118" width="36" height="20"/>
+    <rect x="754" y="118" width="36" height="20"/>
+  </g>
+  <text x="630" y="110" text-anchor="middle" font-size="10.5" fill="#1e8449">间距一致 ≈ 1.5×W</text>
+
+  <!-- 极性一致的电解电容行 -->
+  <line x1="492" y1="158" x2="768" y2="158" stroke="#27ae60" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <text x="636" y="152" text-anchor="middle" font-size="10.5" fill="#1e8449">极性朝向一致</text>
+  <g fill="#d8f0e1" stroke="#1e8449" stroke-width="1.6">
+    <circle cx="502" cy="176" r="12"/><circle cx="592" cy="176" r="12"/>
+    <circle cx="682" cy="176" r="12"/><circle cx="772" cy="176" r="12"/>
+  </g>
+  <g stroke="#1e8449" stroke-width="1.6">
+    <line x1="497" y1="171" x2="507" y2="171"/><line x1="502" y1="166" x2="502" y2="176"/>
+    <line x1="587" y1="171" x2="597" y2="171"/><line x1="592" y1="166" x2="592" y2="176"/>
+    <line x1="677" y1="171" x2="687" y2="171"/><line x1="682" y1="166" x2="682" y2="176"/>
+    <line x1="767" y1="171" x2="777" y2="171"/><line x1="772" y1="166" x2="772" y2="176"/>
   </g>
 
-  <!-- 右：整齐 -->
-  <rect x="460" y="56" width="340" height="350" rx="10" fill="#eefaf2" stroke="#27ae60" stroke-width="1.8"/>
-  <text x="630" y="82" text-anchor="middle" font-size="15" font-weight="700" fill="#1e8449">✓ 栅格对齐：齐、匀、顺</text>
-  <!-- 栅格 -->
-  <g stroke="#d6ebe0" stroke-width="1">
-    <line x1="500" y1="110" x2="760" y2="110"/><line x1="500" y1="160" x2="760" y2="160"/>
-    <line x1="500" y1="210" x2="760" y2="210"/><line x1="500" y1="260" x2="760" y2="260"/>
-    <line x1="500" y1="310" x2="760" y2="310"/>
-    <line x1="520" y1="100" x2="520" y2="330"/><line x1="580" y1="100" x2="580" y2="330"/>
-    <line x1="640" y1="100" x2="640" y2="330"/><line x1="700" y1="100" x2="700" y2="330"/>
+  <!-- 丝印同向的 IC 行 -->
+  <g fill="#d8f0e1" stroke="#1e8449" stroke-width="1.6">
+    <rect x="496" y="222" width="64" height="30"/>
+    <rect x="596" y="222" width="64" height="30"/>
+    <rect x="696" y="222" width="64" height="30"/>
   </g>
-  <!-- 等间距同向元件 -->
-  <g stroke="#1e8449" stroke-width="1.6" fill="#d8f0e1">
-    <rect x="500" y="119" width="40" height="22"/><rect x="560" y="119" width="40" height="22"/>
-    <rect x="620" y="119" width="40" height="22"/><rect x="680" y="119" width="40" height="22"/>
-    <rect x="500" y="219" width="40" height="22"/><rect x="560" y="219" width="40" height="22"/>
-    <rect x="620" y="219" width="40" height="22"/><rect x="680" y="219" width="40" height="22"/>
-  </g>
-  <!-- 对齐虚线 -->
-  <g stroke="#27ae60" stroke-width="1.2" stroke-dasharray="3 3">
-    <line x1="495" y1="130" x2="765" y2="130"/><line x1="495" y1="230" x2="765" y2="230"/>
-  </g>
+  <text x="528" y="241" text-anchor="middle" font-size="12" font-weight="700" fill="#1e8449">U1</text>
+  <text x="628" y="241" text-anchor="middle" font-size="12" font-weight="700" fill="#1e8449">U2</text>
+  <text x="728" y="241" text-anchor="middle" font-size="12" font-weight="700" fill="#1e8449">U3</text>
+  <text x="540" y="280" text-anchor="middle" font-size="10.5" fill="#1e8449">丝印同向可读</text>
+  <line x1="540" y1="270" x2="540" y2="254" stroke="#27ae60" stroke-width="1"/>
+
   <!-- 横平竖直 + 45° 走线 -->
-  <polyline points="520,160 520,190 600,190 600,219" fill="none" stroke="#1e8449" stroke-width="2"/>
-  <polyline points="640,160 640,180 700,180 700,219" fill="none" stroke="#1e8449" stroke-width="2"/>
-  <text x="630" y="360" text-anchor="middle" font-size="12" fill="#1e8449">栅格定位·方向一致·等间距对称·横平竖直/45°·疏密均衡</text>
-  <text x="630" y="382" text-anchor="middle" font-size="12" fill="#1e8449">→ 易焊易测、应力均衡，本身也是好的电气布局</text>
+  <polyline points="502,138 502,168 530,196 530,222" fill="none" stroke="#1e8449" stroke-width="2"/>
+  <polyline points="598,138 598,160 626,188 626,222" fill="none" stroke="#1e8449" stroke-width="2"/>
+  <polyline points="688,138 688,154 716,182 716,222" fill="none" stroke="#1e8449" stroke-width="2"/>
+
+  <!-- 四性徽章 -->
+  <g>
+    <rect x="506" y="340" width="58" height="26" rx="13" fill="#27ae60"/>
+    <text x="535" y="358" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">对齐</text>
+    <rect x="570" y="340" width="58" height="26" rx="13" fill="#27ae60"/>
+    <text x="599" y="358" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">一致</text>
+    <rect x="634" y="340" width="58" height="26" rx="13" fill="#27ae60"/>
+    <text x="663" y="358" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">有序</text>
+    <rect x="698" y="340" width="58" height="26" rx="13" fill="#27ae60"/>
+    <text x="727" y="358" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">简洁</text>
+  </g>
+
+  <text x="630" y="398" text-anchor="middle" font-size="11.5" fill="#1e8449">栅格定位 · 等间距 · 同向丝印 · 45° 转角 · 疏密均衡</text>
+  <text x="630" y="418" text-anchor="middle" font-size="11.5" fill="#1e8449">→ 易焊易测、应力均衡，本身就是更好的电气布局</text>
 </svg>
