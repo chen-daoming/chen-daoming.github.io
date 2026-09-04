@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="820" height="480" fill="#fbfcfd"/>
+  <text x="410" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">printf 调试之痛 vs VOFA+ 波形调试</text>
+
+  <!-- ================= 左：传统打印 ================= -->
+  <rect x="40" y="56" width="350" height="380" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="215" y="84" text-anchor="middle" font-size="15" font-weight="700" fill="#c0392b">✗ 传统串口打印：数据长龙</text>
+
+  <!-- 串口终端 -->
+  <rect x="60" y="100" width="310" height="190" rx="6" fill="#2b3137"/>
+  <rect x="60" y="100" width="310" height="20" rx="6" fill="#3a4148"/>
+  <circle cx="74" cy="110" r="3.5" fill="#e74c3c"/><circle cx="86" cy="110" r="3.5" fill="#f39c12"/><circle cx="98" cy="110" r="3.5" fill="#27ae60"/>
+  <text x="360" y="114" text-anchor="end" font-size="9.5" fill="#aab4bd">COM3 · 115200 · 串口助手</text>
+  <g font-family="'Consolas','Courier New',monospace" font-size="11" fill="#82d193">
+    <text x="75" y="138">12.0431   0.9982   2.3511</text>
+    <text x="75" y="155">12.0844   0.9761   2.3508</text>
+    <text x="75" y="172">12.1250   0.9543   2.3505</text>
+    <text x="75" y="189">12.1663   0.9319   2.3501</text>
+    <text x="75" y="206">12.2075   0.9097   2.3499</text>
+    <text x="75" y="223">12.2488   0.8869   2.3496</text>
+    <text x="75" y="240">12.2900   0.8641   2.3494</text>
+    <text x="75" y="257">12.3313   0.8407   2.3492</text>
+    <text x="75" y="274">12.3725   0.8176   2.3491</text>
+  </g>
+
+  <text x="215" y="316" text-anchor="middle" font-size="11.5" fill="#5a6b7b">满屏数字，趋势全靠脑补</text>
+  <text x="215" y="338" text-anchor="middle" font-size="11.5" fill="#5a6b7b">历史一滚而过，无法回放缩放</text>
+  <text x="215" y="360" text-anchor="middle" font-size="11.5" fill="#5a6b7b">找一次异常 ≈ 大海捞针</text>
+  <text x="215" y="394" text-anchor="middle" font-size="12.5" font-weight="700" fill="#c0392b">数据有了，但“看不见”</text>
+  <text x="215" y="418" text-anchor="middle" font-size="11" fill="#8a97a5">Keil 在线 Watch 刷新慢，串口快但难读——两难</text>
+
+  <!-- 中间箭头 -->
+  <path d="M392 220 L414 220 L414 205 L440 230 L414 255 L414 240 L392 240 z" fill="#27ae60"/>
+
+  <!-- ================= 右：VOFA+ ================= -->
+  <rect x="430" y="56" width="350" height="380" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="605" y="84" text-anchor="middle" font-size="15" font-weight="700" fill="#27ae60">✓ VOFA+：所见即波形</text>
+
+  <!-- 工具栏 -->
+  <rect x="450" y="100" width="310" height="30" rx="6" fill="#eef3f8" stroke="#d5dde5"/>
+  <rect x="460" y="106" width="76" height="18" rx="4" fill="#ffffff" stroke="#8a97a5"/>
+  <text x="498" y="119" text-anchor="middle" font-size="9.5" fill="#1f2d3d">JustFloat ▾</text>
+  <rect x="546" y="106" width="70" height="18" rx="4" fill="#ffffff" stroke="#8a97a5"/>
+  <text x="581" y="119" text-anchor="middle" font-size="9.5" fill="#1f2d3d">115200 ▾</text>
+  <rect x="714" y="106" width="40" height="18" rx="4" fill="#27ae60"/>
+  <text x="734" y="119" text-anchor="middle" font-size="9.5" font-weight="700" fill="#ffffff">连接</text>
+
+  <!-- 波形区 -->
+  <rect x="450" y="140" width="310" height="170" fill="#fbfdff" stroke="#d5dde5"/>
+  <g stroke="#e8eff5" stroke-width="1">
+    <line x1="481" y1="140" x2="481" y2="310"/><line x1="512" y1="140" x2="512" y2="310"/>
+    <line x1="543" y1="140" x2="543" y2="310"/><line x1="574" y1="140" x2="574" y2="310"/>
+    <line x1="605" y1="140" x2="605" y2="310"/><line x1="636" y1="140" x2="636" y2="310"/>
+    <line x1="667" y1="140" x2="667" y2="310"/><line x1="698" y1="140" x2="698" y2="310"/>
+    <line x1="729" y1="140" x2="729" y2="310"/>
+    <line x1="450" y1="161" x2="760" y2="161"/><line x1="450" y1="193" x2="760" y2="193"/>
+    <line x1="450" y1="225" x2="760" y2="225"/><line x1="450" y1="257" x2="760" y2="257"/>
+    <line x1="450" y1="289" x2="760" y2="289"/>
+  </g>
+  <path d="M455 225 Q480 150 505 225 T555 225 T605 225 T655 225 T705 225 T755 225" fill="none" stroke="#e67e22" stroke-width="2.4"/>
+  <polyline points="455,308 485,308 485,258 535,258 535,308 585,308 585,258 635,258 635,308 685,308 685,258 735,258 735,308 755,308" fill="none" stroke="#27ae60" stroke-width="2.2"/>
+
+  <!-- 图例 -->
+  <rect x="460" y="320" width="10" height="10" fill="#e67e22"/>
+  <text x="476" y="329" font-size="10.5" fill="#5a6b7b">ch0</text>
+  <rect x="515" y="320" width="10" height="10" fill="#27ae60"/>
+  <text x="531" y="329" font-size="10.5" fill="#5a6b7b">ch1</text>
+
+  <text x="605" y="358" text-anchor="middle" font-size="11.5" fill="#5a6b7b">曲线趋势与突变一眼可见</text>
+  <text x="605" y="380" text-anchor="middle" font-size="11.5" fill="#5a6b7b">内置 FFT、直方图、3D 控件，插件可扩展</text>
+  <text x="605" y="402" text-anchor="middle" font-size="11.5" fill="#5a6b7b">历史可缩放回放，还能绑定控件发命令</text>
+  <text x="605" y="430" text-anchor="middle" font-size="12.5" font-weight="700" fill="#27ae60">趋势、频率、异常，一眼定位</text>
+</svg>
