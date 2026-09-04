@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="820" height="480" fill="#fbfcfd"/>
+  <text x="410" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">差分对布线规则（Intel 高速接口通用要求）</text>
+
+  <!-- ================= 左上：对内规则 ================= -->
+  <rect x="40" y="56" width="370" height="200" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="225" y="84" text-anchor="middle" font-size="15" font-weight="700" fill="#2980b9">① 对内：间距 S ≥ 2W，ΔL ≤ 5 mil</text>
+
+  <!-- 等长前的一段平行对 -->
+  <rect x="70" y="120" width="200" height="12" rx="6" fill="#2980b9"/>
+  <rect x="70" y="156" width="240" height="12" rx="6" fill="#2980b9"/>
+
+  <!-- 上线蛇形补偿 -->
+  <path d="M270 126 h18 v-24 h16 v24 h16 v-24 h16 v24 h18" fill="none" stroke="#2980b9" stroke-width="12" stroke-linejoin="round"/>
+
+  <!-- W 尺寸 -->
+  <g stroke="#8a97a5" stroke-width="1">
+    <line x1="60" y1="120" x2="60" y2="132"/>
+    <line x1="54" y1="120" x2="66" y2="120"/>
+    <line x1="54" y1="132" x2="66" y2="132"/>
+  </g>
+  <text x="50" y="130" text-anchor="end" font-size="11.5" fill="#5a6b7b" font-weight="600">W</text>
+
+  <!-- S 尺寸（边到边） -->
+  <g stroke="#8a97a5" stroke-width="1">
+    <line x1="276" y1="132" x2="360" y2="132"/>
+    <line x1="316" y1="156" x2="360" y2="156"/>
+    <line x1="354" y1="136" x2="354" y2="152"/>
+    <path d="M351 136 L354 130 L357 136 z" fill="#8a97a5" stroke="none"/>
+    <path d="M351 152 L354 158 L357 152 z" fill="#8a97a5" stroke="none"/>
+  </g>
+  <text x="364" y="148" font-size="12" font-weight="700" fill="#1f2d3d">S ≥ 2W</text>
+
+  <!-- 蛇形说明 -->
+  <text x="200" y="108" text-anchor="middle" font-size="11" fill="#8a97a5">蛇形绕线补偿</text>
+  <line x1="252" y1="104" x2="284" y2="98" stroke="#8a97a5" stroke-width="1"/>
+
+  <text x="225" y="200" text-anchor="middle" font-size="12" fill="#5a6b7b">对内长度偏差 ΔL ≤ 5 mil：保证翻转同步、</text>
+  <text x="225" y="220" text-anchor="middle" font-size="12" fill="#5a6b7b">抑制共模噪声与辐射（眼图对称）</text>
+  <text x="225" y="242" text-anchor="middle" font-size="11.5" fill="#8a97a5">蛇形绕线幅值 ≥ 3W，避免自耦合</text>
+
+  <!-- ================= 右上：对间规则 ================= -->
+  <rect x="430" y="56" width="370" height="200" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="615" y="84" text-anchor="middle" font-size="15" font-weight="700" fill="#27ae60">② 对间：长度偏差 ≤ 15 mil</text>
+
+  <!-- 对 A -->
+  <rect x="460" y="112" width="190" height="12" rx="6" fill="#2980b9"/>
+  <rect x="460" y="142" width="190" height="12" rx="6" fill="#2980b9"/>
+  <text x="555" y="104" text-anchor="middle" font-size="11.5" fill="#2980b9" font-weight="600">差分对 A（如 PCIe TX0±）</text>
+
+  <!-- 对 B -->
+  <rect x="460" y="192" width="220" height="12" rx="6" fill="#27ae60"/>
+  <rect x="460" y="222" width="220" height="12" rx="6" fill="#27ae60"/>
+  <text x="570" y="184" text-anchor="middle" font-size="11.5" fill="#27ae60" font-weight="600">差分对 B（如 PCIe TX1±）</text>
+
+  <!-- 对间长度差尺寸 -->
+  <g stroke="#8a97a5" stroke-width="1">
+    <line x1="652" y1="148" x2="652" y2="186"/>
+    <line x1="656" y1="204" x2="656" y2="188"/>
+  </g>
+  <text x="690" y="172" font-size="11.5" fill="#5a6b7b">同组各对之间</text>
+  <text x="690" y="188" font-size="11.5" fill="#5a6b7b">ΔL ≤ 15 mil</text>
+
+  <text x="615" y="252" text-anchor="middle" font-size="11.5" fill="#8a97a5">同组多对（xN 链路）同步切换，组内相位保持一致</text>
+
+  <!-- ================= 下：参考平面 ================= -->
+  <text x="410" y="286" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2d3d">③ 参考平面必须连续 —— 高速/差分信号严禁跨分割</text>
+
+  <!-- 错误：跨分割 -->
+  <rect x="40" y="300" width="370" height="152" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="225" y="326" text-anchor="middle" font-size="13" font-weight="700" fill="#c0392b">✗ 错误：跨越平面分割</text>
+  <rect x="70" y="336" width="310" height="76" fill="#dfe8ef" stroke="#8a97a5"/>
+  <text x="92" y="354" font-size="11" fill="#8a97a5">GND 平面</text>
+  <rect x="200" y="336" width="14" height="76" fill="#fbfcfd"/>
+  <line x1="207" y1="336" x2="207" y2="412" stroke="#c0392b" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <!-- 跨越的差分线 -->
+  <rect x="90" y="352" width="270" height="10" rx="5" fill="#e67e22"/>
+  <rect x="90" y="380" width="270" height="10" rx="5" fill="#e67e22"/>
+  <circle cx="207" cy="367" r="12" fill="#c0392b"/>
+  <text x="207" y="372" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">✕</text>
+  <text x="225" y="440" text-anchor="middle" font-size="11.5" fill="#c0392b">回流路径断裂 → 阻抗突变、串扰与 EMI 恶化</text>
+
+  <!-- 正确：完整平面 -->
+  <rect x="430" y="300" width="370" height="152" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="615" y="326" text-anchor="middle" font-size="13" font-weight="700" fill="#27ae60">✓ 正确：完整参考平面</text>
+  <rect x="460" y="336" width="310" height="76" fill="#dfe8ef" stroke="#8a97a5"/>
+  <text x="482" y="354" font-size="11" fill="#8a97a5">GND 平面</text>
+  <rect x="480" y="352" width="270" height="10" rx="5" fill="#e67e22"/>
+  <rect x="480" y="380" width="270" height="10" rx="5" fill="#e67e22"/>
+  <circle cx="615" cy="367" r="12" fill="#27ae60"/>
+  <text x="615" y="372" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">✓</text>
+  <text x="615" y="440" text-anchor="middle" font-size="11.5" fill="#27ae60">阻抗连续、回流路径最短，眼图质量最佳</text>
+</svg>
