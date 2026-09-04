@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="820" height="480" fill="#fbfcfd"/>
+  <text x="410" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">板级防护体系：ESD 管（前级）与 TVS 管（后级）的分工</text>
+
+  <!-- 外部世界 -->
+  <rect x="40" y="190" width="120" height="90" rx="10" fill="#fdf1e7" stroke="#d35400" stroke-width="2"/>
+  <text x="100" y="225" text-anchor="middle" font-size="13" font-weight="700" fill="#d35400">外部接口</text>
+  <text x="100" y="248" text-anchor="middle" font-size="10.5" fill="#8a97a5">USB / 按键</text>
+  <text x="100" y="264" text-anchor="middle" font-size="10.5" fill="#8a97a5">RS485 / 天线</text>
+  <!-- 静电/浪涌箭头 -->
+  <g stroke="#c0392b" stroke-width="2.4" fill="#c0392b">
+    <line x1="52" y1="150" x2="86" y2="184"/>
+    <path d="M80 172 L92 188 L74 186 z"/>
+  </g>
+  <text x="42" y="140" font-size="11.5" fill="#c0392b" font-weight="600">ESD ±15kV</text>
+  <text x="42" y="156" font-size="11.5" fill="#c0392b" font-weight="600">浪涌 数百 V</text>
+
+  <!-- 板框 -->
+  <rect x="200" y="100" width="560" height="290" rx="14" fill="#f4f7fa" stroke="#5a6b7b" stroke-width="2.2"/>
+  <text x="216" y="122" font-size="12" fill="#8a97a5">PCB 板边</text>
+
+  <!-- 前级 ESD 管 -->
+  <rect x="240" y="160" width="150" height="150" rx="10" fill="#eaf2fb" stroke="#2980b9" stroke-width="2.2"/>
+  <text x="315" y="192" text-anchor="middle" font-size="14.5" font-weight="700" fill="#2980b9">ESD 保护管</text>
+  <text x="315" y="216" text-anchor="middle" font-size="11" fill="#1f2d3d">低结电容 0.3~3 pF</text>
+  <text x="315" y="236" text-anchor="middle" font-size="11" fill="#1f2d3d">响应 &lt; 1 ns</text>
+  <text x="315" y="256" text-anchor="middle" font-size="11" fill="#5a6b7b">贴着连接器放</text>
+  <text x="315" y="284" text-anchor="middle" font-size="11.5" fill="#2980b9" font-weight="600">泄放人体静电脉冲</text>
+
+  <!-- 后级 TVS 管 -->
+  <rect x="470" y="160" width="150" height="150" rx="10" fill="#e9f7ef" stroke="#27ae60" stroke-width="2.2"/>
+  <text x="545" y="192" text-anchor="middle" font-size="14.5" font-weight="700" fill="#27ae60">TVS 管</text>
+  <text x="545" y="216" text-anchor="middle" font-size="11" fill="#1f2d3d">功率大 400W~6.5kW</text>
+  <text x="545" y="236" text-anchor="middle" font-size="11" fill="#1f2d3d">结电容大（百 pF 级）也无妨</text>
+  <text x="545" y="256" text-anchor="middle" font-size="11" fill="#5a6b7b">电源入口 / 功率线</text>
+  <text x="545" y="284" text-anchor="middle" font-size="11.5" fill="#27ae60" font-weight="600">扛雷击浪涌能量</text>
+
+  <!-- 芯片（要保护的） -->
+  <rect x="660" y="160" width="80" height="150" rx="10" fill="#eaf0fb" stroke="#34549a" stroke-width="2.2"/>
+  <text x="700" y="228" text-anchor="middle" font-size="12.5" font-weight="700" fill="#34549a">MCU</text>
+  <text x="700" y="248" text-anchor="middle" font-size="10.5" fill="#8a97a5">脆弱端口</text>
+
+  <!-- 信号流 -->
+  <g stroke="#5a6b7b" stroke-width="2">
+    <line x1="390" y1="235" x2="458" y2="235"/>
+    <line x1="620" y1="235" x2="648" y2="235"/>
+  </g>
+  <path d="M458 230 L468 235 L458 240 z" fill="#5a6b7b"/>
+  <path d="M648 230 L658 235 L648 240 z" fill="#5a6b7b"/>
+
+  <!-- 接口连接器 -->
+  <rect x="208" y="200" width="22" height="70" rx="4" fill="#eceff3" stroke="#8a97a5" stroke-width="1.6"/>
+  <line x1="160" y1="235" x2="208" y2="235" stroke="#5a6b7b" stroke-width="2"/>
+
+  <!-- 位置规则标注 -->
+  <text x="480" y="90" text-anchor="middle" font-size="12.5" fill="#d35400" font-weight="600">位置铁律：管子越靠"入口"越好，防护地回路越短越好</text>
+
+  <!-- 底部对比条 -->
+  <rect x="60" y="410" width="700" height="52" rx="8" fill="#eaf2fb"/>
+  <text x="410" y="432" text-anchor="middle" font-size="12" fill="#1f2d3d">一句话分工：ESD 管"快而省"，守在接口第一线；TVS 管"壮而狠"，守在电源与功率线。</text>
+  <text x="410" y="452" text-anchor="middle" font-size="12" fill="#1f2d3d">选错场景 = 白花钱：拿 ESD 管扛浪涌会炸，拿 TVS 管护高速口会拖垮信号边沿。</text>
+</svg>
