@@ -58,9 +58,6 @@ post:
   copyright:
     enable: true
     content: '本文采用 CC BY-NC-SA 4.0 协议，转载请注明出处。'
-  comments:
-    enable: true
-    type: gitalk
 # ==================== 本地搜索 ====================
 search:
   enable: true
@@ -71,20 +68,6 @@ search:
 # 加载自定义 CSS（导航栏下拉菜单悬浮展开样式，文件位于 source/css/custom.css）
 custom_css:
   - /css/custom.css
-# ==================== 评论系统 ====================
-gitalk:
-  clientID: Ov23liqhJsqJMLtxOSlK
-  clientSecret: 14eedfb4b6585121fe511fc83cca83b48cfc7b13
-  repo: chen-daoming.github.io-comments
-  owner: chen-daoming
-  admin: ['chen-daoming']
-  language: zh-CN
-  labels: ['Gitalk']
-  perPage: 10
-  pagerDirection: last
-  distractionFreeMode: false
-  createIssueManually: true
-  proxy: https://tiny-shape-bfad.2691713347.workers.dev/
 # ==================== 页脚 ====================
 footer:
   content:
