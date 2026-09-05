@@ -68,6 +68,20 @@ search:
 # 加载自定义 CSS（导航栏下拉菜单悬浮展开样式，文件位于 source/css/custom.css）
 custom_css:
   - /css/custom.css
+# ==================== 评论系统 ====================
+comments:
+  gitalk:
+    enable: true
+    github_id: chen-daoming
+    repo: chen-daoming.github.io-comments
+    client_id: Ov23liqhJsqJMLtxOSlK
+    client_secret: 14eedfb4b6585121fe511fc83cca83b48cfc7b13
+    admin_user: chen-daoming
+    admin_repo: chen-daoming.github.io-comments
+    distraction_free_mode: false
+    labels: gitalk
+    language: zh-CN
+    per_page: 10
 # ==================== 页脚 ====================
 footer:
   content:
