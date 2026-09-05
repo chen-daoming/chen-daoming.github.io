@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="820" height="480" fill="#fbfcfd"/>
+  <text x="410" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">实测链路：原始值与 Kalman 估计同屏对比</text>
+
+  <!-- 传感器 -->
+  <rect x="50" y="110" width="150" height="120" rx="10" fill="#fdf1e7" stroke="#d35400" stroke-width="2"/>
+  <text x="125" y="140" text-anchor="middle" font-size="13" font-weight="700" fill="#d35400">被测对象</text>
+  <text x="125" y="164" text-anchor="middle" font-size="10.5" fill="#1f2d3d">电位器（电压）</text>
+  <text x="125" y="184" text-anchor="middle" font-size="10.5" fill="#1f2d3d">或 NTC / MPU6050</text>
+  <text x="125" y="208" text-anchor="middle" font-size="10" fill="#8a97a5">人为制造阶跃与抖动</text>
+
+  <!-- MCU -->
+  <rect x="260" y="90" width="240" height="160" rx="10" fill="#eaf0fb" stroke="#34549a" stroke-width="2.4"/>
+  <text x="380" y="118" text-anchor="middle" font-size="13.5" font-weight="700" fill="#34549a">STM32F103C8T6</text>
+  <rect x="282" y="132" width="196" height="98" rx="6" fill="#ffffff" stroke="#c3cdd6"/>
+  <g font-size="10.5" fill="#1f2d3d">
+    <text x="294" y="152">1. ADC 采原始值 z（1kHz）</text>
+    <text x="294" y="174" font-family="'Consolas',monospace">2. Kalman(x, P, Q, R) → x</text>
+    <text x="294" y="196" font-family="'Consolas',monospace">3. JustFloat{z, x}</text>
+    <text x="294" y="218">4. USART1 DMA → 上位机</text>
+  </g>
+
+  <!-- PC -->
+  <rect x="580" y="110" width="180" height="120" rx="10" fill="#e9f7ef" stroke="#27ae60" stroke-width="2"/>
+  <text x="670" y="140" text-anchor="middle" font-size="13" font-weight="700" fill="#27ae60">VOFA+ 上位机</text>
+  <text x="670" y="166" text-anchor="middle" font-size="10.5" fill="#1f2d3d">ch0 = 原始 z（毛刺）</text>
+  <text x="670" y="186" text-anchor="middle" font-size="10.5" fill="#1f2d3d">ch1 = Kalman x（平滑）</text>
+  <text x="670" y="210" text-anchor="middle" font-size="10" fill="#8a97a5">JustFloat 协议 115200</text>
+
+  <!-- 流箭头 -->
+  <g stroke="#8a97a5" stroke-width="2.4" fill="#8a97a5">
+    <line x1="200" y1="170" x2="252" y2="170"/><path d="M252 165 L262 170 L252 175 z"/>
+    <line x1="500" y1="170" x2="572" y2="170"/><path d="M572 165 L582 170 L572 175 z"/>
+  </g>
+  <text x="226" y="158" text-anchor="middle" font-size="10" fill="#5a6b7b">z</text>
+  <text x="536" y="158" text-anchor="middle" font-size="10" fill="#5a6b7b">{z, x}</text>
+
+  <!-- 硬件清单 -->
+  <rect x="50" y="280" width="710" height="110" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="405" y="306" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2d3d">配套调试硬件清单</text>
+  <line x1="70" y1="318" x2="740" y2="318" stroke="#e3e9ee" stroke-width="1.2"/>
+  <g font-size="11.5" fill="#1f2d3d">
+    <text x="70" y="340">STM32F103C8T6 小蓝板 ×1 · ST-Link V2 ×1（下载）· CH340 USB 转 TTL ×1（串口）</text>
+    <text x="70" y="362">10kΩ 电位器 ×1（接 3.3V 与 GND，滑臂接 PA1/ADC1_IN1）· 杜邦线若干</text>
+    <text x="70" y="384" fill="#5a6b7b">备选：MPU6050 模块（I2C，PB6/PB7）测加速度/角速度，同样适用本滤波器</text>
+  </g>
+
+  <!-- 底部提示 -->
+  <rect x="50" y="406" width="710" height="48" rx="8" fill="#eaf2fb"/>
+  <text x="405" y="428" text-anchor="middle" font-size="12" fill="#1f2d3d">看图调参：ch0 抖得越离谱，ch1 越能证明滤波器的价值；旋钮阶跃时观察 ch1 的追赶速度，</text>
+  <text x="405" y="446" text-anchor="middle" font-size="12" fill="#1f2d3d">滞后明显 → 减 R 或加 Q；毛刺仍多 → 加 R 或减 Q，两分钟就能收一轮</text>
+</svg>

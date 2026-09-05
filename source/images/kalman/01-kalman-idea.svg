@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="820" height="480" fill="#fbfcfd"/>
+  <text x="410" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">Kalman 滤波的直观思想：两把“不确定的尺子”加权融合</text>
+
+  <!-- ============ 左：曲线对比 ============ -->
+  <rect x="40" y="60" width="390" height="370" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="235" y="88" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1f2d3d">原始测量 · 真值 · Kalman 估计</text>
+
+  <!-- 坐标 -->
+  <line x1="80" y1="110" x2="80" y2="390" stroke="#8a97a5" stroke-width="1.6"/>
+  <line x1="80" y1="390" x2="410" y2="390" stroke="#8a97a5" stroke-width="1.6"/>
+
+  <!-- 真值（缓变） -->
+  <path d="M90 250 L410 156" fill="none" stroke="#95a5a6" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <text x="404" y="146" text-anchor="end" font-size="10.5" fill="#95a5a5">真值</text>
+
+  <!-- 原始测量散点 -->
+  <g fill="#e67e22">
+    <circle cx="90" cy="232" r="4"/><circle cx="118" cy="266" r="4"/><circle cx="146" cy="230" r="4"/>
+    <circle cx="174" cy="262" r="4"/><circle cx="202" cy="240" r="4"/><circle cx="230" cy="274" r="4"/>
+    <circle cx="258" cy="236" r="4"/><circle cx="286" cy="254" r="4"/><circle cx="314" cy="216" r="4"/>
+    <circle cx="342" cy="248" r="4"/><circle cx="370" cy="208" r="4"/><circle cx="398" cy="232" r="4"/>
+  </g>
+
+  <!-- Kalman 估计 -->
+  <path d="M90 244 C 150 250, 210 246, 268 236 S 370 200, 410 162" fill="none" stroke="#2980b9" stroke-width="2.8"/>
+
+  <!-- 图例 -->
+  <g font-size="10.5">
+    <circle cx="95" cy="416" r="4" fill="#e67e22"/><text x="105" y="420" fill="#5a6b7b">原始测量 z（抖）</text>
+    <circle cx="205" cy="416" r="4" fill="#2980b9"/><text x="215" y="420" fill="#5a6b7b">Kalman 估计（稳且不迟）</text>
+    <line x1="360" y1="416" x2="378" y2="416" stroke="#95a5a6" stroke-width="1.6" stroke-dasharray="5 3"/><text x="384" y="420" fill="#5a6b7b">真值</text>
+  </g>
+
+  <!-- ============ 右：加权公式与直觉 ============ -->
+  <rect x="450" y="60" width="340" height="180" rx="10" fill="#eaf2fb"/>
+  <text x="620" y="88" text-anchor="middle" font-size="13.5" font-weight="700" fill="#34549a">最优估计 = 预测与测量的加权平均</text>
+  <g font-family="'Consolas',monospace" font-size="13" fill="#1f2d3d" text-anchor="middle">
+    <text x="620" y="126">x = (1 − K)·x1 + K·z</text>
+  </g>
+  <g font-size="11" fill="#5a6b7b" text-anchor="middle">
+    <text x="620" y="152">x1：模型预测值　z：本次测量值</text>
+    <text x="620" y="172">K：卡尔曼增益，0~1 之间的“信任权重”</text>
+    <text x="620" y="196" font-family="'Consolas',monospace" fill="#34549a" font-weight="700">K = P1 / (P1 + R)</text>
+    <text x="620" y="222">P1：预测的方差　R：测量的方差</text>
+  </g>
+
+  <rect x="450" y="254" width="340" height="130" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="620" y="282" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2d3d">谁的不确定性小，就多信谁</text>
+  <g font-size="11.5" fill="#1f2d3d">
+    <text x="470" y="308" fill="#27ae60" font-weight="700">R 调大</text>
+    <text x="530" y="308">→ K 变小 → 更信模型 → 曲线平滑但滞后</text>
+    <text x="470" y="334" fill="#d35400" font-weight="700">Q 调大</text>
+    <text x="530" y="334">→ P1 变大 → K 变大 → 更信测量 → 跟随快但毛刺多</text>
+    <text x="470" y="364" fill="#8a97a5">极值：K=0 退化为纯模型，K=1 退化为裸测量</text>
+  </g>
+
+  <text x="620" y="424" text-anchor="middle" font-size="11" fill="#8a97a5">K 随每次测量自动更新——这就是“递归”：不用存历史数据</text>
+  <text x="410" y="464" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f2d3d">滑动平均是对过去一视同仁；Kalman 是按“不确定性”动态加权</text>
+</svg>
