@@ -263,12 +263,11 @@ TPS5430 还可以配置为 **反相 Buck-Boost** 拓扑，产生负电压输出�
 
 **文件位置**：
 
-- 原理图：`source/images/TPS5430/TPS5430_Schematic.pdf`
-- PCB：`source/images/TPS5430/TPS5430_PCB.pdf`
-- Gerber 文件：`source/images/TPS5430/Gerber/`
-- BOM：`source/images/TPS5430/BOM.csv`
+- 原理图：`source/images/TPS5430/schematic diagram.png`
+- PCB 顶层：`source/images/TPS5430/top.png`
+- PCB 底层：`source/images/TPS5430/bottom.png`
 
-> **注意**：请将您的原理图、PCB 截图、BOM 等文件放到 `source/images/TPS5430/` 目录下，并更新上面的文件路径。
+> **注意**：所有图片文件已统一存放在 `source/images/TPS5430/` 目录下。
 
 ### 设计规格
 
