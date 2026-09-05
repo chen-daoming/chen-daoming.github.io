@@ -83,7 +83,7 @@ gitalk:
   perPage: 10
   pagerDirection: last
   distractionFreeMode: false
-  createIssueManually: true
+  createIssueManually: false
   proxy: https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token
 # ==================== 页脚 ====================
 footer:
