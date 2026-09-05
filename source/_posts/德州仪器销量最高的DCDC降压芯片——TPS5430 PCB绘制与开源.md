@@ -259,15 +259,21 @@ TPS5430 还可以配置为 **反相 Buck-Boost** 拓扑，产生负电压输出�
 
 ## 六、开源文件
 
-本设计的原理图和 PCB 文件已开源，使用 **立创 EDA** 绘制：
+本设计的原理图和 PCB 文件已开源，使用 **立创 EDA** 绘制。
 
-**文件位置**：
+### 原理图
 
-- 原理图：`source/images/TPS5430/schematic diagram.png`
-- PCB 顶层：`source/images/TPS5430/top.png`
-- PCB 底层：`source/images/TPS5430/bottom.png`
+![TPS5430 原理图](/images/TPS5430/schematic%20diagram.png)
 
-> **注意**：所有图片文件已统一存放在 `source/images/TPS5430/` 目录下。
+### PCB 设计
+
+**顶层**：
+
+![TPS5430 PCB 顶层](/images/TPS5430/top.png)
+
+**底层**：
+
+![TPS5430 PCB 底层](/images/TPS5430/bottom.png)
 
 ### 设计规格
 
