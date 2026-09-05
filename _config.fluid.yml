@@ -84,7 +84,7 @@ gitalk:
   pagerDirection: last
   distractionFreeMode: false
   createIssueManually: true
-  proxy: https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token
+  proxy: https://corsproxy.io/?https://github.com/login/oauth/access_token
 # ==================== 页脚 ====================
 footer:
   content:
