@@ -84,7 +84,7 @@ gitalk:
   pagerDirection: last
   distractionFreeMode: false
   createIssueManually: true
-  proxy: https://api.allorigins.win/raw?url=https://github.com/login/oauth/access_token
+  proxy: https://tiny-shape-bfad.2691713347.workers.dev/
 # ==================== 页脚 ====================
 footer:
   content:
