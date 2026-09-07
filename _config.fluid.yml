@@ -19,7 +19,7 @@ navbar:
         - { key: 'led', name: 'LED 串联电阻', link: '/led-resistor/' }
         - { key: 'base', name: '进制转换器', link: '/base-converter/' }
         - { key: 'pcb', name: 'PCB走线宽度', link: '/pcb-trace/' }
-        - { key: 'dcdc', name: 'DC-DC升降压电感', link: '/dcdc-calculator/' }
+        - { key: 'dcdc', name: 'DC-DC升降压计算', link: '/dcdc-calculator/' }
         - { key: 'resistor-color', name: '电阻色环', link: '/resistor-color/' }
         - { key: 'opamp', name: '运放计算器', link: '/opamp/' }
         - { key: 'lc', name: 'LC谐振/滤波', link: '/lc/' }
