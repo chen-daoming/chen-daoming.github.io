@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
   <rect width="820" height="480" fill="#fbfcfd"/>
-  <text x="410" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">去耦半径：电容“管得着”的势力范围</text>
+  <text x="410" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">去耦半径：电容"管得着"的势力范围</text>
 
   <!-- ============ 左：俯视几何 ============ -->
-  <text x="215" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#2980b9">① 扰动源在芯片，电容要“听得见、来得及”</text>
+  <text x="215" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#2980b9">① 扰动源在芯片，电容要"听得见、来得及"</text>
 
-  <!-- 半径圈 -->
-  <circle cx="215" cy="250" r="150" fill="#eaf2fb" stroke="#2980b9" stroke-width="1.6" stroke-dasharray="7 5" opacity="0.6"/>
-  <circle cx="215" cy="250" r="88" fill="#e9f7ef" stroke="#27ae60" stroke-width="1.8" stroke-dasharray="6 4" opacity="0.85"/>
+  <!-- 半径圈 - 实际工程半径（100MHz） -->
+  <circle cx="215" cy="250" r="38" fill="#e9f7ef" stroke="#27ae60" stroke-width="1.8" stroke-dasharray="6 4" opacity="0.85"/>
+  <circle cx="215" cy="250" r="60" fill="#eaf2fb" stroke="#2980b9" stroke-width="1.6" stroke-dasharray="7 5" opacity="0.6"/>
 
   <!-- 芯片（扰动源） -->
   <rect x="183" y="222" width="64" height="56" rx="8" fill="#34549a"/>
@@ -19,48 +19,54 @@
     <circle cx="215" cy="250" r="38"/>
   </g>
 
-  <!-- 半径标注 -->
-  <line x1="215" y1="250" x2="356" y2="148" stroke="#8a97a5" stroke-width="1.4"/>
-  <text x="362" y="170" font-size="12" font-weight="700" fill="#2980b9">去耦半径 r</text>
+  <!-- 半径标注 - 100MHz 实际半径 -->
+  <line x1="215" y1="250" x2="270" y2="200" stroke="#8a97a5" stroke-width="1.4"/>
+  <text x="275" y="198" font-size="11" font-weight="700" fill="#27ae60">r ≈ 3cm (100MHz)</text>
 
   <!-- 界内电容 -->
-  <line x1="278" y1="270" x2="262" y2="262" stroke="#27ae60" stroke-width="2.4"/>
-  <text x="288" y="278" font-size="11" fill="#1e8449" font-weight="600">界内 ✓ 有效</text>
+  <line x1="248" y1="270" x2="236" y2="262" stroke="#27ae60" stroke-width="2.4"/>
+  <text x="256" y="278" font-size="10.5" fill="#1e8449" font-weight="600">界内 ✓ 有效</text>
   <!-- 界外电容 -->
-  <line x1="392" y1="150" x2="378" y2="142" stroke="#95a5a6" stroke-width="2.4"/>
-  <text x="400" y="142" font-size="11" fill="#7f8c8d" font-weight="600">界外 ✗ 失效</text>
+  <line x1="340" y1="195" x2="328" y2="188" stroke="#95a5a6" stroke-width="2.4"/>
+  <text x="348" y="188" font-size="10.5" fill="#7f8c8d" font-weight="600">界外 ✗ 失效</text>
 
-  <text x="215" y="428" text-anchor="middle" font-size="11.5" fill="#5a6b7b">扰动以电磁波速度传播：太远的电容“感知晚、支援慢”，相位对不上等于没帮</text>
+  <text x="215" y="340" text-anchor="middle" font-size="11" fill="#5a6b7b">按 100MHz 实际工作频率计算（MCU 典型噪声频段）</text>
+  <text x="215" y="360" text-anchor="middle" font-size="11" fill="#5a6b7b">100nF 理论半径 24cm（按 SRF）→ 实际仅需 3cm</text>
+  <text x="215" y="380" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="600">所以"0.1µF 贴引脚"是完全正确的</text>
 
   <!-- ============ 右：公式与算例 ============ -->
-  <text x="610" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#27ae60">② 半径怎么算：按谐振波长取 1/40~1/50</text>
+  <text x="610" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#27ae60">② 半径怎么算：按实际工作频率取 1/40~1/50</text>
 
   <rect x="460" y="88" width="320" height="76" rx="10" fill="#eaf2fb"/>
-  <text x="620" y="118" text-anchor="middle" font-size="14" font-weight="700" fill="#34549a" font-family="'Consolas',monospace">r ≈ λ / 40 ~ λ / 50 = v / (50·f0)</text>
-  <text x="620" y="142" text-anchor="middle" font-size="10.5" fill="#5a6b7b">v ≈ 166 ps/inch（FR4 信号传播速度）　f0 = 1/(2π√(LC总))</text>
+  <text x="620" y="118" text-anchor="middle" font-size="14" font-weight="700" fill="#34549a" font-family="'Consolas',monospace">r ≈ λ / 40 ~ λ / 50 = v / (50·f)</text>
+  <text x="620" y="142" text-anchor="middle" font-size="10.5" fill="#5a6b7b">v ≈ 166 ps/inch（FR4 信号传播速度）　f = 实际工作频率</text>
 
   <!-- 算例表 -->
-  <rect x="460" y="178" width="320" height="170" rx="10" fill="#ffffff" stroke="#d5dde5"/>
-  <text x="620" y="202" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f2d3d">算例（安装后总电感 1.6nH / 2nH）</text>
+  <rect x="460" y="178" width="320" height="190" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="620" y="202" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f2d3d">实际工程算例（100MHz 工作频率）</text>
   <line x1="478" y1="214" x2="762" y2="214" stroke="#e3e9ee" stroke-width="1.2"/>
   <g font-size="11" fill="#1f2d3d">
     <text x="478" y="234" font-weight="700" fill="#5a6b7b">电容</text>
-    <text x="570" y="234" font-weight="700" fill="#5a6b7b">f₀</text>
-    <text x="660" y="234" font-weight="700" fill="#5a6b7b">去耦半径</text>
+    <text x="545" y="234" font-weight="700" fill="#5a6b7b">SRF</text>
+    <text x="620" y="234" font-weight="700" fill="#5a6b7b">100MHz 半径</text>
+    <text x="720" y="234" font-weight="700" fill="#5a6b7b">实际要求</text>
     <line x1="478" y1="242" x2="762" y2="242" stroke="#f0f3f6" stroke-width="1"/>
     <text x="478" y="262" font-family="'Consolas',monospace">1nF</text>
-    <text x="570" y="262" font-family="'Consolas',monospace">125.8MHz</text>
-    <text x="660" y="262" font-weight="700" fill="#c0392b">≈ 2.4cm</text>
+    <text x="545" y="262" font-family="'Consolas',monospace" fill="#8a97a5">125.8MHz</text>
+    <text x="620" y="262" font-family="'Consolas',monospace">≈ 2.4cm</text>
+    <text x="720" y="262" font-weight="700" fill="#27ae60">&lt; 2cm</text>
     <text x="478" y="288" font-family="'Consolas',monospace">100nF</text>
-    <text x="570" y="288" font-family="'Consolas',monospace">12.6MHz</text>
-    <text x="660" y="288" font-weight="700" fill="#d35400">≈ 24cm</text>
+    <text x="545" y="288" font-family="'Consolas',monospace" fill="#8a97a5">12.6MHz</text>
+    <text x="620" y="288" font-family="'Consolas',monospace">≈ 3cm</text>
+    <text x="720" y="288" font-weight="700" fill="#27ae60">&lt; 3cm</text>
     <text x="478" y="314" font-family="'Consolas',monospace">10µF</text>
-    <text x="570" y="314" font-family="'Consolas',monospace">1.13MHz</text>
-    <text x="660" y="314" font-weight="700" fill="#27ae60">≈ 2.7m</text>
-    <text x="478" y="338" fill="#8a97a5">（1nF 算例与经典文献一致，可复算）</text>
+    <text x="545" y="314" font-family="'Consolas',monospace" fill="#8a97a5">1.13MHz</text>
+    <text x="620" y="314" font-family="'Consolas',monospace">≈ 6cm</text>
+    <text x="720" y="314" font-weight="700" fill="#2980b9">&lt; 5cm</text>
+    <text x="478" y="348" fill="#8a97a5" font-size="10">SRF 只决定"能用到多高"，实际半径按工作频率算</text>
   </g>
 
-  <text x="620" y="376" text-anchor="middle" font-size="11.5" fill="#5a6b7b">规律：容值越小 → 谐振越高 → 半径越小 → 越要贴脸</text>
+  <text x="620" y="398" text-anchor="middle" font-size="11.5" fill="#5a6b7b">规律：工作频率越高 → 半径越小 → 越要贴脸</text>
 
-  <text x="620" y="418" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2d3d">布局铁律：小电容贴引脚，大电容随意外围</text>
+  <text x="620" y="438" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2d3d">布局铁律：小电容贴引脚，大电容随意外围</text>
 </svg>
