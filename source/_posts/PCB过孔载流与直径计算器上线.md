@@ -130,5 +130,4 @@ categories:
 
 1. [IPC-2221: Generic Standard on Printed Board Design](https://www.ipc.org)
 2. [IPC-2152: Standard for Determining Current-Carrying Capacity in Printed Board Design](https://www.ipc.org)
-3. [TPS5430 PCB 绘制与开源](/2026/09/04/德州仪器销量最高的DCDC降压芯片——TPS5430 PCB绘制与开源/)
-4. [PCB 走线宽度计算器](/pcb-trace/)
+3. [PCB 走线宽度计算器](/pcb-trace/)
