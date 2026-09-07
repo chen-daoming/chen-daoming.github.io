@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="820" height="480" fill="#fbfcfd"/>
+  <text x="410" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">阻抗曲线视角：谐振谷与反谐振峰</text>
+
+  <!-- ============ 左：单电容 V 形曲线 ============ -->
+  <rect x="40" y="60" width="360" height="330" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="220" y="88" text-anchor="middle" font-size="15" font-weight="700" fill="#2980b9">① 单颗电容：阻抗是个“V”字</text>
+
+  <!-- 坐标 -->
+  <line x1="90" y1="110" x2="90" y2="340" stroke="#5a6b7b" stroke-width="1.8"/>
+  <line x1="90" y1="340" x2="380" y2="340" stroke="#5a6b7b" stroke-width="1.8"/>
+  <text x="82" y="124" text-anchor="end" font-size="10.5" fill="#5a6b7b">|Z|</text>
+  <text x="372" y="358" font-size="10.5" fill="#5a6b7b">f (对数)</text>
+
+  <!-- V 形曲线 -->
+  <polyline points="100,130 180,222 240,256 262,262 296,242 350,192" fill="none" stroke="#2980b9" stroke-width="2.8"/>
+  <!-- 谷点 -->
+  <circle cx="262" cy="262" r="5" fill="#c0392b"/>
+  <line x1="262" y1="262" x2="262" y2="340" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="262" y="356" text-anchor="middle" font-size="11.5" font-weight="700" fill="#c0392b">f0 自谐振</text>
+
+  <text x="140" y="296" font-size="10.5" fill="#5a6b7b">容性区（1/f 下降）</text>
+  <line x1="166" y1="284" x2="152" y2="196" stroke="#8a97a5" stroke-width="1"/>
+  <text x="322" y="296" font-size="10.5" fill="#5a6b7b">感性区（wL 上升）</text>
+  <line x1="330" y1="284" x2="322" y2="240" stroke="#8a97a5" stroke-width="1"/>
+  <text x="220" y="412" text-anchor="middle" font-size="11.5" fill="#5a6b7b">谷点阻抗 ≈ ESR；高于 f₀ 后电容变“电感”，去耦失效</text>
+  <text x="220" y="434" text-anchor="middle" font-size="11.5" fill="#8a97a5">所以一颗电容只擅长一个频段</text>
+
+  <!-- ============ 右：双电容反谐振 ============ -->
+  <rect x="420" y="60" width="360" height="330" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="600" y="88" text-anchor="middle" font-size="15" font-weight="700" fill="#27ae60">② 两颗并联：小心反谐振峰</text>
+
+  <line x1="470" y1="110" x2="470" y2="340" stroke="#5a6b7b" stroke-width="1.8"/>
+  <line x1="470" y1="340" x2="760" y2="340" stroke="#5a6b7b" stroke-width="1.8"/>
+  <text x="462" y="124" text-anchor="end" font-size="10.5" fill="#5a6b7b">|Z|</text>
+
+  <!-- 10nF 谷（右/高频） -->
+  <polyline points="500,190 570,230 640,280 662,300 690,322 750,330" fill="none" stroke="#2980b9" stroke-width="2" opacity="0.8"/>
+  <!-- 100nF 谷（左/低频） -->
+  <polyline points="478,150 530,210 590,270 640,306 700,322 750,326" fill="none" stroke="#27ae60" stroke-width="2" opacity="0.8"/>
+  <!-- 并联曲线：反谐振峰 -->
+  <polyline points="482,158 535,214 590,266 622,286 638,246 652,196 668,258 700,310 750,328" fill="none" stroke="#c0392b" stroke-width="2.6"/>
+  <circle cx="652" cy="196" r="5" fill="#c0392b"/>
+  <text x="652" y="182" text-anchor="middle" font-size="11" font-weight="700" fill="#c0392b">反谐振峰</text>
+
+  <rect x="476" y="136" width="8" height="8" fill="#27ae60"/>
+  <text x="489" y="144" font-size="10" fill="#27ae60">100nF</text>
+  <rect x="714" y="299" width="8" height="8" fill="#2980b9"/>
+  <text x="727" y="307" font-size="10" fill="#2980b9">10nF</text>
+  <text x="600" y="412" text-anchor="middle" font-size="11.5" fill="#5a6b7b">峰点：一个呈容性 + 一个呈感性，并联后阻抗飙升</text>
+  <text x="600" y="434" text-anchor="middle" font-size="11.5" fill="#8a97a5">对策：容值按 ~10:1 梯度铺开，别只放两颗</text>
+
+  <text x="410" y="464" text-anchor="middle" font-size="12" fill="#5a6b7b">文末 Python 脚本可一键复现这两张曲线</text>
+</svg>

@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="820" height="480" fill="#fbfcfd"/>
+  <text x="410" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">3W 与 20H 规则 —— 串扰抑制与板边辐射控制</text>
+
+  <!-- ================= 左：3W 规则 ================= -->
+  <rect x="40" y="56" width="370" height="380" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="225" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#2980b9">① 3W 规则：线间距（边到边）≥ 3W</text>
+
+  <!-- 攻击线 -->
+  <text x="200" y="150" text-anchor="middle" font-size="12" fill="#d35400" font-weight="600">攻击线（驱动端电平翻转）</text>
+  <rect x="80" y="193" width="240" height="14" rx="7" fill="#d35400"/>
+  <!-- 被干扰线 -->
+  <rect x="80" y="249" width="240" height="14" rx="7" fill="#2980b9"/>
+  <text x="200" y="285" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="600">被干扰线（敏感信号）</text>
+
+  <!-- 耦合场弧线 -->
+  <g fill="none" stroke="#e67e22" stroke-width="1.6" stroke-dasharray="4 3" opacity="0.85">
+    <path d="M120 210 Q128 228 120 246"/>
+    <path d="M200 210 Q208 228 200 246"/>
+    <path d="M280 210 Q288 228 280 246"/>
+  </g>
+  <text x="322" y="234" font-size="11" fill="#e67e22">电磁耦合</text>
+
+  <!-- W 尺寸 -->
+  <g stroke="#8a97a5" stroke-width="1">
+    <line x1="70" y1="193" x2="70" y2="207"/>
+    <line x1="64" y1="193" x2="76" y2="193"/>
+    <line x1="64" y1="207" x2="76" y2="207"/>
+  </g>
+  <text x="58" y="204" text-anchor="end" font-size="12" fill="#5a6b7b" font-weight="600">W</text>
+
+  <!-- 3W 尺寸（边到边） -->
+  <g stroke="#8a97a5" stroke-width="1">
+    <line x1="324" y1="207" x2="352" y2="207"/>
+    <line x1="324" y1="249" x2="352" y2="249"/>
+    <line x1="344" y1="211" x2="344" y2="245"/>
+    <path d="M341 211 L344 205 L347 211 z" fill="#8a97a5" stroke="none"/>
+    <path d="M341 245 L344 251 L347 245 z" fill="#8a97a5" stroke="none"/>
+  </g>
+  <text x="360" y="224" font-size="13" font-weight="700" fill="#1f2d3d">3W</text>
+  <text x="360" y="240" font-size="10.5" fill="#8a97a5">边到边</text>
+
+  <line x1="60" y1="316" x2="390" y2="316" stroke="#e3e9ee" stroke-width="1"/>
+  <text x="225" y="342" text-anchor="middle" font-size="12" fill="#5a6b7b">经验法则：间距增大到 3W 后，近端/远端串扰显著下降</text>
+  <text x="225" y="364" text-anchor="middle" font-size="12" fill="#5a6b7b">时钟、复位、模拟小信号、差分对之间优先满足</text>
+  <text x="225" y="390" text-anchor="middle" font-size="11.5" fill="#8a97a5">关键噪声源与敏感线之间可进一步加大到 4W~5W</text>
+
+  <!-- ================= 右：20H 规则 ================= -->
+  <rect x="430" y="56" width="360" height="380" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="610" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#27ae60">② 20H 规则：电源层相对地平面内缩 ≥ 20H</text>
+
+  <!-- 介质体 -->
+  <rect x="480" y="160" width="300" height="196" fill="#eef3f7"/>
+  <!-- 上下地平面 -->
+  <rect x="480" y="160" width="300" height="14" fill="#2980b9"/>
+  <text x="630" y="153" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="600">GND 地平面（伸出）</text>
+  <rect x="480" y="342" width="300" height="14" fill="#2980b9"/>
+  <text x="630" y="376" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="600">GND 地平面（伸出）</text>
+  <!-- 电源平面（内缩） -->
+  <rect x="520" y="248" width="220" height="14" fill="#e67e22"/>
+  <text x="630" y="242" text-anchor="middle" font-size="12" fill="#d35400" font-weight="600">PWR 电源平面（内缩）</text>
+
+  <!-- H 尺寸 -->
+  <g stroke="#8a97a5" stroke-width="1">
+    <line x1="470" y1="174" x2="470" y2="248"/>
+    <line x1="464" y1="174" x2="476" y2="174"/>
+    <line x1="464" y1="248" x2="476" y2="248"/>
+    <path d="M467 180 L470 174 L473 180 z" fill="#8a97a5" stroke="none"/>
+    <path d="M467 242 L470 248 L473 242 z" fill="#8a97a5" stroke="none"/>
+  </g>
+  <text x="456" y="215" text-anchor="end" font-size="12" fill="#5a6b7b" font-weight="600">H</text>
+  <text x="456" y="230" text-anchor="end" font-size="10" fill="#8a97a5">介质厚度</text>
+
+  <!-- 20H 尺寸 -->
+  <g stroke="#8a97a5" stroke-width="1">
+    <line x1="480" y1="196" x2="520" y2="196"/>
+    <path d="M486 193 L480 196 L486 199 z" fill="#8a97a5" stroke="none"/>
+    <path d="M514 193 L520 196 L514 199 z" fill="#8a97a5" stroke="none"/>
+    <line x1="740" y1="196" x2="780" y2="196"/>
+    <path d="M746 193 L740 196 L746 199 z" fill="#8a97a5" stroke="none"/>
+    <path d="M774 193 L780 196 L774 199 z" fill="#8a97a5" stroke="none"/>
+  </g>
+  <text x="500" y="188" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1f2d3d">≥20H</text>
+  <text x="760" y="188" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1f2d3d">≥20H</text>
+
+  <!-- 边缘场抑制示意 -->
+  <g stroke="#c0392b" stroke-width="1.6" stroke-dasharray="4 3" opacity="0.8">
+    <line x1="478" y1="210" x2="452" y2="222"/>
+    <line x1="478" y1="300" x2="452" y2="288"/>
+  </g>
+  <text x="448" y="232" text-anchor="end" font-size="10.5" fill="#c0392b">边缘场</text>
+  <text x="448" y="246" text-anchor="end" font-size="10.5" fill="#c0392b">被削弱</text>
+
+  <line x1="450" y1="396" x2="770" y2="396" stroke="#e3e9ee" stroke-width="1"/>
+  <text x="610" y="418" text-anchor="middle" font-size="12" fill="#5a6b7b">H = 电源平面与相邻地平面之间的介质总厚度</text>
+  <text x="610" y="440" text-anchor="middle" font-size="12" fill="#5a6b7b">四边对称内缩，可显著降低板边 EMI 辐射</text>
+
+  <!-- 底部口诀 -->
+  <text x="410" y="466" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2d3d">口诀：间距 3W 防串扰，电源内缩 20H 防辐射</text>
+</svg>

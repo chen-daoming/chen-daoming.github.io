@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="820" height="480" fill="#fbfcfd"/>
+  <text x="410" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">TVS / ESD 管五步选型流程</text>
+
+  <!-- 流程主线（左侧蛇形） -->
+  <g text-anchor="middle">
+    <!-- Step1 -->
+    <rect x="60" y="70" width="150" height="72" rx="8" fill="#eaf2fb" stroke="#2980b9" stroke-width="2"/>
+    <text x="135" y="96" font-size="13" font-weight="700" fill="#2980b9">① 明确场景</text>
+    <text x="135" y="116" font-size="10.5" fill="#5a6b7b">接口 ESD？电源浪涌？</text>
+    <text x="135" y="131" font-size="10.5" fill="#5a6b7b">直流极性 or 双向信号？</text>
+    <!-- Step2 -->
+    <rect x="300" y="70" width="150" height="72" rx="8" fill="#e9f7ef" stroke="#27ae60" stroke-width="2"/>
+    <text x="375" y="96" font-size="13" font-weight="700" fill="#27ae60">② 定 V_RWM</text>
+    <text x="375" y="116" font-size="10.5" fill="#5a6b7b">≥ 线路最高工作电压</text>
+    <text x="375" y="131" font-size="10.5" fill="#5a6b7b">留 10%~20% 裕量</text>
+    <!-- Step3 -->
+    <rect x="540" y="70" width="150" height="72" rx="8" fill="#fdf1e7" stroke="#d35400" stroke-width="2"/>
+    <text x="615" y="96" font-size="13" font-weight="700" fill="#d35400">③ 算能量</text>
+    <text x="615" y="116" font-size="10.5" fill="#5a6b7b">按 IEC 61000 等级</text>
+    <text x="615" y="131" font-size="10.5" fill="#5a6b7b">查 P_PP / I_PP 裕量</text>
+    <!-- Step4 -->
+    <rect x="540" y="210" width="150" height="72" rx="8" fill="#f2eafb" stroke="#8e44ad" stroke-width="2"/>
+    <text x="615" y="236" font-size="13" font-weight="700" fill="#8e44ad">④ 查 V_C 与 C_J</text>
+    <text x="615" y="256" font-size="10.5" fill="#5a6b7b">V_C ≤ 芯片耐受电压</text>
+    <text x="615" y="271" font-size="10.5" fill="#5a6b7b">高速口卡结电容</text>
+    <!-- Step5 -->
+    <rect x="300" y="210" width="150" height="72" rx="8" fill="#eaf0fb" stroke="#34549a" stroke-width="2"/>
+    <text x="375" y="236" font-size="13" font-weight="700" fill="#34549a">⑤ 定封装布局</text>
+    <text x="375" y="256" font-size="10.5" fill="#5a6b7b">SMA/SOT-23/DFN</text>
+    <text x="375" y="271" font-size="10.5" fill="#5a6b7b">贴近接口 · 回路最短</text>
+  </g>
+
+  <!-- 流程箭头 -->
+  <g stroke="#8a97a5" stroke-width="2" fill="#8a97a5">
+    <line x1="210" y1="106" x2="292" y2="106"/><path d="M292 101 L302 106 L292 111 z"/>
+    <line x1="450" y1="106" x2="532" y2="106"/><path d="M532 101 L542 106 L532 111 z"/>
+    <path d="M615 142 L615 202"/>
+    <path d="M610 202 L615 212 L620 202 z"/>
+    <line x1="540" y1="246" x2="458" y2="246"/><path d="M458 241 L448 246 L458 251 z"/>
+  </g>
+
+  <!-- 典型值表（右侧竖排） -->
+  <rect x="90" y="180" width="150" height="250" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="165" y="206" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f2d3d">常见场景速配</text>
+  <line x1="105" y1="218" x2="225" y2="218" stroke="#e3e9ee" stroke-width="1.2"/>
+  <g font-size="10.5" fill="#1f2d3d">
+    <text x="105" y="240" fill="#8e44ad" font-weight="700">USB 2.0 D±</text>
+    <text x="105" y="256" fill="#5a6b7b">ESD 管 · C_J ≤ 1pF</text>
+    <text x="105" y="284" fill="#8e44ad" font-weight="700">RS485 A/B</text>
+    <text x="105" y="300" fill="#5a6b7b">双向 TVS 600W 级</text>
+    <text x="105" y="328" fill="#8e44ad" font-weight="700">12V 电源输入</text>
+    <text x="105" y="344" fill="#5a6b7b">V_RWM≈13V 单向 TVS</text>
+    <text x="105" y="372" fill="#8e44ad" font-weight="700">5V 电源轨</text>
+    <text x="105" y="388" fill="#5a6b7b">V_RWM≈5.5~6V</text>
+    <text x="105" y="416" fill="#8e44ad" font-weight="700">按键/低速 IO</text>
+    <text x="105" y="426" fill="#5a6b7b">ESD 管 阵列最省板面积</text>
+  </g>
+
+  <!-- 底部避坑 -->
+  <rect x="300" y="310" width="460" height="120" rx="10" fill="#fdf0ef" stroke="#e6b8b3"/>
+  <text x="530" y="336" text-anchor="middle" font-size="13" font-weight="700" fill="#c0392b">三个高频翻车点</text>
+  <g font-size="11.5" fill="#1f2d3d">
+    <text x="320" y="362">① V_RWM 贴着电源电压选 → 上电就漏电流大、发热甚至误动作</text>
+    <text x="320" y="386">② 只看 V_C 不看 I_PP 对应条件 → 换个浪涌波形钳位电压翻倍</text>
+    <text x="320" y="410">③ 管子选对了但放得远、回路绕 → 等效电感把钳位抬高一截</text>
+  </g>
+</svg>

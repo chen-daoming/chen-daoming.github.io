@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="820" height="480" fill="#fbfcfd"/>
+  <text x="410" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2d3d">Q / R 调参直觉：同一份原始数据，三种结局</text>
+
+  <!-- ============ 面板 A：R 太大 ============ -->
+  <rect x="40" y="60" width="240" height="340" rx="10" fill="#ffffff" stroke="#d5dde5"/>
+  <text x="160" y="88" text-anchor="middle" font-size="13.5" font-weight="700" fill="#5a6b7b">R 太大（更信模型）</text>
+  <line x1="70" y1="110" x2="70" y2="340" stroke="#8a97a5" stroke-width="1.4"/>
+  <line x1="70" y1="340" x2="260" y2="340" stroke="#8a97a5" stroke-width="1.4"/>
+  <line x1="70" y1="270" x2="165" y2="270" stroke="#95a5a6" stroke-width="1.4" stroke-dasharray="5 3"/>
+  <line x1="165" y1="170" x2="260" y2="170" stroke="#95a5a6" stroke-width="1.4" stroke-dasharray="5 3"/>
+  <g fill="#f0b27a">
+    <circle cx="80" cy="262" r="3.5"/><circle cx="98" cy="278" r="3.5"/><circle cx="116" cy="258" r="3.5"/>
+    <circle cx="134" cy="272" r="3.5"/><circle cx="152" cy="264" r="3.5"/>
+    <circle cx="180" cy="180" r="3.5"/><circle cx="198" cy="158" r="3.5"/><circle cx="216" cy="178" r="3.5"/>
+    <circle cx="234" cy="162" r="3.5"/><circle cx="252" cy="172" r="3.5"/>
+  </g>
+  <path d="M70 268 C 120 266, 160 250, 200 226 S 245 196, 258 188" fill="none" stroke="#2980b9" stroke-width="2.6"/>
+  <text x="160" y="368" text-anchor="middle" font-size="10.5" fill="#5a6b7b">曲线过于平滑，爬得慢、</text>
+  <text x="160" y="386" text-anchor="middle" font-size="10.5" fill="#5a6b7b">反应迟钝（滞后大）</text>
+
+  <!-- ============ 面板 B：匹配 ============ -->
+  <rect x="295" y="60" width="240" height="340" rx="10" fill="#f4fcf6" stroke="#27ae60" stroke-width="1.8"/>
+  <text x="415" y="88" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1e8449">Q/R 匹配（推荐）</text>
+  <line x1="325" y1="110" x2="325" y2="340" stroke="#8a97a5" stroke-width="1.4"/>
+  <line x1="325" y1="340" x2="515" y2="340" stroke="#8a97a5" stroke-width="1.4"/>
+  <line x1="325" y1="270" x2="420" y2="270" stroke="#95a5a6" stroke-width="1.4" stroke-dasharray="5 3"/>
+  <line x1="420" y1="170" x2="515" y2="170" stroke="#95a5a6" stroke-width="1.4" stroke-dasharray="5 3"/>
+  <g fill="#f0b27a">
+    <circle cx="335" cy="262" r="3.5"/><circle cx="353" cy="278" r="3.5"/><circle cx="371" cy="258" r="3.5"/>
+    <circle cx="389" cy="272" r="3.5"/><circle cx="407" cy="264" r="3.5"/>
+    <circle cx="435" cy="180" r="3.5"/><circle cx="453" cy="158" r="3.5"/><circle cx="471" cy="178" r="3.5"/>
+    <circle cx="489" cy="162" r="3.5"/><circle cx="507" cy="172" r="3.5"/>
+  </g>
+  <path d="M325 268 H398 C 412 264, 420 236, 432 210 S 460 176, 508 172" fill="none" stroke="#2980b9" stroke-width="2.6"/>
+  <text x="415" y="368" text-anchor="middle" font-size="10.5" fill="#1e8449">阶跃后一两个周期收拢，</text>
+  <text x="415" y="386" text-anchor="middle" font-size="10.5" fill="#1e8449">稳态几乎没有毛刺</text>
+
+  <!-- ============ 面板 C：Q 太大 ============ -->
+  <rect x="550" y="60" width="240" height="340" rx="10" fill="#fdf4f3" stroke="#e6b8b3" stroke-width="1.8"/>
+  <text x="670" y="88" text-anchor="middle" font-size="13.5" font-weight="700" fill="#c0392b">Q 太大（更信测量）</text>
+  <line x1="580" y1="110" x2="580" y2="340" stroke="#8a97a5" stroke-width="1.4"/>
+  <line x1="580" y1="340" x2="770" y2="340" stroke="#8a97a5" stroke-width="1.4"/>
+  <line x1="580" y1="270" x2="675" y2="270" stroke="#95a5a6" stroke-width="1.4" stroke-dasharray="5 3"/>
+  <line x1="675" y1="170" x2="770" y2="170" stroke="#95a5a6" stroke-width="1.4" stroke-dasharray="5 3"/>
+  <g fill="#f0b27a">
+    <circle cx="590" cy="262" r="3.5"/><circle cx="608" cy="278" r="3.5"/><circle cx="626" cy="258" r="3.5"/>
+    <circle cx="644" cy="272" r="3.5"/><circle cx="662" cy="264" r="3.5"/>
+    <circle cx="690" cy="180" r="3.5"/><circle cx="708" cy="158" r="3.5"/><circle cx="726" cy="178" r="3.5"/>
+    <circle cx="744" cy="162" r="3.5"/><circle cx="762" cy="172" r="3.5"/>
+  </g>
+  <polyline points="580,266 595,258 610,272 625,260 640,270 655,262 668,200 683,178 698,190 713,164 728,180 743,164 765,174" fill="none" stroke="#2980b9" stroke-width="2.4"/>
+  <text x="670" y="368" text-anchor="middle" font-size="10.5" fill="#c0392b">输出跟着噪声一起抖，</text>
+  <text x="670" y="386" text-anchor="middle" font-size="10.5" fill="#c0392b">滤波等于白做</text>
+
+  <!-- 底部调参口诀 -->
+  <rect x="40" y="414" width="750" height="48" rx="8" fill="#eaf2fb"/>
+  <text x="415" y="436" text-anchor="middle" font-size="12" fill="#1f2d3d">调参顺序：先实测传感器静止噪声算出方差 → 定 R；再从小到大调 Q，直到“既稳又跟手”。</text>
+  <text x="415" y="454" text-anchor="middle" font-size="11" fill="#8a97a5">图中三块面板共用同一组原始采样点（橙色），只有 Q/R 不同</text>
+</svg>
