@@ -28,6 +28,10 @@ about:
   title: '关于'
   subtitle: '关于'
 
+tools:
+  menu: '工具栏'
+  title: '工具栏'
+
 links:
   menu: '友链'
   title: '友链'

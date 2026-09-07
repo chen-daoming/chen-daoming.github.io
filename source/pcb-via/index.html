@@ -1,0 +1,658 @@
+---
+title: PCB 过孔计算器
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCB 过孔计算器</title>
+<style>
+  :root{
+    --bg:#121518;--panel:#1b2026;--panel-2:#21272e;--border:#2b333c;--border-strong:#3a444f;
+    --text:#e9edf2;--text-dim:#98a4b1;--text-faint:#6b7683;
+    --accent:#e0a34b;--accent-soft:rgba(224,163,75,.14);
+    --display-bg:#0c120e;--display:#a7e8ba;--display-dim:#4c7a5e;
+    --inner:#7fb4e8;--outer:#e8a77f;
+    --ok:#58c67c;--err:#d9685f;--warn:#d9a85f;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono",Consolas,"Courier New",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+  }
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:28px 16px 40px}
+  .tool{max-width:1000px;margin:0 auto}
+  .head{margin-bottom:22px}
+  .head-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin:0 0 8px}
+  .head h1{margin:0 0 6px;font-size:26px;font-weight:700}
+  .head-sub{margin:0;color:var(--text-dim);font-size:14px;max-width:72ch}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px}
+  .panel-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text-dim);letter-spacing:.06em;margin:0 0 14px}
+  .panel-title::before{content:"";width:6px;height:14px;background:var(--accent);border-radius:1px;flex:none}
+  .mode-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .mode-tab{appearance:none;border:1px solid var(--border-strong);background:var(--panel-2);color:var(--text-dim);font-family:var(--sans);font-size:14px;padding:9px 18px;min-height:40px;border-radius:6px;cursor:pointer;transition:background .15s ease,color .15s ease,border-color .15s ease}
+  .mode-tab:hover{color:var(--text);border-color:var(--accent)}
+  .mode-tab.is-active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+  .mode-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .field-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:13px;color:var(--text-dim);font-weight:500}
+  .field label .hint{color:var(--text-faint);font-size:11px}
+  .field-input{display:flex;gap:0}
+  .field-input input{flex:1;min-width:0;background:#0f1317;border:1px solid var(--border-strong);border-right:none;border-radius:6px 0 0 6px;color:var(--display);font-family:var(--mono);font-size:15px;padding:10px 12px;min-height:42px}
+  .field-input input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .field-input select{width:auto;min-width:70px;background:var(--panel-2);border:1px solid var(--border-strong);border-radius:0 6px 6px 0;color:var(--text);font-family:var(--sans);font-size:12.5px;padding:0 8px;min-height:42px;cursor:pointer}
+  .field-input select:focus{outline:none;border-color:var(--accent)}
+  .field-check{display:flex;align-items:center;gap:8px;min-height:42px}
+  .field-check input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
+  .field-check span{font-size:13px;color:var(--text-dim)}
+  .readout{background:var(--display-bg);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin-bottom:14px;box-shadow:inset 0 1px 4px rgba(0,0,0,.5)}
+  .readout-label{font-size:12px;color:var(--display-dim);font-family:var(--mono);letter-spacing:.08em;margin-bottom:6px}
+  .readout-value{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--display);line-height:1.25;word-break:break-all}
+  .readout-value .unit{font-size:17px;color:var(--display-dim);margin-left:6px;font-weight:500}
+  .readout-value .sep{color:var(--display-dim);margin:0 10px}
+  .readout-sub{font-size:12.5px;color:var(--text-dim);margin-top:6px}
+  .detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+  .detail-item{background:var(--panel-2);border:1px solid var(--border);border-radius:6px;padding:10px 12px}
+  .detail-item .di-label{font-size:11px;color:var(--text-faint);margin-bottom:3px}
+  .detail-item .di-value{font-family:var(--mono);font-size:15px;color:var(--text);font-weight:600;word-break:break-all}
+  .detail-item.accent{border-color:var(--accent);background:var(--accent-soft)}
+  .detail-item.accent .di-value{color:var(--accent)}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .formula-box{background:var(--display-bg);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;margin-bottom:10px}
+  .formula-box .fm-text{font-family:var(--mono);font-size:14px;color:var(--display);font-weight:600;line-height:1.8}
+  .formula-box .fm-text .var{color:var(--accent)}
+  .note{margin-top:10px;font-size:12px;color:var(--text-faint);line-height:1.6}
+  .note code{font-family:var(--mono);color:var(--text-dim);background:var(--panel-2);padding:1px 5px;border-radius:4px}
+  .foot{margin-top:18px;color:var(--text-faint);font-size:12.5px;border-top:1px dashed var(--border);padding-top:12px}
+  .foot code{font-family:var(--mono);color:var(--text-dim);background:var(--panel-2);padding:1px 5px;border-radius:4px}
+  .warn{color:var(--warn);font-size:13px;margin-top:10px;font-family:var(--mono)}
+  .err{color:var(--err);font-size:13px;margin-top:10px;font-family:var(--mono)}
+  .svg-container{display:flex;justify-content:center;margin:16px 0}
+  .svg-container svg{max-width:100%;height:auto}
+  .ref-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:12px}
+  .ref-table thead th{background:var(--panel-2);color:var(--accent);font-weight:600;text-align:left;padding:7px 10px;border-bottom:1px solid var(--border-strong);font-size:11.5px;letter-spacing:.04em}
+  .ref-table tbody td{padding:6px 10px;border-bottom:1px solid var(--border);font-family:var(--mono)}
+  .ref-table tbody td:first-child{font-family:var(--sans);font-weight:500}
+  .ref-table tbody tr:hover{background:var(--accent-soft)}
+  .rec-box{background:var(--accent-soft);border:1px solid var(--accent);border-radius:8px;padding:12px 14px;margin-top:14px}
+  .rec-title{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:8px}
+  .rec-row{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;padding:5px 0;font-size:12.5px;border-bottom:1px dashed rgba(224,163,75,0.15)}
+  .rec-row:last-child{border-bottom:none}
+  .rec-name{font-family:var(--mono);font-weight:700;color:var(--accent);min-width:96px}
+  .rec-pick{font-family:var(--mono);font-weight:700;color:var(--display);font-size:14px}
+  @media(max-width:720px){
+    body{padding:20px 12px 32px}.head h1{font-size:22px}
+    .two-col{grid-template-columns:1fr}
+    .readout-value{font-size:22px}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="tool">
+  <header class="head">
+    <div class="head-kicker">Embedded Utility · IPC-2221 / IPC-2152</div>
+    <h1>PCB 过孔计算器</h1>
+    <p class="head-sub">基于 IPC-2221 与 IPC-2152 标准，计算 PCB 过孔的载流能力与所需直径。支持通孔、盲埋孔，自动计算电阻、压降与功率损耗。</p>
+  </header>
+
+  <!-- ===== 过孔剖面图 ===== -->
+  <section class="panel">
+    <h2 class="panel-title">过孔结构示意</h2>
+    <div class="svg-container">
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="max-width:400px">
+        <!-- PCB 基板 -->
+        <rect x="50" y="60" width="300" height="100" rx="4" fill="#2a3a4a" stroke="#4a5a6a" stroke-width="1.5"/>
+        <text x="200" y="115" text-anchor="middle" fill="#8899aa" font-size="11" font-family="sans-serif">PCB 基板 (FR-4)</text>
+        
+        <!-- 顶层铜 -->
+        <rect x="50" y="55" width="300" height="8" rx="2" fill="#d4a574" stroke="#b8956a" stroke-width="1"/>
+        <text x="30" y="62" text-anchor="middle" fill="#d4a574" font-size="10" font-family="sans-serif">顶层铜</text>
+        
+        <!-- 底层铜 -->
+        <rect x="50" y="157" width="300" height="8" rx="2" fill="#d4a574" stroke="#b8956a" stroke-width="1"/>
+        <text x="30" y="164" text-anchor="middle" fill="#d4a574" font-size="10" font-family="sans-serif">底层铜</text>
+        
+        <!-- 过孔铜壁 -->
+        <rect x="185" y="55" width="6" height="110" fill="#e8b88a" stroke="#d4a574" stroke-width="1"/>
+        <rect x="209" y="55" width="6" height="110" fill="#e8b88a" stroke="#d4a574" stroke-width="1"/>
+        
+        <!-- 过孔钻孔 -->
+        <rect x="191" y="55" width="18" height="110" fill="#1a2a3a" stroke="#3a4a5a" stroke-width="1"/>
+        
+        <!-- 顶层焊盘 -->
+        <ellipse cx="200" cy="59" rx="25" ry="5" fill="#d4a574" stroke="#b8956a" stroke-width="1"/>
+        <!-- 底层焊盘 -->
+        <ellipse cx="200" cy="161" rx="25" ry="5" fill="#d4a574" stroke="#b8956a" stroke-width="1"/>
+        
+        <!-- 标注：过孔直径 d -->
+        <line x1="191" y1="35" x2="209" y2="35" stroke="#e0a34b" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+        <text x="200" y="30" text-anchor="middle" fill="#e0a34b" font-size="11" font-weight="bold" font-family="monospace">d</text>
+        
+        <!-- 标注：铜壁厚 t -->
+        <line x1="180" y1="90" x2="185" y2="90" stroke="#a7e8ba" stroke-width="1.5" marker-start="url(#arrow-g)" marker-end="url(#arrow-g)"/>
+        <text x="172" y="88" text-anchor="end" fill="#a7e8ba" font-size="10" font-weight="bold" font-family="monospace">t</text>
+        
+        <!-- 标注：板厚 L -->
+        <line x1="370" y1="55" x2="370" y2="165" stroke="#7fb4e8" stroke-width="1.5" marker-start="url(#arrow-b)" marker-end="url(#arrow-b)"/>
+        <text x="380" y="115" text-anchor="start" fill="#7fb4e8" font-size="11" font-weight="bold" font-family="monospace">L</text>
+        
+        <!-- 箭头定义 -->
+        <defs>
+          <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#e0a34b"/>
+          </marker>
+          <marker id="arrow-g" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#a7e8ba"/>
+          </marker>
+          <marker id="arrow-b" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#7fb4e8"/>
+          </marker>
+        </defs>
+        
+        <!-- 图例 -->
+        <rect x="60" y="185" width="12" height="12" rx="2" fill="#d4a574"/>
+        <text x="78" y="195" fill="#98a4b1" font-size="10" font-family="sans-serif">铜层/焊盘</text>
+        <rect x="150" y="185" width="12" height="12" rx="2" fill="#e8b88a"/>
+        <text x="168" y="195" fill="#98a4b1" font-size="10" font-family="sans-serif">孔壁镀铜</text>
+        <rect x="240" y="185" width="12" height="12" rx="2" fill="#1a2a3a"/>
+        <text x="258" y="195" fill="#98a4b1" font-size="10" font-family="sans-serif">钻孔</text>
+      </svg>
+    </div>
+    <p class="note">
+      <code>d</code> = 成品孔径（电镀后） · <code>t</code> = 孔壁铜厚 · <code>L</code> = 板厚（通孔）或层间距离（盲埋孔）<br>
+      孔壁铜厚通常为 18–25 µm，与外层走线铜厚不同，请以 PCB 制造商提供的数据为准。
+    </p>
+  </section>
+
+  <!-- ===== 模式切换 ===== -->
+  <section class="panel">
+    <div class="mode-tabs">
+      <button class="mode-tab is-active" data-mode="current">过孔载流计算</button>
+      <button class="mode-tab" data-mode="size">过孔直径计算</button>
+    </div>
+
+    <!-- ===== 载流计算模式 ===== -->
+    <div id="mode-current">
+      <div class="field-grid">
+        <div class="field">
+          <label>成品孔径 d</label>
+          <div class="field-input">
+            <input type="number" id="c-diameter" step="any" min="0.1" value="0.3">
+            <select id="c-diameter-unit">
+              <option value="mm" selected>mm</option>
+              <option value="mil">mil</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>孔壁铜厚 t</label>
+          <div class="field-input">
+            <input type="number" id="c-plating" step="any" min="1" value="25">
+            <select id="c-plating-unit">
+              <option value="um" selected>µm</option>
+              <option value="mil">mil</option>
+              <option value="oz">oz</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>允许温升 ΔT</label>
+          <div class="field-input">
+            <input type="number" id="c-temp" step="any" min="1" value="10">
+            <select disabled><option>°C</option></select>
+          </div>
+        </div>
+        <div class="field">
+          <label>板厚 / 层间距离 L</label>
+          <div class="field-input">
+            <input type="number" id="c-length" step="any" min="0.1" value="1.6">
+            <select id="c-length-unit">
+              <option value="mm" selected>mm</option>
+              <option value="mil">mil</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>IPC 标准</label>
+          <div class="field-input">
+            <select id="c-std" style="width:100%;min-height:42px;background:#0f1317;border:1px solid var(--border-strong);border-radius:6px;color:var(--display);font-family:var(--mono);font-size:14px;padding:0 12px">
+              <option value="2221-ext">IPC-2221 通孔 (外层 k=0.048)</option>
+              <option value="2221-int">IPC-2221 盲埋孔 (内层 k=0.024)</option>
+              <option value="2152">IPC-2152 (k=0.064)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>过孔类型</label>
+          <div class="field-input">
+            <select id="c-type" style="width:100%;min-height:42px;background:#0f1317;border:1px solid var(--border-strong);border-radius:6px;color:var(--display);font-family:var(--mono);font-size:14px;padding:0 12px">
+              <option value="through">通孔 (Through)</option>
+              <option value="blind">盲孔 (Blind)</option>
+              <option value="buried">埋孔 (Buried)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-check">
+            <input type="checkbox" id="c-plane">
+            <span>直连铜平面 (×1.2)</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>并联过孔数</label>
+          <div class="field-input">
+            <input type="number" id="c-count" step="1" min="1" value="1">
+            <select disabled><option>个</option></select>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 结果 -->
+      <div id="current-result" style="margin-top:16px">
+        <div class="readout">
+          <div class="readout-label">单孔最大载流</div>
+          <div class="readout-value" id="c-current">—<span class="unit">A</span></div>
+          <div class="readout-sub" id="c-current-sub"></div>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-item accent">
+            <div class="di-label">铜截面积</div>
+            <div class="di-value" id="c-area">—</div>
+          </div>
+          <div class="detail-item">
+            <div class="di-label">单孔电阻</div>
+            <div class="di-value" id="c-res">—</div>
+          </div>
+          <div class="detail-item">
+            <div class="di-label">压降</div>
+            <div class="di-value" id="c-drop">—</div>
+          </div>
+          <div class="detail-item">
+            <div class="di-label">功率损耗</div>
+            <div class="di-value" id="c-power">—</div>
+          </div>
+          <div class="detail-item accent">
+            <div class="di-label">并联总载流</div>
+            <div class="di-value" id="c-total">—</div>
+          </div>
+          <div class="detail-item">
+            <div class="di-label">并联总电阻</div>
+            <div class="di-value" id="c-total-res">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 直径计算模式 ===== -->
+    <div id="mode-size" style="display:none">
+      <div class="field-grid">
+        <div class="field">
+          <label>目标电流 I</label>
+          <div class="field-input">
+            <input type="number" id="s-current" step="any" min="0.01" value="1">
+            <select disabled><option>A</option></select>
+          </div>
+        </div>
+        <div class="field">
+          <label>孔壁铜厚 t</label>
+          <div class="field-input">
+            <input type="number" id="s-plating" step="any" min="1" value="25">
+            <select id="s-plating-unit">
+              <option value="um" selected>µm</option>
+              <option value="mil">mil</option>
+              <option value="oz">oz</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>允许温升 ΔT</label>
+          <div class="field-input">
+            <input type="number" id="s-temp" step="any" min="1" value="10">
+            <select disabled><option>°C</option></select>
+          </div>
+        </div>
+        <div class="field">
+          <label>板厚 / 层间距离 L</label>
+          <div class="field-input">
+            <input type="number" id="s-length" step="any" min="0.1" value="1.6">
+            <select id="s-length-unit">
+              <option value="mm" selected>mm</option>
+              <option value="mil">mil</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>IPC 标准</label>
+          <div class="field-input">
+            <select id="s-std" style="width:100%;min-height:42px;background:#0f1317;border:1px solid var(--border-strong);border-radius:6px;color:var(--display);font-family:var(--mono);font-size:14px;padding:0 12px">
+              <option value="2221-ext">IPC-2221 通孔 (外层 k=0.048)</option>
+              <option value="2221-int">IPC-2221 盲埋孔 (内层 k=0.024)</option>
+              <option value="2152">IPC-2152 (k=0.064)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>过孔类型</label>
+          <div class="field-input">
+            <select id="s-type" style="width:100%;min-height:42px;background:#0f1317;border:1px solid var(--border-strong);border-radius:6px;color:var(--display);font-family:var(--mono);font-size:14px;padding:0 12px">
+              <option value="through">通孔 (Through)</option>
+              <option value="blind">盲孔 (Blind)</option>
+              <option value="buried">埋孔 (Buried)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-check">
+            <input type="checkbox" id="s-plane">
+            <span>直连铜平面 (×1.2)</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>并联过孔数</label>
+          <div class="field-input">
+            <input type="number" id="s-count" step="1" min="1" value="1">
+            <select disabled><option>个</option></select>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 结果 -->
+      <div id="size-result" style="margin-top:16px">
+        <div class="readout">
+          <div class="readout-label">所需最小孔径</div>
+          <div class="readout-value" id="s-diameter">—<span class="unit">mm</span></div>
+          <div class="readout-sub" id="s-diameter-sub"></div>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-item accent">
+            <div class="di-label">所需铜截面积</div>
+            <div class="di-value" id="s-area">—</div>
+          </div>
+          <div class="detail-item">
+            <div class="di-label">单孔载流能力</div>
+            <div class="di-value" id="s-cap">—</div>
+          </div>
+          <div class="detail-item">
+            <div class="di-label">单孔电阻</div>
+            <div class="di-value" id="s-res">—</div>
+          </div>
+          <div class="detail-item">
+            <div class="di-label">压降</div>
+            <div class="di-value" id="s-drop">—</div>
+          </div>
+          <div class="detail-item accent">
+            <div class="di-label">推荐标准孔径</div>
+            <div class="di-value" id="s-recommend">—</div>
+          </div>
+          <div class="detail-item">
+            <div class="di-label">深宽比</div>
+            <div class="di-value" id="s-ar">—</div>
+          </div>
+        </div>
+        
+        <!-- 推荐孔径表 -->
+        <div class="rec-box">
+          <div class="rec-title">常用过孔规格参考</div>
+          <table class="ref-table">
+            <thead>
+              <tr><th>孔径</th><th>IPC-2221 (10°C)</th><th>IPC-2152 (10°C)</th><th>5A 所需数量</th></tr>
+            </thead>
+            <tbody id="s-ref-table">
+              <tr><td>0.2mm</td><td>~0.35A</td><td>~0.47A</td><td>15 个</td></tr>
+              <tr><td>0.3mm</td><td>~0.65A</td><td>~0.87A</td><td>8 个</td></tr>
+              <tr><td>0.4mm</td><td>~0.95A</td><td>~1.27A</td><td>6 个</td></tr>
+              <tr><td>0.5mm</td><td>~1.25A</td><td>~1.67A</td><td>4 个</td></tr>
+              <tr><td>0.6mm</td><td>~1.55A</td><td>~2.07A</td><td>4 个</td></tr>
+              <tr><td>0.8mm</td><td>~2.20A</td><td>~2.93A</td><td>3 个</td></tr>
+              <tr><td>1.0mm</td><td>~2.90A</td><td>~3.87A</td><td>2 个</td></tr>
+            </tbody>
+          </table>
+          <p class="note">以上数据基于 25µm 铜厚、2oz 铜箔的典型值，仅供参考。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 公式说明 ===== -->
+  <section class="panel">
+    <h2 class="panel-title">计算公式</h2>
+    <div class="two-col">
+      <div>
+        <div class="formula-box">
+          <div class="fm-text">A = π × <span class="var">t</span> × (<span class="var">d</span> + <span class="var">t</span>)</div>
+        </div>
+        <p class="note">铜截面积（mil²），d 为成品孔径，t 为孔壁铜厚</p>
+      </div>
+      <div>
+        <div class="formula-box">
+          <div class="fm-text">I = <span class="var">k</span> × ΔT<sup>0.44</sup> × A<sup>0.725</sup></div>
+        </div>
+        <p class="note">IPC-2221/2152 载流公式，k 值取决于标准和过孔类型</p>
+      </div>
+    </div>
+    <div class="two-col" style="margin-top:12px">
+      <div>
+        <div class="formula-box">
+          <div class="fm-text">R = ρ × <span class="var">L</span> / A × (1 + α × ΔT)</div>
+        </div>
+        <p class="note">过孔电阻，ρ=1.72×10⁻⁸ Ω·m (铜)，α=0.00393/°C</p>
+      </div>
+      <div>
+        <div class="formula-box">
+          <div class="fm-text">ΔV = I × R &nbsp;&nbsp; P = I² × R</div>
+        </div>
+        <p class="note">压降与功率损耗</p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:14px">
+      <strong>k 值说明：</strong><br>
+      • IPC-2221 通孔（外层）：k = 0.048<br>
+      • IPC-2221 盲埋孔（内层）：k = 0.024<br>
+      • IPC-2152：k = 0.064<br>
+      • 直连铜平面时，载流能力 ×1.2
+    </p>
+  </section>
+
+  <!-- ===== 设计建议 ===== -->
+  <section class="panel">
+    <h2 class="panel-title">设计建议</h2>
+    <div class="detail-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+      <div class="detail-item">
+        <div class="di-label">IPC Class 2 最小铜厚</div>
+        <div class="di-value">20 µm (0.8 mil)</div>
+      </div>
+      <div class="detail-item">
+        <div class="di-label">IPC Class 3 最小铜厚</div>
+        <div class="di-value">25 µm (1.0 mil)</div>
+      </div>
+      <div class="detail-item">
+        <div class="di-label">标准深宽比限制</div>
+        <div class="di-value">≤ 10:1</div>
+      </div>
+      <div class="detail-item">
+        <div class="di-label">常用孔径范围</div>
+        <div class="di-value">0.2mm – 1.0mm</div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:12px">
+      • 大电流应用建议使用 <strong>多个过孔并联</strong>，而非单个大孔<br>
+      • 电源/地过孔建议在铜平面上 <strong>直接连接</strong>（无热焊盘），可提升 20% 载流<br>
+      • 铜填充过孔载流能力约为普通过孔的 <strong>2–3 倍</strong><br>
+      • 过孔阵列推荐间距 ≥ 2 倍孔径
+    </p>
+  </section>
+
+  <footer class="foot">
+    本工具基于 IPC-2221 与 IPC-2152 公开公式，仅供参考。实际载流能力受铜箔粗糙度、叠层结构、散热条件等因素影响，请以制造商数据为准。<br>
+    相关工具：<a href="/pcb-trace/" style="color:var(--accent);text-decoration:none">线宽计算器</a>
+  </footer>
+</main>
+
+<script>
+(function(){
+  const $ = s => document.querySelector(s);
+  const $$ = s => document.querySelectorAll(s);
+
+  // 模式切换
+  $$('.mode-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.mode-tab').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      const mode = btn.dataset.mode;
+      $('#mode-current').style.display = mode === 'current' ? '' : 'none';
+      $('#mode-size').style.display = mode === 'size' ? '' : 'none';
+      if (mode === 'current') calcCurrent();
+      else calcSize();
+    });
+  });
+
+  // 单位转换
+  function toMm(val, unit) {
+    if (unit === 'mil') return val * 0.0254;
+    return val;
+  }
+  function toUm(val, unit) {
+    if (unit === 'mil') return val * 25.4;
+    if (unit === 'oz') return val * 35;
+    return val;
+  }
+  function mmToMil(mm) { return mm / 0.0254; }
+  function umToMil(um) { return um / 25.4; }
+
+  // 获取 k 值
+  function getK(std, type) {
+    if (std === '2152') return 0.064;
+    if (std === '2221-int') return 0.024;
+    return 0.048; // 2221-ext
+  }
+
+  // 载流计算
+  function calcCurrent() {
+    const d_mm = toMm(parseFloat($('#c-diameter').value) || 0, $('#c-diameter-unit').value);
+    const t_um = toUm(parseFloat($('#c-plating').value) || 0, $('#c-plating-unit').value);
+    const dT = parseFloat($('#c-temp').value) || 10;
+    const L_mm = toMm(parseFloat($('#c-length').value) || 1.6, $('#c-length-unit').value);
+    const std = $('#c-std').value;
+    const type = $('#c-type').value;
+    const plane = $('#c-plane').checked;
+    const count = Math.max(1, parseInt($('#c-count').value) || 1);
+
+    // 单位换算
+    const d_mil = mmToMil(d_mm);
+    const t_mil = umToMil(t_um);
+
+    // 铜截面积 (mil²)
+    const A_mil2 = Math.PI * t_mil * (d_mil + t_mil);
+    // 铜截面积 (mm²)
+    const A_mm2 = Math.PI * (t_um/1000) * (d_mm + t_um/1000);
+
+    // k 值
+    let k = getK(std, type);
+    if (plane) k *= 1.2;
+
+    // 载流能力 (A)
+    const I_max = k * Math.pow(dT, 0.44) * Math.pow(A_mil2, 0.725);
+
+    // 电阻计算
+    const rho = 1.72e-8; // Ω·m
+    const alpha = 0.00393;
+    const R = (rho * (L_mm/1000) / (A_mm2/1e6)) * (1 + alpha * dT);
+
+    // 压降 (假设工作在最大电流)
+    const V_drop = I_max * R;
+    const P_loss = I_max * I_max * R;
+
+    // 并联总载流
+    const I_total = I_max * count;
+    const R_total = R / count;
+
+    // 更新 UI
+    $('#c-current').innerHTML = I_max.toFixed(3) + '<span class="unit">A</span>';
+    $('#c-current-sub').textContent = `k=${k.toFixed(4)}, ΔT=${dT}°C, A=${A_mil2.toFixed(1)} mil²`;
+    $('#c-area').textContent = A_mil2.toFixed(1) + ' mil² (' + (A_mm2*1e6).toFixed(2) + ' µm²)';
+    $('#c-res').textContent = (R*1000).toFixed(3) + ' mΩ';
+    $('#c-drop').textContent = (V_drop*1000).toFixed(2) + ' mV';
+    $('#c-power').textContent = (P_loss*1000).toFixed(2) + ' mW';
+    $('#c-total').textContent = I_total.toFixed(3) + ' A (' + count + ' 孔)';
+    $('#c-total-res').textContent = (R_total*1000).toFixed(3) + ' mΩ';
+  }
+
+  // 直径计算
+  function calcSize() {
+    const I_target = parseFloat($('#s-current').value) || 1;
+    const t_um = toUm(parseFloat($('#s-plating').value) || 0, $('#s-plating-unit').value);
+    const dT = parseFloat($('#s-temp').value) || 10;
+    const L_mm = toMm(parseFloat($('#s-length').value) || 1.6, $('#s-length-unit').value);
+    const std = $('#s-std').value;
+    const type = $('#s-type').value;
+    const plane = $('#s-plane').checked;
+    const count = Math.max(1, parseInt($('#s-count').value) || 1);
+
+    const t_mil = umToMil(t_um);
+    let k = getK(std, type);
+    if (plane) k *= 1.2;
+
+    // 反算所需截面积
+    // I = k * dT^0.44 * A^0.725
+    // A = (I / (k * dT^0.44))^(1/0.725)
+    const I_per_via = I_target / count;
+    const A_mil2 = Math.pow(I_per_via / (k * Math.pow(dT, 0.44)), 1 / 0.725);
+
+    // 反算孔径
+    // A = π * t * (d + t)
+    // d = A/(π*t) - t
+    const d_mil = A_mil2 / (Math.PI * t_mil) - t_mil;
+    const d_mm = d_mil * 0.0254;
+
+    // 深宽比
+    const AR = L_mm / Math.max(d_mm, 0.01);
+
+    // 铜截面积 mm²
+    const A_mm2 = Math.PI * (t_um/1000) * (d_mm + t_um/1000);
+
+    // 电阻
+    const rho = 1.72e-8;
+    const alpha = 0.00393;
+    const R = (rho * (L_mm/1000) / (A_mm2/1e6)) * (1 + alpha * dT);
+    const V_drop = I_per_via * R;
+
+    // 推荐标准孔径
+    const stdHoles = [0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+    let recommend = stdHoles[stdHoles.length - 1];
+    for (const h of stdHoles) {
+      if (h >= d_mm) { recommend = h; break; }
+    }
+
+    // 更新 UI
+    $('#s-diameter').innerHTML = d_mm.toFixed(3) + '<span class="unit">mm</span>';
+    $('#s-diameter-sub').textContent = `≈ ${(d_mil).toFixed(1)} mil, ${count} 孔并联`;
+    $('#s-area').textContent = A_mil2.toFixed(1) + ' mil²';
+    $('#s-cap').textContent = I_per_via.toFixed(3) + ' A';
+    $('#s-res').textContent = (R*1000).toFixed(3) + ' mΩ';
+    $('#s-drop').textContent = (V_drop*1000).toFixed(2) + ' mV';
+    $('#s-recommend').textContent = recommend + ' mm';
+    $('#s-ar').textContent = AR.toFixed(1) + ':1' + (AR > 10 ? ' ⚠️ 超限' : ' ✓');
+  }
+
+  // 绑定事件
+  ['c-diameter','c-plating','c-temp','c-length','c-count'].forEach(id => {
+    $('#' + id).addEventListener('input', calcCurrent);
+  });
+  ['c-diameter-unit','c-plating-unit','c-length-unit','c-std','c-type','c-plane'].forEach(id => {
+    $('#' + id).addEventListener('change', calcCurrent);
+  });
+  ['s-current','s-plating','s-temp','s-length','s-count'].forEach(id => {
+    $('#' + id).addEventListener('input', calcSize);
+  });
+  ['s-plating-unit','s-length-unit','s-std','s-type','s-plane'].forEach(id => {
+    $('#' + id).addEventListener('change', calcSize);
+  });
+
+  // 初始化
+  calcCurrent();
+  calcSize();
+})();
+</script>
+</body>
+</html>

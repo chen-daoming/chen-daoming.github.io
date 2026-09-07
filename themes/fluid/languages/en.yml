@@ -28,6 +28,10 @@ about:
   title: 'About'
   subtitle: 'About'
 
+tools:
+  menu: 'Tools'
+  title: 'Tools'
+
 links:
   menu: 'Links'
   title: 'Links'
