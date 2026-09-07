@@ -202,7 +202,7 @@ title: DC-DC 升降压计算器
   </header>
 
   <!-- ===== 主模式切换 ===== -->
-  <div class="mode-tabs" role="tablist" aria-label="功能模式">
+  <div id="main-tabs" class="mode-tabs" role="tablist" aria-label="功能模式">
     <button class="mode-tab is-active" data-mode="inductor" role="tab" aria-selected="true">电感计算</button>
     <button class="mode-tab" data-mode="feedback" role="tab" aria-selected="false">分压电阻计算</button>
   </div>
@@ -494,6 +494,7 @@ title: DC-DC 升降压计算器
 (function () {
   "use strict";
   var $ = function (id) { return document.getElementById(id); };
+  var $$ = function (sel) { return document.querySelectorAll(sel); };
 
   /* ===== E12 / E24 / E96 标称系列 ===== */
   var E12_BASE = [1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 6.8, 8.2];
@@ -568,9 +569,9 @@ title: DC-DC 升降压计算器
 
   /* ===== 模式切换 ===== */
   var currentMode = "inductor";
-  $$('.mode-tabs:first-of-type .mode-tab').forEach(function(btn) {
+  $('#main-tabs').querySelectorAll('.mode-tab').forEach(function(btn) {
     btn.addEventListener('click', function() {
-      $$('.mode-tabs:first-of-type .mode-tab').forEach(function(b) { b.classList.remove('is-active'); });
+      $('#main-tabs').querySelectorAll('.mode-tab').forEach(function(b) { b.classList.remove('is-active'); });
       btn.classList.add('is-active');
       currentMode = btn.dataset.mode;
       $('mode-inductor').style.display = currentMode === 'inductor' ? '' : 'none';
