@@ -357,8 +357,14 @@ title: DC-DC 升降压计算器
           <div class="detail-item"><div class="di-label">Vout 误差</div><div class="di-value" id="fbFixedErr">—</div></div>
         </div>
         <div class="rec-box">
-          <div class="rec-title">标准系列推荐值</div>
+          <div class="rec-title">标准系列推荐值（点击查看详情）</div>
           <div id="fbFixedRecList"></div>
+          <div id="fbFixedDetail" style="display:none;margin-top:10px;padding:10px;background:#21272e;border:1px solid #3a444f;border-radius:6px;font-size:12.5px">
+            <div style="color:#e0a34b;font-weight:600;margin-bottom:6px" id="fbFixedDetailTitle">—</div>
+            <div style="color:#98a4b1">实际 Vout = <span id="fbFixedDetailVout" style="color:#a7e8ba">—</span></div>
+            <div style="color:#98a4b1">误差 = <span id="fbFixedDetailErr" style="color:#a7e8ba">—</span></div>
+            <div style="color:#98a4b1">Vout 公式 = <span id="fbFixedDetailFormula" style="color:#a7e8ba">—</span></div>
+          </div>
         </div>
       </div>
     </section>
@@ -753,20 +759,45 @@ document.addEventListener('DOMContentLoaded', function() {
     validValues.sort(function(a, b) { return a.error - b.error; });
 
     var recList = $("fbFixedRecList");
+    var detailDiv = $("fbFixedDetail");
+    if (detailDiv) detailDiv.style.display = "none";
+
     if (recList) {
       if (validValues.length === 0) {
         recList.innerHTML = '<div style="color:#d9685f;font-size:13px">无满足误差要求的标准值</div>';
       } else {
         var html = '<div style="font-size:12.5px;color:#98a4b1;margin-bottom:8px">共 ' + validValues.length + ' 个标准值满足误差 ≤ ' + (voutTol * 100) + '%：</div>';
         html += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
-        validValues.forEach(function(item) {
-          var cls = item.isNearest ? 'chip best' : (item.error < 0.1 ? 'chip' : 'chip');
+        validValues.forEach(function(item, idx) {
+          var cls = item.isNearest ? 'chip best' : 'chip';
           var border = item.isNearest ? 'border-color:#58c67c;color:#58c67c;font-weight:700' : '';
-          html += '<span class="' + cls + '" style="' + border + '" title="Vout=' + sigFigs(item.vout, 4) + 'V, 误差=' + item.error.toFixed(3) + '%">' + sigFigs(item.value, 4) + ' kΩ</span>';
+          html += '<span class="' + cls + '" style="' + border + ';cursor:pointer" data-idx="' + idx + '">' + sigFigs(item.value, 4) + ' kΩ</span>';
         });
         html += '</div>';
-        html += '<div style="margin-top:10px;font-size:11.5px;color:#6b7683">点击可查看详情（Vout 实际值和误差）</div>';
         recList.innerHTML = html;
+
+        // 绑定点击事件
+        recList.querySelectorAll('.chip').forEach(function(chip) {
+          chip.addEventListener('click', function() {
+            var idx = parseInt(chip.dataset.idx);
+            var item = validValues[idx];
+            if (!item) return;
+            var fixedOhm = parseFloat($("fb-fixed-val").value) * 1000;
+            var isFixR2 = ($("fb-fixed-select").value === "R2");
+            var formula;
+            if (isFixR2) {
+              formula = vref + ' × (1 + ' + sigFigs(item.value, 4) + ' / ' + sigFigs(fixedOhm / 1000, 4) + ')';
+            } else {
+              formula = vref + ' × (1 + ' + sigFigs(fixedOhm / 1000, 4) + ' / ' + sigFigs(item.value, 4) + ')';
+            }
+            var detail = $("fbFixedDetail");
+            if (detail) detail.style.display = "";
+            el = $("fbFixedDetailTitle"); if (el) el.textContent = "选中：" + sigFigs(item.value, 4) + " kΩ" + (item.isNearest ? "（最近标准值）" : "");
+            el = $("fbFixedDetailVout"); if (el) el.textContent = sigFigs(item.vout, 4) + " V";
+            el = $("fbFixedDetailErr"); if (el) el.textContent = item.error.toFixed(3) + "%";
+            el = $("fbFixedDetailFormula"); if (el) el.textContent = formula + " = " + sigFigs(item.vout, 4) + " V";
+          });
+        });
       }
     }
   }
