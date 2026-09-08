@@ -324,6 +324,44 @@ title: DC-DC 升降压计算器
         <div class="detail-item"><div class="di-label">MC34063</div><div class="di-value">1.25V</div></div>
       </div>
     </section>
+    <section class="panel">
+      <h2 class="panel-title">固定电阻反算</h2>
+      <div class="field-grid fb" style="margin-bottom:14px">
+        <div class="field">
+          <label>已知电阻</label>
+          <div class="field-input">
+            <select id="fb-fixed-select">
+              <option value="R2">固定 R2 (下分压)，求 R1</option>
+              <option value="R1">固定 R1 (上分压)，求 R2</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>已知电阻值 <span style="color:#d9685f">*</span></label>
+          <div class="field-input">
+            <input type="number" id="fb-fixed-val" step="any" min="0" placeholder="如 10, 47">
+            <span class="unit-tag">kΩ</span>
+          </div>
+        </div>
+      </div>
+      <div id="fbFixedErrMsg" class="err-msg"></div>
+      <div id="fbFixedResult" style="display:none">
+        <div class="readout">
+          <div class="readout-label">计算结果</div>
+          <div class="readout-value"><span id="fbFixedLabel">R1</span><span class="unit"> = </span><span id="fbFixedCalc">—</span></div>
+          <div class="readout-sub" id="fbFixedSub"></div>
+        </div>
+        <div class="detail-grid" style="margin-bottom:14px">
+          <div class="detail-item accent"><div class="di-label">理论值</div><div class="di-value" id="fbFixedIdeal">—</div></div>
+          <div class="detail-item"><div class="di-label">实际 Vout</div><div class="di-value" id="fbFixedVout">—</div></div>
+          <div class="detail-item"><div class="di-label">Vout 误差</div><div class="di-value" id="fbFixedErr">—</div></div>
+        </div>
+        <div class="rec-box">
+          <div class="rec-title">标准系列推荐值</div>
+          <div id="fbFixedRecList"></div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <footer class="foot">所有计算在浏览器本地完成，数据不上传。实际选型请结合芯片数据手册。</footer>
@@ -609,6 +647,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }).join('');
       }
     }
+
+    calcFixedResistor();
   }
 
   ["fb-vref","fb-vout","fb-series","fb-vout-tol","fb-rmin","fb-rmax","fb-count"].forEach(function(id) {
@@ -616,6 +656,126 @@ document.addEventListener('DOMContentLoaded', function() {
     if (el) {
       el.addEventListener("input", calcFeedback);
       el.addEventListener("change", calcFeedback);
+    }
+  });
+
+  // ===== 固定电阻反算 =====
+  function calcFixedResistor() {
+    var vref = parseFloat($("fb-vref").value);
+    var vout = parseFloat($("fb-vout").value);
+    var series = $("fb-series").value;
+    var voutTol = parseFloat($("fb-vout-tol").value) / 100;
+    var fixedSelect = $("fb-fixed-select").value;
+    var fixedVal = parseFloat($("fb-fixed-val").value);
+
+    var errMsg = $("fbFixedErrMsg");
+    var resultDiv = $("fbFixedResult");
+    if (errMsg) errMsg.textContent = "";
+    if (resultDiv) resultDiv.style.display = "none";
+
+    if (isNaN(vref) || isNaN(vout) || vref <= 0 || vout <= 0) {
+      if (errMsg) errMsg.textContent = "请先填写参考电压和输出电压";
+      return;
+    }
+    if (vout <= vref) {
+      if (errMsg) errMsg.textContent = "输出电压必须大于参考电压";
+      return;
+    }
+    if (isNaN(fixedVal) || fixedVal <= 0) {
+      if (errMsg) errMsg.textContent = "请输入有效的已知电阻值";
+      return;
+    }
+
+    var targetRatio = (vout / vref) - 1;
+    var fixedOhm = fixedVal * 1000;
+    var isFixR2 = (fixedSelect === "R2");
+    var idealOther, actualLabel, calcLabel;
+
+    if (isFixR2) {
+      idealOther = targetRatio * fixedOhm;
+      actualLabel = "R1";
+      calcLabel = "R1";
+    } else {
+      idealOther = fixedOhm / targetRatio;
+      actualLabel = "R2";
+      calcLabel = "R2";
+    }
+
+    var el;
+    el = $("fbFixedLabel"); if (el) el.textContent = calcLabel;
+
+    var resList = getResSeries(series);
+    var idealK = idealOther / 1000;
+
+    // 找最近的标准值
+    var nearestVal = nearest(resList, idealK);
+    var nearestOhm = nearestVal.value * 1000;
+
+    var actualVout, voutError;
+    if (isFixR2) {
+      actualVout = vref * (1 + nearestOhm / fixedOhm);
+    } else {
+      actualVout = vref * (1 + fixedOhm / nearestOhm);
+    }
+    voutError = Math.abs(actualVout - vout) / vout * 100;
+
+    if (resultDiv) resultDiv.style.display = "";
+    el = $("fbFixedIdeal"); if (el) el.textContent = sigFigs(idealK, 4) + " kΩ";
+    el = $("fbFixedCalc"); if (el) el.textContent = sigFigs(nearestVal.value, 4) + " kΩ";
+    el = $("fbFixedVout"); if (el) el.textContent = sigFigs(actualVout, 4) + " V";
+    el = $("fbFixedErr"); if (el) el.textContent = voutError.toFixed(3) + "%";
+
+    // 计算有效范围：Vout 误差在允许范围内
+    var rMin = parseFloat($("fb-rmin").value) * 1000;
+    var rMax = parseFloat($("fb-rmax").value) * 1000;
+    var validValues = [];
+
+    for (var i = 0; i < resList.length; i++) {
+      var testOhm = resList[i] * 1000;
+      if (testOhm < rMin || testOhm > rMax) continue;
+      var testVout;
+      if (isFixR2) {
+        testVout = vref * (1 + testOhm / fixedOhm);
+      } else {
+        testVout = vref * (1 + fixedOhm / testOhm);
+      }
+      var testErr = Math.abs(testVout - vout) / vout * 100;
+      if (testErr <= voutTol * 100) {
+        validValues.push({
+          value: resList[i],
+          vout: testVout,
+          error: testErr,
+          isNearest: Math.abs(resList[i] - nearestVal.value) < 1e-9
+        });
+      }
+    }
+
+    validValues.sort(function(a, b) { return a.error - b.error; });
+
+    var recList = $("fbFixedRecList");
+    if (recList) {
+      if (validValues.length === 0) {
+        recList.innerHTML = '<div style="color:#d9685f;font-size:13px">无满足误差要求的标准值</div>';
+      } else {
+        var html = '<div style="font-size:12.5px;color:#98a4b1;margin-bottom:8px">共 ' + validValues.length + ' 个标准值满足误差 ≤ ' + (voutTol * 100) + '%：</div>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
+        validValues.forEach(function(item) {
+          var cls = item.isNearest ? 'chip best' : (item.error < 0.1 ? 'chip' : 'chip');
+          var border = item.isNearest ? 'border-color:#58c67c;color:#58c67c;font-weight:700' : '';
+          html += '<span class="' + cls + '" style="' + border + '" title="Vout=' + sigFigs(item.vout, 4) + 'V, 误差=' + item.error.toFixed(3) + '%">' + sigFigs(item.value, 4) + ' kΩ</span>';
+        });
+        html += '</div>';
+        html += '<div style="margin-top:10px;font-size:11.5px;color:#6b7683">点击可查看详情（Vout 实际值和误差）</div>';
+        recList.innerHTML = html;
+      }
+    }
+  }
+
+  ["fb-fixed-select","fb-fixed-val"].forEach(function(id) {
+    var el = $(id);
+    if (el) {
+      el.addEventListener("input", calcFixedResistor);
+      el.addEventListener("change", calcFixedResistor);
     }
   });
 
