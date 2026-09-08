@@ -1,6 +1,6 @@
 # ==================== 顶部导航栏 ====================
 navbar:
-  title: Novice learning
+  title: 菜鸡工程师的折腾记录
   menu:
     - { key: 'home', link: '/', icon: 'icon-home-fill' }
     - { key: 'archive', link: '/archives/', icon: 'icon-archive-fill' }
@@ -29,7 +29,7 @@ navbar:
 # ==================== 首页 ====================
 index:
   slogan:
-    text: 嵌入式工程师的折腾记录
+    text: 菜鸡工程师的折腾记录
   post_list:
     date_format: 'YYYY-MM-DD'
 # ==================== 文章页 ====================
