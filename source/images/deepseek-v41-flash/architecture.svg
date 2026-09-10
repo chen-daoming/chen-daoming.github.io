@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="800" height="400" fill="#f8f9fa"/>
+  <text x="400" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1a2e">DeepSeek V4.1 Flash 架构示意</text>
+
+  <!-- 左：输入端 -->
+  <rect x="40" y="80" width="200" height="240" rx="12" fill="#e8f4f8" stroke="#2196F3" stroke-width="2"/>
+  <text x="140" y="110" text-anchor="middle" font-size="16" font-weight="700" fill="#1565C0">输入端</text>
+  <text x="140" y="135" text-anchor="middle" font-size="13" fill="#455a64">Causal Encoder</text>
+  
+  <!-- 输入激活参数 -->
+  <rect x="60" y="155" width="160" height="50" rx="8" fill="#bbdefb" stroke="#1976D2" stroke-width="1.5"/>
+  <text x="140" y="178" text-anchor="middle" font-size="24" font-weight="700" fill="#0d47a1">8B</text>
+  <text x="140" y="196" text-anchor="middle" font-size="11" fill="#1565C0">激活参数</text>
+
+  <!-- 输入类型 -->
+  <rect x="60" y="220" width="75" height="40" rx="6" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5"/>
+  <text x="97" y="245" text-anchor="middle" font-size="12" fill="#e65100">文本</text>
+  <rect x="145" y="220" width="75" height="40" rx="6" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="182" y="245" text-anchor="middle" font-size="12" fill="#2e7d32">图像</text>
+  
+  <text x="140" y="290" text-anchor="middle" font-size="11" fill="#78909c">原生多模态输入</text>
+  <text x="140" y="308" text-anchor="middle" font-size="11" fill="#78909c">无需额外适配器</text>
+
+  <!-- 中间：MoE 路由 -->
+  <rect x="280" y="120" width="240" height="160" rx="12" fill="#fff8e1" stroke="#ffc107" stroke-width="2"/>
+  <text x="400" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#f57f17">MoE 路由层</text>
+  
+  <!-- 专家节点 -->
+  <circle cx="320" cy="200" r="18" fill="#ffe082" stroke="#ffb300" stroke-width="1.5"/>
+  <text x="320" y="205" text-anchor="middle" font-size="10" fill="#f57f17">E1</text>
+  <circle cx="370" cy="200" r="18" fill="#ffe082" stroke="#ffb300" stroke-width="1.5"/>
+  <text x="370" y="205" text-anchor="middle" font-size="10" fill="#f57f17">E2</text>
+  <circle cx="420" cy="200" r="18" fill="#ffe082" stroke="#ffb300" stroke-width="1.5"/>
+  <text x="420" y="205" text-anchor="middle" font-size="10" fill="#f57f17">E3</text>
+  <circle cx="470" cy="200" r="18" fill="#ffe082" stroke="#ffb300" stroke-width="1.5"/>
+  <text x="470" y="205" text-anchor="middle" font-size="10" fill="#f57f17">E4</text>
+  
+  <text x="400" y="250" text-anchor="middle" font-size="11" fill="#795548">稀疏激活：每次仅激活部分专家</text>
+  <text x="400" y="268" text-anchor="middle" font-size="11" fill="#795548">总参数 552B，激活 16B</text>
+
+  <!-- 右：输出端 -->
+  <rect x="560" y="80" width="200" height="240" rx="12" fill="#fce4ec" stroke="#e91e63" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-size="16" font-weight="700" fill="#c2185b">输出端</text>
+  <text x="660" y="135" text-anchor="middle" font-size="13" fill="#455a64">Causal Decoder</text>
+  
+  <!-- 输出激活参数 -->
+  <rect x="580" y="155" width="160" height="50" rx="8" fill="#f8bbd0" stroke="#e91e63" stroke-width="1.5"/>
+  <text x="660" y="178" text-anchor="middle" font-size="24" font-weight="700" fill="#880e4f">16B</text>
+  <text x="660" y="196" text-anchor="middle" font-size="11" fill="#c2185b">激活参数</text>
+
+  <!-- 输出能力 -->
+  <rect x="580" y="220" width="160" height="40" rx="6" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5"/>
+  <text x="660" y="245" text-anchor="middle" font-size="12" fill="#6a1b9a">文本生成 + 推理</text>
+  
+  <text x="660" y="290" text-anchor="middle" font-size="11" fill="#78909c">非对称设计</text>
+  <text x="660" y="308" text-anchor="middle" font-size="11" fill="#78909c">输出能力强，成本低</text>
+
+  <!-- 连接箭头 -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#546e7a"/>
+    </marker>
+  </defs>
+  <line x1="240" y1="200" x2="275" y2="200" stroke="#546e7a" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="525" y1="200" x2="555" y2="200" stroke="#546e7a" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 底部说明 -->
+  <rect x="40" y="340" width="720" height="45" rx="8" fill="#e3f2fd"/>
+  <text x="400" y="368" text-anchor="middle" font-size="13" fill="#1565C0" font-weight="600">核心优势：输入端轻量化（8B）+ 输出端保持高能力（16B）= 更低成本 + 更快速度</text>
+</svg>
