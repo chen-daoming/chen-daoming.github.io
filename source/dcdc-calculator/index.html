@@ -325,6 +325,95 @@ title: DC-DC 升降压计算器
       </div>
     </section>
     <section class="panel">
+      <h2 class="panel-title">反馈电阻 PCB 布局指南</h2>
+      <div class="topo-note" style="margin-bottom:14px">
+        <strong style="color:var(--accent)">核心原则：</strong>FB 是高阻抗敏感信号，布局质量直接决定输出电压稳定性和 EMI 性能。
+      </div>
+
+      <!-- Buck vs Boost 对比 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
+        <!-- Buck -->
+        <div style="background:var(--panel-2);border:1px solid var(--border-strong);border-radius:8px;padding:16px">
+          <div style="color:var(--accent);font-weight:700;font-size:14px;margin-bottom:10px">⬇ BUCK 降压</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.8">
+            <div style="margin-bottom:8px"><strong style="color:var(--display)">FB 采样点：</strong>输出小电容处</div>
+            <div style="margin-bottom:8px"><strong style="color:var(--display)">FB 接地：</strong>单点接 <strong>输出电容地</strong>（或靠近输出电容地）</div>
+            <div style="margin-bottom:8px"><strong style="color:var(--display)">平滑端：</strong>输出端（电感串联输出，电流连续平滑）</div>
+            <div style="margin-bottom:8px"><strong style="color:var(--err)">重点关注：</strong>输入电容、SW 节点、功率地</div>
+            <div><strong style="color:var(--err)">环路面积：</strong>输入环路（Vin-Cin-IC-GND）最小化</div>
+          </div>
+        </div>
+        <!-- Boost -->
+        <div style="background:var(--panel-2);border:1px solid var(--border-strong);border-radius:8px;padding:16px">
+          <div style="color:var(--accent);font-weight:700;font-size:14px;margin-bottom:10px">⬆ BOOST 升压</div>
+          <div style="font-size:13px;color:var(--text-dim);line-height:1.8">
+            <div style="margin-bottom:8px"><strong style="color:var(--display)">FB 采样点：</strong>输出小电容处</div>
+            <div style="margin-bottom:8px"><strong style="color:var(--display)">FB 接地：</strong>单点接 <strong>输入电容地</strong>（或靠近输入电容地）</div>
+            <div style="margin-bottom:8px"><strong style="color:var(--display)">平滑端：</strong>输入端（电感串联输入，电流连续平滑）</div>
+            <div style="margin-bottom:8px"><strong style="color:var(--err)">重点关注：</strong>输出电容、SW 节点、功率地</div>
+            <div><strong style="color:var(--err)">环路面积：</strong>输出环路（Cout-SW-IC-GND）最小化</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 核心差异解释 -->
+      <div class="rec-box" style="margin-bottom:16px">
+        <div class="rec-title">为什么 Buck 和 Boost 的 FB 接地不同？</div>
+        <div style="font-size:13px;color:var(--text-dim);line-height:1.8">
+          <p style="margin:0 0 8px"><strong style="color:var(--text)">关键：找到"平滑端"</strong></p>
+          <ul style="margin:0;padding-left:20px">
+            <li style="margin-bottom:6px"><strong>Buck：</strong>电感在输出端 → 输出电流连续平滑 → 输出电容地是干净的 → FB 地接输出电容地</li>
+            <li style="margin-bottom:6px"><strong>Boost：</strong>电感在输入端 → 输入电流连续平滑 → 输入电容地是干净的 → FB 地接输入电容地</li>
+          </ul>
+          <p style="margin:8px 0 0">功率地（PGND）上有大电流开关噪声，如果 FB 地接在噪声大的地方，会导致输出电压振荡或不准。</p>
+        </div>
+      </div>
+
+      <!-- 通用布局规则 -->
+      <div style="font-size:13px;color:var(--text-dim);margin-bottom:14px">
+        <strong style="color:var(--text)">通用布局规则：</strong>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:14px">
+        <div class="detail-item"><div class="di-label">FB 走线长度</div><div class="di-value" style="font-size:13px">&lt; 10mm，越短越好</div></div>
+        <div class="detail-item"><div class="di-label">分压电阻位置</div><div class="di-value" style="font-size:13px">靠近芯片 FB 引脚</div></div>
+        <div class="detail-item"><div class="di-label">远离噪声源</div><div class="di-value" style="font-size:13px">电感、SW、二极管</div></div>
+        <div class="detail-item"><div class="di-label">包地屏蔽</div><div class="di-value" style="font-size:13px">FB 走线两侧铺地</div></div>
+      </div>
+
+      <!-- Buck 详细布局 -->
+      <div style="margin-bottom:16px">
+        <div style="color:var(--accent);font-weight:600;font-size:13px;margin-bottom:8px">Buck 降压详细布局</div>
+        <div style="font-size:12.5px;color:var(--text-dim);line-height:1.7;background:var(--panel-2);border:1px solid var(--border);border-radius:6px;padding:12px">
+          <div style="margin-bottom:6px"><strong style="color:var(--text)">1. FB 采样点：</strong>从输出电容（COUT）的正端取样，而非电感引脚处。输出电容处电压最平滑、最准确。</div>
+          <div style="margin-bottom:6px"><strong style="color:var(--text)">2. FB 接地：</strong>R2（下分压电阻）的地单点连接到输出电容的地，或靠近输出电容地。远离输入电容地（输入地有高频噪声）。</div>
+          <div style="margin-bottom:6px"><strong style="color:var(--text)">3. 关注环路：</strong>输入环路（Vin → Cin → IC → GND）面积最小化，这是 EMI 的主要来源。输入电流不连续、跳变大（高 di/dt）。</div>
+          <div><strong style="color:var(--text)">4. 输出端平滑：</strong>输出电流经电感后连续平滑，输出电容地相对干净，是 FB 接地的理想参考点。</div>
+        </div>
+      </div>
+
+      <!-- Boost 详细布局 -->
+      <div style="margin-bottom:16px">
+        <div style="color:var(--accent);font-weight:600;font-size:13px;margin-bottom:8px">Boost 升压详细布局</div>
+        <div style="font-size:12.5px;color:var(--text-dim);line-height:1.7;background:var(--panel-2);border:1px solid var(--border);border-radius:6px;padding:12px">
+          <div style="margin-bottom:6px"><strong style="color:var(--text)">1. FB 采样点：</strong>同样从输出电容（COUT）正端取样。输出电容处能反映真实输出电压。</div>
+          <div style="margin-bottom:6px"><strong style="color:var(--text)">2. FB 接地：</strong>R2 的地单点连接到输入电容的地，或靠近输入电容地。因为 Boost 的输入端电流平滑（电感在输入侧），输入电容地更干净。</div>
+          <div style="margin-bottom:6px"><strong style="color:var(--text)">3. 关注环路：</strong>输出环路（Cout → SW → IC → GND）面积最小化，这是 Boost 的 EMI 主要来源。输出电流在开关切换时突变。</div>
+          <div><strong style="color:var(--text)">4. 输入端平滑：</strong>输入电流经电感后连续平滑，输入电容地相对干净，是 FB 接地的理想参考点。</div>
+        </div>
+      </div>
+
+      <!-- 常见错误 -->
+      <div style="font-size:13px;color:var(--err);font-weight:600;margin-bottom:8px">常见错误</div>
+      <div style="font-size:12.5px;color:var(--text-dim);line-height:1.7;background:var(--err-soft);border:1px solid rgba(217,104,95,0.3);border-radius:6px;padding:12px">
+        <div style="margin-bottom:4px">1. FB 采样点在电感之前（含开关噪声）</div>
+        <div style="margin-bottom:4px">2. FB 地接到功率地（PGND）而非信号地（AGND）</div>
+        <div style="margin-bottom:4px">3. 分压电阻远离 FB 引脚，走线过长</div>
+        <div style="margin-bottom:4px">4. FB 走线靠近或平行于 SW 节点/电感</div>
+        <div>5. Buck 的 FB 地接输入电容地 / Boost 的 FB 地接输出电容地</div>
+      </div>
+    </section>
+
+    <section class="panel">
       <h2 class="panel-title">固定电阻反算</h2>
       <div class="field-grid fb" style="margin-bottom:14px">
         <div class="field">
