@@ -31,7 +31,6 @@ description: 纯浏览器本地处理的 SVG 转 PNG 在线工具，支持多种
 
 博客顶部导航栏 → 工具栏 → SVG 转 PNG
 
-或直接访问：`/tools/svg2png/`
 
 ### 技术实现
 
