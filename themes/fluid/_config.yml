@@ -386,6 +386,7 @@ navbar:
     - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
     - { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
     - { key: "tools", icon: "iconfont icon-calculator-fill", submenu: [
+        { name: "SVG 转 PNG", link: "/tools/svg2png/", icon: "iconfont icon-picture-fill" },
         { name: "DC-DC 电感计算", link: "/dcdc-calculator/", icon: "iconfont icon-flashlight-fill" },
         { name: "PCB 走线宽度", link: "/pcb-trace/", icon: "iconfont icon-ruler" },
         { name: "PCB 过孔计算", link: "/pcb-via/", icon: "iconfont icon-toolbox" }

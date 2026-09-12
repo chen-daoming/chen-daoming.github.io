@@ -1,0 +1,449 @@
+---
+title: SVG 转 PNG 在线工具
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SVG 转 PNG 在线工具</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --panel: #1a1d24;
+    --panel-2: #22262e;
+    --border: #2d333c;
+    --border-hover: #404854;
+    --text: #e9edf2;
+    --text-dim: #98a4b1;
+    --text-faint: #6b7683;
+    --accent: #e0a34b;
+    --accent-soft: rgba(224, 163, 75, 0.12);
+    --success: #58c67c;
+    --success-soft: rgba(88, 198, 124, 0.12);
+    --err: #d9685f;
+    --blue: #6db3e8;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .header h1 span { color: var(--accent); }
+  .header p { color: var(--text-dim); font-size: 14px; }
+
+  /* Main card */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title::before {
+    content: "";
+    width: 4px;
+    height: 16px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  /* Upload area */
+  .upload-area {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 48px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--panel-2);
+  }
+  .upload-area:hover, .upload-area.dragover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .upload-area svg { width: 48px; height: 48px; margin-bottom: 12px; opacity: 0.5; }
+  .upload-area p { color: var(--text-dim); font-size: 14px; margin-bottom: 8px; }
+  .upload-area .hint { color: var(--text-faint); font-size: 12px; }
+  .upload-area input { display: none; }
+
+  /* Settings */
+  .settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 13px; color: var(--text-dim); font-weight: 500; }
+  .field select, .field input {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 14px;
+    padding: 10px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .field select:focus, .field input:focus { border-color: var(--accent); }
+  .field select { cursor: pointer; }
+  .field input:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Preview */
+  .preview-box {
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .preview-box .placeholder { color: var(--text-faint); font-size: 14px; }
+  .preview-box canvas, .preview-box img { max-width: 100%; max-height: 500px; object-fit: contain; }
+  .preview-box .checkerboard {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(45deg, #252525 25%, transparent 25%),
+      linear-gradient(-45deg, #252525 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #252525 75%),
+      linear-gradient(-45deg, transparent 75%, #252525 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    z-index: 0;
+  }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+  .btn {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    font-weight: 600;
+  }
+  .btn.primary:hover { background: #c98f3a; }
+  .btn.success { background: var(--success); border-color: var(--success); color: #000; }
+
+  /* Info */
+  .info-bar {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--text-faint);
+  }
+  .info-bar span { display: flex; align-items: center; gap: 4px; }
+  .info-bar .val { color: var(--text-dim); font-family: monospace; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--text-faint);
+    font-size: 12px;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 600px) {
+    .container { padding: 16px 12px 40px; }
+    .header h1 { font-size: 22px; }
+    .upload-area { padding: 32px 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1><span>SVG</span> 转 <span>PNG</span> 在线工具</h1>
+    <p>纯浏览器本地处理，文件不上传服务器，安全可靠</p>
+  </div>
+
+  <!-- Upload -->
+  <div class="card">
+    <div class="card-title">上传 SVG 文件</div>
+    <div class="upload-area" id="uploadArea">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 16V4m0 0l-4 4m4-4l4 4"/>
+        <path d="M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/>
+      </svg>
+      <p>点击上传或拖拽 SVG 文件到此处</p>
+      <div class="hint">仅支持 .svg 格式</div>
+      <input type="file" id="fileInput" accept=".svg,image/svg+xml">
+    </div>
+  </div>
+
+  <!-- Settings -->
+  <div class="card" id="settingsCard" style="display:none">
+    <div class="card-title">输出设置</div>
+    <div class="settings-grid">
+      <div class="field">
+        <label>尺寸模式</label>
+        <select id="sizeMode">
+          <option value="original">保持原尺寸</option>
+          <option value="custom">自定义尺寸</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>缩放比例</label>
+        <select id="scaleMode" disabled>
+          <option value="1">1x（原始）</option>
+          <option value="2" selected>2x（推荐）</option>
+          <option value="3">3x（高清）</option>
+          <option value="4">4x（超高清）</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>自定义宽度 (PX)</label>
+        <input type="number" id="customWidth" value="1024" min="64" max="8192" disabled>
+      </div>
+      <div class="field">
+        <label>自定义高度 (PX)</label>
+        <input type="number" id="customHeight" value="768" min="64" max="8192" disabled>
+      </div>
+    </div>
+    <div class="info-bar" id="infoBar"></div>
+  </div>
+
+  <!-- Preview -->
+  <div class="card" id="previewCard" style="display:none">
+    <div class="card-title">预览效果</div>
+    <div class="preview-box" id="previewBox">
+      <div class="checkerboard"></div>
+      <span class="placeholder">预览区域</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn primary" id="downloadBtn" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
+        下载 PNG
+      </button>
+      <button class="btn" id="clearBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        清空
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">
+    所有处理均在浏览器本地完成，文件不会上传至服务器。<br>
+    工具由 <a href="/">陈道明的技术博客</a> 提供 · 基于 HTML5 Canvas API
+  </div>
+</div>
+
+<script>
+(function() {
+  var svgContent = null;
+  var svgWidth = 0;
+  var svgHeight = 0;
+  var fileName = 'output';
+
+  var uploadArea = document.getElementById('uploadArea');
+  var fileInput = document.getElementById('fileInput');
+  var settingsCard = document.getElementById('settingsCard');
+  var previewCard = document.getElementById('previewCard');
+  var previewBox = document.getElementById('previewBox');
+  var downloadBtn = document.getElementById('downloadBtn');
+  var clearBtn = document.getElementById('clearBtn');
+  var sizeMode = document.getElementById('sizeMode');
+  var scaleMode = document.getElementById('scaleMode');
+  var customWidth = document.getElementById('customWidth');
+  var customHeight = document.getElementById('customHeight');
+  var infoBar = document.getElementById('infoBar');
+
+  // Upload handlers
+  uploadArea.addEventListener('click', function() { fileInput.click(); });
+  uploadArea.addEventListener('dragover', function(e) { e.preventDefault(); uploadArea.classList.add('dragover'); });
+  uploadArea.addEventListener('dragleave', function() { uploadArea.classList.remove('dragover'); });
+  uploadArea.addEventListener('drop', function(e) {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    var file = e.dataTransfer.files[0];
+    if (file && file.name.endsWith('.svg')) {
+      handleFile(file);
+    }
+  });
+  fileInput.addEventListener('change', function() {
+    if (fileInput.files[0]) handleFile(fileInput.files[0]);
+  });
+
+  function handleFile(file) {
+    fileName = file.name.replace('.svg', '');
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      svgContent = e.target.result;
+      // Parse SVG dimensions
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(svgContent, 'image/svg+xml');
+      var svgEl = doc.querySelector('svg');
+      if (!svgEl) { alert('无效的 SVG 文件'); return; }
+
+      var w = svgEl.getAttribute('width');
+      var h = svgEl.getAttribute('height');
+      var vb = svgEl.getAttribute('viewBox');
+
+      if (w && h) {
+        svgWidth = parseFloat(w) || 800;
+        svgHeight = parseFloat(h) || 600;
+      } else if (vb) {
+        var parts = vb.split(/[\s,]+/);
+        svgWidth = parseFloat(parts[2]) || 800;
+        svgHeight = parseFloat(parts[3]) || 600;
+      } else {
+        svgWidth = 800;
+        svgHeight = 600;
+      }
+
+      settingsCard.style.display = '';
+      previewCard.style.display = '';
+      downloadBtn.disabled = false;
+      updateInfo();
+      renderPreview();
+    };
+    reader.readAsText(file);
+  }
+
+  // Settings change handlers
+  sizeMode.addEventListener('change', function() {
+    var isCustom = sizeMode.value === 'custom';
+    scaleMode.disabled = isCustom;
+    customWidth.disabled = !isCustom;
+    customHeight.disabled = !isCustom;
+    updateInfo();
+    renderPreview();
+  });
+  scaleMode.addEventListener('change', function() { updateInfo(); renderPreview(); });
+  customWidth.addEventListener('input', function() { updateInfo(); renderPreview(); });
+  customHeight.addEventListener('input', function() { updateInfo(); renderPreview(); });
+
+  function getOutputSize() {
+    if (sizeMode.value === 'custom') {
+      return {
+        width: parseInt(customWidth.value) || 1024,
+        height: parseInt(customHeight.value) || 768
+      };
+    }
+    var scale = parseInt(scaleMode.value) || 2;
+    return {
+      width: Math.round(svgWidth * scale),
+      height: Math.round(svgHeight * scale)
+    };
+  }
+
+  function updateInfo() {
+    var size = getOutputSize();
+    infoBar.innerHTML =
+      '<span>原始尺寸：<span class="val">' + svgWidth + ' × ' + svgHeight + '</span></span>' +
+      '<span>输出尺寸：<span class="val">' + size.width + ' × ' + size.height + '</span></span>' +
+      '<span>文件名：<span class="val">' + fileName + '_' + size.width + 'x' + size.height + '.png</span></span>';
+  }
+
+  function renderPreview() {
+    if (!svgContent) return;
+    var size = getOutputSize();
+
+    var canvas = document.createElement('canvas');
+    canvas.width = size.width;
+    canvas.height = size.height;
+    var ctx = canvas.getContext('2d');
+
+    var img = new Image();
+    img.onload = function() {
+      ctx.clearRect(0, 0, size.width, size.height);
+      ctx.drawImage(img, 0, 0, size.width, size.height);
+
+      // Show in preview
+      var existing = previewBox.querySelector('canvas, img');
+      if (existing) existing.remove();
+      var displayImg = new Image();
+      displayImg.src = canvas.toDataURL('image/png');
+      displayImg.style.position = 'relative';
+      displayImg.style.zIndex = '1';
+      previewBox.appendChild(displayImg);
+    };
+    var blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+    img.src = URL.createObjectURL(blob);
+  }
+
+  // Download
+  downloadBtn.addEventListener('click', function() {
+    if (!svgContent) return;
+    var size = getOutputSize();
+
+    var canvas = document.createElement('canvas');
+    canvas.width = size.width;
+    canvas.height = size.height;
+    var ctx = canvas.getContext('2d');
+
+    var img = new Image();
+    img.onload = function() {
+      ctx.clearRect(0, 0, size.width, size.height);
+      ctx.drawImage(img, 0, 0, size.width, size.height);
+
+      var link = document.createElement('a');
+      link.download = fileName + '_' + size.width + 'x' + size.height + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    };
+    var blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+    img.src = URL.createObjectURL(blob);
+  });
+
+  // Clear
+  clearBtn.addEventListener('click', function() {
+    svgContent = null;
+    svgWidth = 0;
+    svgHeight = 0;
+    fileName = 'output';
+    fileInput.value = '';
+    settingsCard.style.display = 'none';
+    previewCard.style.display = 'none';
+    downloadBtn.disabled = true;
+    var existing = previewBox.querySelector('canvas, img');
+    if (existing) existing.remove();
+  });
+})();
+</script>
+</body>
+</html>
