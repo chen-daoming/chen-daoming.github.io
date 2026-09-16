@@ -1,8 +1,8 @@
----
+﻿---
 title: 工具上新：SVG 转 PNG 在线工具发布
 date: 2026-09-12 09:30:00
 tags: [工具, SVG, PNG, 在线工具]
-categories: [工具更新]
+categories: [工具与教程]
 description: 纯浏览器本地处理的 SVG 转 PNG 在线工具，支持多种尺寸调整模式，安全可靠。
 ---
 
