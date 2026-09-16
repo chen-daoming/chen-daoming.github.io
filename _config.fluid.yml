@@ -65,6 +65,7 @@ search:
   path: /search.json
   field: post
   content: true
+  format: 'onlyzh'
 # ==================== 自定义资源 ====================
 # 加载自定义 CSS（导航栏下拉菜单悬浮展开样式，文件位于 source/css/custom.css）
 custom_css:

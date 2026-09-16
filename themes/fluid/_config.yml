@@ -394,18 +394,18 @@ navbar:
     - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
     #- { key: "links", link: "/links/", icon: "iconfont icon-link-fill" }
 
-# 搜索功能，基于 hexo-generator-search 插件，若已安装其他搜索插件请关闭此功能，以避免生成多余的索引文件
-# Search feature, based on hexo-generator-search. If you have installed other search plugins, please disable this feature to avoid generating redundant index files
+# 搜索功能，基于 hexo-generator-searchdb 插件
+# Search feature, based on hexo-generator-searchdb plugin
 search:
   enable: true
 
-  # 搜索索引文件的路径，可以是相对路径或外站的绝对路径
-  # Path for search index file, it can be a relative path or an absolute path
-  path: /local-search.xml
+  # 搜索索引文件的路径
+  # Path for search index file
+  path: /search.json
 
-  # 文件生成在本地的位置，必须是相对路径
-  # The location where the index file is generated locally, it must be a relative location
-  generate_path: /local-search.xml
+  # 文件生成在本地的位置
+  # The location where the index file is generated locally
+  generate_path: /search.json
 
   # 搜索的范围
   # Search field
