@@ -1,6 +1,6 @@
 ---
 title: DCDC计算器更新——反馈电阻PCB布局指南：Buck与Boost的接地差异
-date: 2025-09-09 14:00:00
+date: 2026-09-10 22:30:00
 tags:
   - DCDC
   - PCB设计

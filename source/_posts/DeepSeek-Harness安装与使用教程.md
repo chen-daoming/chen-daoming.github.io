@@ -1,4 +1,4 @@
----
+﻿---
 title: DeepSeek Harness 安装与使用教程（含 Node.js/npm 与 API Key 前置教程）
 date: 2026-08-15 14:00:00
 tags:
@@ -6,7 +6,7 @@ tags:
   - DeepSeek
   - 效率工具
 categories:
-  - 工具教程
+  - 工具与教程
 ---
 
 DeepSeek Harness 是 DeepSeek 推出的首款 Agent 产品，它把大模型变成能够管理项目、编排多 Agent、执行长任务的智能体。本文从零基础讲起：先补齐 **Node.js/npm 安装**和 **DeepSeek API Key 获取**两个前置环节，再讲 Harness 的安装、模型配置、日常使用与高级功能，跟着做一遍即可在本地搭好一个开源 AI Agent 工作台。

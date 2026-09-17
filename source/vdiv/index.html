@@ -1,5 +1,6 @@
----
+﻿---
 title: 分压电阻计算器
+layout: false
 ---
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -38,7 +39,7 @@ title: 分压电阻计算器
     font-family: var(--sans);
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
-    padding: 28px 16px 40px;
+    padding: 0 16px 40px;
   }
   .tool { max-width: 960px; margin: 0 auto; }
 
@@ -294,9 +295,38 @@ title: 分压电阻计算器
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
   }
+
+  /* Navigation Bar */
+  .tool-nav{position:sticky;top:0;z-index:100;background:rgba(15,17,23,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 16px;margin:0;display:flex;align-items:center;height:50px;gap:16px}
+  .tool-nav .nav-brand{font-size:14px;font-weight:700;color:var(--accent);text-decoration:none;white-space:nowrap}
+  .tool-nav .nav-links{display:flex;gap:4px;overflow-x:auto;flex:1;scrollbar-width:none}
+  .tool-nav .nav-links::-webkit-scrollbar{display:none}
+  .tool-nav .nav-link{font-size:12px;color:var(--text-dim);text-decoration:none;padding:6px 10px;border-radius:4px;white-space:nowrap;transition:all .15s}
+  .tool-nav .nav-link:hover{color:var(--text);background:var(--panel-2)}
+  .tool-nav .nav-link.active{color:var(--accent);background:var(--accent-soft)}
+  @media(max-width:600px){.tool-nav{padding:0 12px}.tool-nav .nav-brand{font-size:12px}.tool-nav .nav-link{font-size:11px;padding:5px 8px}}
 </style>
 </head>
 <body>
+<nav class="tool-nav">
+  <a href="/" class="nav-brand">菜鸡工程师</a>
+  <div class="nav-links">
+    <a href="/crc/" class="nav-link">CRC</a>
+    <a href="/ascii/" class="nav-link">ASCII</a>
+    <a href="/vdiv/" class="nav-link active">分压电阻</a>
+    <a href="/capacitance/" class="nav-link">电容换算</a>
+    <a href="/battery/" class="nav-link">电池续航</a>
+    <a href="/led-resistor/" class="nav-link">LED电阻</a>
+    <a href="/base-converter/" class="nav-link">进制转换</a>
+    <a href="/pcb-trace/" class="nav-link">PCB走线</a>
+    <a href="/dcdc-calculator/" class="nav-link">DC-DC计算</a>
+    <a href="/resistor-color/" class="nav-link">电阻色环</a>
+    <a href="/opamp/" class="nav-link">运放计算</a>
+    <a href="/lc/" class="nav-link">LC谐振</a>
+    <a href="/pcb-via/" class="nav-link">PCB过孔</a>
+    <a href="/tools/svg2png/" class="nav-link">SVG转PNG</a>
+  </div>
+</nav>
 <main class="tool">
   <header class="head">
     <div class="head-kicker">Embedded Utility</div>

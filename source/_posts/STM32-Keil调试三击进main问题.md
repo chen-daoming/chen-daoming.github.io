@@ -7,7 +7,7 @@ tags:
   - printf
   - 调试
 categories:
-  - 嵌入式
+  - 嵌入式开发
 ---
 
 ## 现象

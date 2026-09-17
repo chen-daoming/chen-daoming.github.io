@@ -24,6 +24,7 @@ navbar:
         - { key: 'opamp', name: '运放计算器', link: '/opamp/' }
         - { key: 'lc', name: 'LC谐振/滤波', link: '/lc/' }
         - { key: 'via', name: 'PCB过孔计算器', link: '/pcb-via/' }
+        - { key: 'svg2png', name: 'SVG转PNG', link: '/tools/svg2png/' }
         # 以后新增工具：- { key: 'xxx', name: '工具名', link: '/xxx/' }
     - { key: 'about', link: '/about/', icon: 'icon-info-circle-fill' }
 # ==================== 首页 ====================
@@ -64,6 +65,7 @@ search:
   path: /search.json
   field: post
   content: true
+  format: 'onlyzh'
 # ==================== 自定义资源 ====================
 # 加载自定义 CSS（导航栏下拉菜单悬浮展开样式，文件位于 source/css/custom.css）
 custom_css:
