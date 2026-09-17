@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 450" width="700" height="450">
   <defs>
     <style>
-      .title { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #333; }
-      .label { font-family: Arial, sans-serif; font-size: 12px; fill: #555; }
-      .data { font-family: monospace; font-size: 14px; fill: #1976d2; }
-      .crc { font-family: monospace; font-size: 14px; fill: #d32f2f; font-weight: bold; }
-      .arrow { font-family: Arial, sans-serif; font-size: 12px; fill: #666; }
+      .title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #1a1a1a; }
+      .subtitle { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #666; }
+      .label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #333; }
+      .data { font-family: 'Consolas', monospace; font-size: 13px; fill: #1565c0; }
+      .crc { font-family: 'Consolas', monospace; font-size: 13px; fill: #c62828; font-weight: bold; }
+      .step { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #333; }
+      .box { stroke-width: 1.5; }
     </style>
     <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
       <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
@@ -14,90 +16,106 @@
   </defs>
   
   <!-- Background -->
-  <rect width="800" height="400" fill="#fafafa" rx="8"/>
+  <rect width="700" height="450" fill="#fafafa" rx="8"/>
   
   <!-- Title -->
-  <text x="400" y="30" text-anchor="middle" class="title">CRC 校验原理流程</text>
+  <text x="350" y="28" text-anchor="middle" class="title">CRC 校验原理流程图</text>
   
-  <!-- Sender Side -->
-  <g transform="translate(50, 60)">
-    <text x="150" y="0" text-anchor="middle" class="title" fill="#1976d2">发送方</text>
+  <!-- Sender Section -->
+  <g transform="translate(30, 60)">
+    <text x="120" y="0" text-anchor="middle" class="step" fill="#1976d2">发送方</text>
     
-    <!-- Original Data -->
-    <rect x="0" y="20" width="300" height="40" fill="#e3f2fd" stroke="#1976d2" rx="6"/>
-    <text x="150" y="45" text-anchor="middle" class="data">原始数据 D(x)</text>
+    <!-- Step 1: Original Data -->
+    <rect x="0" y="20" width="240" height="40" fill="#e3f2fd" stroke="#90caf9" class="box" rx="6"/>
+    <text x="120" y="45" text-anchor="middle" dominant-baseline="middle" class="data">原始数据 D(x)</text>
     
-    <!-- Append Zeros -->
-    <rect x="0" y="80" width="300" height="40" fill="#fff3e0" stroke="#ff9800" rx="6"/>
-    <text x="150" y="105" text-anchor="middle" class="label">添加 r 个 0（r = 除数位数-1）</text>
+    <!-- Arrow -->
+    <line x1="120" y1="60" x2="120" y2="80" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
     
-    <!-- CRC Calculation -->
-    <rect x="0" y="140" width="300" height="50" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
-    <text x="150" y="165" text-anchor="middle" class="label">模二除法</text>
-    <text x="150" y="180" text-anchor="middle" class="data">÷ 生成多项式 P(x)</text>
+    <!-- Step 2: Append Zeros -->
+    <rect x="0" y="80" width="240" height="40" fill="#fff3e0" stroke="#ffb74d" class="box" rx="6"/>
+    <text x="120" y="105" text-anchor="middle" dominant-baseline="middle" class="label">添加 r 个 0（r = 除数位数-1）</text>
     
-    <!-- Remainder -->
-    <rect x="0" y="210" width="300" height="40" fill="#ffebee" stroke="#d32f2f" rx="6"/>
-    <text x="150" y="235" text-anchor="middle" class="crc">余数 = CRC 校验码 R(x)</text>
+    <!-- Arrow -->
+    <line x1="120" y1="120" x2="120" y2="140" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
     
-    <!-- Send Data -->
-    <rect x="0" y="270" width="300" height="50" fill="#e3f2fd" stroke="#1976d2" rx="6"/>
-    <text x="150" y="295" text-anchor="middle" class="data">发送：D(x) + R(x)</text>
-    <text x="150" y="310" text-anchor="middle" class="label">（原始数据 + CRC码）</text>
+    <!-- Step 3: Division -->
+    <rect x="0" y="140" width="240" height="50" fill="#e8f5e9" stroke="#a5d6a7" class="box" rx="6"/>
+    <text x="120" y="162" text-anchor="middle" dominant-baseline="middle" class="label">模二除法</text>
+    <text x="120" y="180" text-anchor="middle" dominant-baseline="middle" class="data">÷ 生成多项式 P(x)</text>
+    
+    <!-- Arrow -->
+    <line x1="120" y1="190" x2="120" y2="210" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    
+    <!-- Step 4: Remainder -->
+    <rect x="0" y="210" width="240" height="40" fill="#ffebee" stroke="#ef9a9a" class="box" rx="6"/>
+    <text x="120" y="235" text-anchor="middle" dominant-baseline="middle" class="crc">余数 = CRC 校验码 R(x)</text>
+    
+    <!-- Arrow -->
+    <line x1="120" y1="250" x2="120" y2="270" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    
+    <!-- Step 5: Send Data -->
+    <rect x="0" y="270" width="240" height="50" fill="#e3f2fd" stroke="#90caf9" class="box" rx="6"/>
+    <text x="120" y="292" text-anchor="middle" dominant-baseline="middle" class="data">发送：D(x) + R(x)</text>
+    <text x="120" y="310" text-anchor="middle" dominant-baseline="middle" class="label">（原始数据 + CRC码）</text>
   </g>
-  
-  <!-- Arrows -->
-  <line x1="200" y1="100" x2="200" y2="140" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
-  <line x1="200" y1="190" x2="200" y2="210" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
-  <line x1="200" y1="250" x2="200" y2="270" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
   
   <!-- Channel -->
-  <rect x="380" y="150" width="40" height="180" fill="#f5f5f5" stroke="#999" rx="4"/>
-  <text x="400" y="240" text-anchor="middle" class="label" transform="rotate(90, 400, 240)">信道</text>
-  
-  <!-- Arrow to channel -->
-  <line x1="300" y1="295" x2="380" y2="240" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
-  
-  <!-- Receiver Side -->
-  <g transform="translate(450, 60)">
-    <text x="150" y="0" text-anchor="middle" class="title" fill="#4caf50">接收方</text>
-    
-    <!-- Receive Data -->
-    <rect x="0" y="20" width="300" height="50" fill="#e3f2fd" stroke="#1976d2" rx="6"/>
-    <text x="150" y="45" text-anchor="middle" class="data">接收：D(x) + R(x)</text>
-    <text x="150" y="60" text-anchor="middle" class="label">（可能包含传输错误）</text>
-    
-    <!-- CRC Check -->
-    <rect x="0" y="100" width="300" height="50" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
-    <text x="150" y="125" text-anchor="middle" class="label">模二除法校验</text>
-    <text x="150" y="140" text-anchor="middle" class="data">÷ 生成多项式 P(x)</text>
-    
-    <!-- Decision -->
-    <rect x="75" y="180" width="150" height="50" fill="#fff3e0" stroke="#ff9800" rx="6"/>
-    <text x="150" y="205" text-anchor="middle" class="label">余数 == 0？</text>
-    
-    <!-- Results -->
-    <rect x="0" y="260" width="130" height="50" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
-    <text x="65" y="285" text-anchor="middle" class="label" fill="#4caf50">✓ 无差错</text>
-    <text x="65" y="300" text-anchor="middle" class="label">接受数据</text>
-    
-    <rect x="170" y="260" width="130" height="50" fill="#ffebee" stroke="#d32f2f" rx="6"/>
-    <text x="235" y="285" text-anchor="middle" class="label" fill="#d32f2f">✗ 有差错</text>
-    <text x="235" y="300" text-anchor="middle" class="label">丢弃/重传</text>
+  <g transform="translate(290, 160)">
+    <rect x="0" y="0" width="60" height="180" fill="#f5f5f5" stroke="#bdbdbd" class="box" rx="4"/>
+    <text x="30" y="100" text-anchor="middle" dominant-baseline="middle" class="label" transform="rotate(90, 30, 100)">信道</text>
   </g>
   
-  <!-- Arrows -->
-  <line x1="650" y1="150" x2="650" y2="180" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
-  <line x1="600" y1="230" x2="565" y2="260" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
-  <line x1="700" y1="230" x2="735" y2="260" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- Arrow from sender to channel -->
+  <path d="M 270 310 L 290 250" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
   
   <!-- Arrow from channel to receiver -->
-  <line x1="420" y1="240" x2="450" y2="240" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="350" y1="250" x2="380" y2="250" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Receiver Section -->
+  <g transform="translate(380, 60)">
+    <text x="120" y="0" text-anchor="middle" class="step" fill="#4caf50">接收方</text>
+    
+    <!-- Step 1: Receive Data -->
+    <rect x="0" y="20" width="240" height="50" fill="#e3f2fd" stroke="#90caf9" class="box" rx="6"/>
+    <text x="120" y="42" text-anchor="middle" dominant-baseline="middle" class="data">接收：D(x) + R(x)</text>
+    <text x="120" y="62" text-anchor="middle" dominant-baseline="middle" class="label">（可能包含传输错误）</text>
+    
+    <!-- Arrow -->
+    <line x1="120" y1="70" x2="120" y2="100" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    
+    <!-- Step 2: CRC Check -->
+    <rect x="0" y="100" width="240" height="50" fill="#e8f5e9" stroke="#a5d6a7" class="box" rx="6"/>
+    <text x="120" y="122" text-anchor="middle" dominant-baseline="middle" class="label">模二除法校验</text>
+    <text x="120" y="140" text-anchor="middle" dominant-baseline="middle" class="data">÷ 生成多项式 P(x)</text>
+    
+    <!-- Arrow -->
+    <line x1="120" y1="150" x2="120" y2="175" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    
+    <!-- Step 3: Decision -->
+    <rect x="50" y="175" width="140" height="40" fill="#fff3e0" stroke="#ffb74d" class="box" rx="4"/>
+    <text x="120" y="200" text-anchor="middle" dominant-baseline="middle" class="label">余数 == 0 ?</text>
+    
+    <!-- Yes path -->
+    <line x1="80" y1="215" x2="80" y2="245" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <text x="65" y="235" text-anchor="end" class="label" fill="#4caf50">是</text>
+    
+    <rect x="0" y="245" width="160" height="40" fill="#e8f5e9" stroke="#a5d6a7" class="box" rx="6"/>
+    <text x="80" y="270" text-anchor="middle" dominant-baseline="middle" class="label" fill="#2e7d32">✓ 接受数据</text>
+    
+    <!-- No path -->
+    <line x1="160" y1="215" x2="160" y2="245" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <text x="175" y="235" text-anchor="start" class="label" fill="#c62828">否</text>
+    
+    <rect x="80" y="245" width="160" height="40" fill="#ffebee" stroke="#ef9a9a" class="box" rx="6"/>
+    <text x="160" y="270" text-anchor="middle" dominant-baseline="middle" class="label" fill="#c62828">✗ 丢弃/重传</text>
+  </g>
   
   <!-- Key Formula -->
-  <g transform="translate(50, 350)">
-    <text x="0" y="0" class="label" font-weight="bold">核心公式：</text>
-    <text x="100" y="0" class="data">R(x) = [2^r × D(x)] mod P(x)</text>
-    <text x="400" y="0" class="label">（CRC码 = 左移r位后的数据 除以 多项式的余数）</text>
+  <g transform="translate(30, 400)">
+    <rect x="0" y="0" width="640" height="35" fill="#f3e5f5" stroke="#ce93d8" rx="4"/>
+    <text x="20" y="22" class="step">核心公式：</text>
+    <text x="120" y="22" class="data">R(x) = [2^r × D(x)] mod P(x)</text>
+    <text x="380" y="22" class="label">（CRC码 = 左移r位后的数据 除以 多项式的余数）</text>
   </g>
 </svg>

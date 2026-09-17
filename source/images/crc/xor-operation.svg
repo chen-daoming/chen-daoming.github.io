@@ -1,71 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="600" height="200">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 280" width="500" height="280">
   <defs>
     <style>
-      .title { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #333; }
-      .label { font-family: Arial, sans-serif; font-size: 14px; fill: #555; }
-      .result { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #d32f2f; }
-      .operator { font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #1976d2; }
+      .title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #1a1a1a; }
+      .header { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #444; }
+      .cell { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; fill: #333; }
+      .result { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #c62828; }
+      .note { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #666; }
+      .box { stroke-width: 1.5; rx: 4; }
     </style>
   </defs>
   
   <!-- Background -->
-  <rect width="600" height="200" fill="#f5f5f5" rx="8"/>
+  <rect width="500" height="280" fill="#fafafa" rx="8"/>
   
   <!-- Title -->
-  <text x="300" y="30" text-anchor="middle" class="title">模二运算（XOR）</text>
+  <text x="250" y="28" text-anchor="middle" class="title">模二运算（XOR）真值表</text>
   
-  <!-- XOR Truth Table -->
-  <g transform="translate(50, 60)">
-    <text x="60" y="0" text-anchor="middle" class="label" font-weight="bold">A</text>
-    <text x="120" y="0" text-anchor="middle" class="label" font-weight="bold">B</text>
-    <text x="200" y="0" text-anchor="middle" class="label" font-weight="bold">A ⊕ B</text>
+  <!-- Table -->
+  <g transform="translate(40, 50)">
+    <!-- Header row -->
+    <rect x="0" y="0" width="60" height="30" fill="#1976d2" class="box"/>
+    <text x="30" y="20" text-anchor="middle" dominant-baseline="middle" class="header" fill="white">A</text>
     
-    <!-- Row 1 -->
-    <rect x="30" y="15" width="60" height="25" fill="#e3f2fd" stroke="#1976d2" rx="4"/>
-    <text x="60" y="33" text-anchor="middle" class="label">0</text>
-    <rect x="90" y="15" width="60" height="25" fill="#e3f2fd" stroke="#1976d2" rx="4"/>
-    <text x="120" y="33" text-anchor="middle" class="label">0</text>
-    <rect x="170" y="15" width="60" height="25" fill="#e8f5e9" stroke="#4caf50" rx="4"/>
-    <text x="200" y="33" text-anchor="middle" class="result">0</text>
+    <rect x="70" y="0" width="60" height="30" fill="#1976d2" class="box"/>
+    <text x="100" y="20" text-anchor="middle" dominant-baseline="middle" class="header" fill="white">B</text>
     
-    <!-- Row 2 -->
-    <rect x="30" y="50" width="60" height="25" fill="#e3f2fd" stroke="#1976d2" rx="4"/>
-    <text x="60" y="68" text-anchor="middle" class="label">0</text>
-    <rect x="90" y="50" width="60" height="25" fill="#e3f2fd" stroke="#1976d2" rx="4"/>
-    <text x="120" y="68" text-anchor="middle" class="label">1</text>
-    <rect x="170" y="50" width="60" height="25" fill="#ffebee" stroke="#d32f2f" rx="4"/>
-    <text x="200" y="68" text-anchor="middle" class="result">1</text>
+    <rect x="150" y="0" width="80" height="30" fill="#1976d2" class="box"/>
+    <text x="190" y="20" text-anchor="middle" dominant-baseline="middle" class="header" fill="white">A ⊕ B</text>
     
-    <!-- Row 3 -->
-    <rect x="30" y="85" width="60" height="25" fill="#e3f2fd" stroke="#1976d2" rx="4"/>
-    <text x="60" y="103" text-anchor="middle" class="label">1</text>
-    <rect x="90" y="85" width="60" height="25" fill="#e3f2fd" stroke="#1976d2" rx="4"/>
-    <text x="120" y="103" text-anchor="middle" class="label">0</text>
-    <rect x="170" y="85" width="60" height="25" fill="#ffebee" stroke="#d32f2f" rx="4"/>
-    <text x="200" y="103" text-anchor="middle" class="result">1</text>
+    <!-- Row 1: 0,0 -> 0 -->
+    <rect x="0" y="40" width="60" height="30" fill="#e3f2fd" stroke="#90caf9" class="box"/>
+    <text x="30" y="60" text-anchor="middle" dominant-baseline="middle" class="cell">0</text>
     
-    <!-- Row 4 -->
-    <rect x="30" y="120" width="60" height="25" fill="#e3f2fd" stroke="#1976d2" rx="4"/>
-    <text x="60" y="138" text-anchor="middle" class="label">1</text>
-    <rect x="90" y="120" width="60" height="25" fill="#e3f2fd" stroke="#1976d2" rx="4"/>
-    <text x="120" y="138" text-anchor="middle" class="label">1</text>
-    <rect x="170" y="120" width="60" height="25" fill="#e8f5e9" stroke="#4caf50" rx="4"/>
-    <text x="200" y="138" text-anchor="middle" class="result">0</text>
+    <rect x="70" y="40" width="60" height="30" fill="#e3f2fd" stroke="#90caf9" class="box"/>
+    <text x="100" y="60" text-anchor="middle" dominant-baseline="middle" class="cell">0</text>
+    
+    <rect x="150" y="40" width="80" height="30" fill="#e8f5e9" stroke="#a5d6a7" class="box"/>
+    <text x="190" y="60" text-anchor="middle" dominant-baseline="middle" class="result">0</text>
+    
+    <!-- Row 2: 0,1 -> 1 -->
+    <rect x="0" y="80" width="60" height="30" fill="#e3f2fd" stroke="#90caf9" class="box"/>
+    <text x="30" y="100" text-anchor="middle" dominant-baseline="middle" class="cell">0</text>
+    
+    <rect x="70" y="80" width="60" height="30" fill="#e3f2fd" stroke="#90caf9" class="box"/>
+    <text x="100" y="100" text-anchor="middle" dominant-baseline="middle" class="cell">1</text>
+    
+    <rect x="150" y="80" width="80" height="30" fill="#ffebee" stroke="#ef9a9a" class="box"/>
+    <text x="190" y="100" text-anchor="middle" dominant-baseline="middle" class="result">1</text>
+    
+    <!-- Row 3: 1,0 -> 1 -->
+    <rect x="0" y="120" width="60" height="30" fill="#e3f2fd" stroke="#90caf9" class="box"/>
+    <text x="30" y="140" text-anchor="middle" dominant-baseline="middle" class="cell">1</text>
+    
+    <rect x="70" y="120" width="60" height="30" fill="#e3f2fd" stroke="#90caf9" class="box"/>
+    <text x="100" y="140" text-anchor="middle" dominant-baseline="middle" class="cell">0</text>
+    
+    <rect x="150" y="120" width="80" height="30" fill="#ffebee" stroke="#ef9a9a" class="box"/>
+    <text x="190" y="140" text-anchor="middle" dominant-baseline="middle" class="result">1</text>
+    
+    <!-- Row 4: 1,1 -> 0 -->
+    <rect x="0" y="160" width="60" height="30" fill="#e3f2fd" stroke="#90caf9" class="box"/>
+    <text x="30" y="180" text-anchor="middle" dominant-baseline="middle" class="cell">1</text>
+    
+    <rect x="70" y="160" width="60" height="30" fill="#e3f2fd" stroke="#90caf9" class="box"/>
+    <text x="100" y="180" text-anchor="middle" dominant-baseline="middle" class="cell">1</text>
+    
+    <rect x="150" y="160" width="80" height="30" fill="#e8f5e9" stroke="#a5d6a7" class="box"/>
+    <text x="190" y="180" text-anchor="middle" dominant-baseline="middle" class="result">0</text>
   </g>
   
-  <!-- Formula -->
-  <text x="350" y="100" text-anchor="middle" class="operator">⊕</text>
-  <text x="350" y="130" text-anchor="middle" class="label">= XOR</text>
-  <text x="350" y="160" text-anchor="middle" class="label">不进位加法</text>
+  <!-- Key Points Box -->
+  <g transform="translate(280, 50)">
+    <rect x="0" y="0" width="180" height="170" fill="#fff" stroke="#ddd" rx="6"/>
+    <text x="90" y="25" text-anchor="middle" class="header">特点</text>
+    
+    <text x="15" y="55" class="cell">• 相同得 0</text>
+    <text x="15" y="80" class="cell">• 相异得 1</text>
+    <text x="15" y="105" class="cell">• 模二加法 = 模二减法</text>
+    <text x="15" y="130" class="cell">• 奇数个1 → 1</text>
+    <text x="15" y="155" class="cell">• 偶数个1 → 0</text>
+  </g>
   
-  <!-- Key Points -->
-  <g transform="translate(400, 60)">
-    <text x="0" y="0" class="label" font-weight="bold">特点：</text>
-    <text x="0" y="25" class="label">• 相同得0</text>
-    <text x="0" y="50" class="label">• 相异得1</text>
-    <text x="0" y="75" class="label">• 模二加法 = 模二减法</text>
-    <text x="0" y="100" class="label">• 奇数个1→1</text>
-    <text x="0" y="125" class="label">• 偶数个1→0</text>
+  <!-- Formula Box -->
+  <g transform="translate(40, 240)">
+    <rect x="0" y="0" width="420" height="30" fill="#fff3e0" stroke="#ffb74d" rx="4"/>
+    <text x="210" y="20" text-anchor="middle" class="note">⊕ = XOR 运算符（不进位加法）</text>
   </g>
 </svg>
