@@ -1,135 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
-  <defs>
-    <style>
-      .title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #1a1a1a; }
-      .header { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #fff; }
-      .cell { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #333; }
-      .poly { font-family: 'Consolas', monospace; font-size: 11px; fill: #1565c0; }
-      .note { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #666; }
-      .box { stroke-width: 1; }
-    </style>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="300" viewBox="0 0 680 300">
+  <style>
+    text { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; }
+    .title { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
+    .th { font-size: 13px; font-weight: bold; fill: #fff; }
+    .td { font-size: 13px; fill: #333; }
+    .poly { font-size: 12px; fill: #1565c0; font-family: 'Consolas', monospace; }
+    .hex { font-size: 13px; fill: #d00; font-weight: bold; font-family: 'Consolas', monospace; }
+    .app { font-size: 12px; fill: #555; }
+    .note { font-size: 11px; fill: #888; }
+  </style>
   
-  <!-- Background -->
-  <rect width="800" height="420" fill="#fafafa" rx="8"/>
+  <rect width="680" height="300" fill="#f8f9fa" rx="10"/>
+  <text x="340" y="28" text-anchor="middle" class="title">常用 CRC 版本对比</text>
   
-  <!-- Title -->
-  <text x="400" y="28" text-anchor="middle" class="title">常用 CRC 版本对比</text>
+  <!-- 表格 -->
+  <rect x="20" y="45" width="640" height="240" fill="#fff" stroke="#ddd" rx="6"/>
   
-  <!-- Table Header -->
-  <g transform="translate(20, 50)">
-    <rect x="0" y="0" width="100" height="35" fill="#1976d2" class="box" rx="4"/>
-    <text x="50" y="22" text-anchor="middle" dominant-baseline="middle" class="header">名称</text>
-    
-    <rect x="110" y="0" width="220" height="35" fill="#1976d2" class="box" rx="4"/>
-    <text x="220" y="22" text-anchor="middle" dominant-baseline="middle" class="header">多项式</text>
-    
-    <rect x="340" y="0" width="110" height="35" fill="#1976d2" class="box" rx="4"/>
-    <text x="395" y="22" text-anchor="middle" dominant-baseline="middle" class="header">16进制表示</text>
-    
-    <rect x="460" y="0" width="320" height="35" fill="#1976d2" class="box" rx="4"/>
-    <text x="620" y="22" text-anchor="middle" dominant-baseline="middle" class="header">典型应用场景</text>
-  </g>
+  <!-- 表头 -->
+  <rect x="20" y="45" width="640" height="30" fill="#1976d2" rx="6"/>
+  <rect x="20" y="60" width="640" height="15" fill="#1976d2"/>
+  <text x="80" y="65" text-anchor="middle" class="th">名称</text>
+  <text x="220" y="65" text-anchor="middle" class="th">多项式</text>
+  <text x="380" y="65" text-anchor="middle" class="th">16进制</text>
+  <text x="540" y="65" text-anchor="middle" class="th">典型应用</text>
   
-  <!-- Table Rows -->
-  <g transform="translate(20, 95)">
-    <!-- Row 1: CRC-8 -->
-    <rect x="0" y="0" width="100" height="50" fill="#e3f2fd" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="50" y="30" text-anchor="middle" dominant-baseline="middle" class="cell" font-weight="bold">CRC-8</text>
-    
-    <rect x="110" y="0" width="220" height="50" fill="#fff" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="220" y="22" text-anchor="middle" dominant-baseline="middle" class="poly">X⁸ + X² + X + 1</text>
-    <text x="220" y="42" text-anchor="middle" dominant-baseline="middle" class="note">（省略最高位 X⁸）</text>
-    
-    <rect x="340" y="0" width="110" height="50" fill="#fff" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="395" y="30" text-anchor="middle" dominant-baseline="middle" class="poly">0x07</text>
-    
-    <rect x="460" y="0" width="320" height="50" fill="#e8f5e9" stroke="#c8e6c9" class="box" rx="2"/>
-    <text x="620" y="30" text-anchor="middle" dominant-baseline="middle" class="cell">短帧校验、简单通信协议</text>
-    
-    <!-- Row 2: CRC-12 -->
-    <rect x="0" y="60" width="100" height="50" fill="#e3f2fd" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="50" y="90" text-anchor="middle" dominant-baseline="middle" class="cell" font-weight="bold">CRC-12</text>
-    
-    <rect x="110" y="60" width="220" height="50" fill="#fff" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="220" y="82" text-anchor="middle" dominant-baseline="middle" class="poly">X¹² + X¹¹ + X³ + X² + X + 1</text>
-    <text x="220" y="102" text-anchor="middle" dominant-baseline="middle" class="note">（省略最高位 X¹²）</text>
-    
-    <rect x="340" y="60" width="110" height="50" fill="#fff" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="395" y="90" text-anchor="middle" dominant-baseline="middle" class="poly">0x80F</text>
-    
-    <rect x="460" y="60" width="320" height="50" fill="#e8f5e9" stroke="#c8e6c9" class="box" rx="2"/>
-    <text x="620" y="90" text-anchor="middle" dominant-baseline="middle" class="cell">电信系统</text>
-    
-    <!-- Row 3: CRC-16 -->
-    <rect x="0" y="120" width="100" height="60" fill="#e3f2fd" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="50" y="150" text-anchor="middle" dominant-baseline="middle" class="cell" font-weight="bold">CRC-16</text>
-    
-    <rect x="110" y="120" width="220" height="60" fill="#fff" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="220" y="142" text-anchor="middle" dominant-baseline="middle" class="poly">X¹⁶ + X¹⁵ + X² + 1</text>
-    <text x="220" y="162" text-anchor="middle" dominant-baseline="middle" class="note">（省略最高位 X¹⁶）</text>
-    
-    <rect x="340" y="120" width="110" height="60" fill="#fff" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="395" y="150" text-anchor="middle" dominant-baseline="middle" class="poly">0x8005</text>
-    
-    <rect x="460" y="120" width="320" height="60" fill="#fff3e0" stroke="#ffe0b2" class="box" rx="2"/>
-    <text x="620" y="142" text-anchor="middle" dominant-baseline="middle" class="cell">Modbus, USB, ANSI X3.28</text>
-    <text x="620" y="162" text-anchor="middle" dominant-baseline="middle" class="cell">SIA DC-07 等</text>
-    
-    <!-- Row 4: CRC-CCITT -->
-    <rect x="0" y="190" width="100" height="50" fill="#e3f2fd" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="50" y="220" text-anchor="middle" dominant-baseline="middle" class="cell" font-weight="bold">CRC-CCITT</text>
-    
-    <rect x="110" y="190" width="220" height="50" fill="#fff" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="220" y="212" text-anchor="middle" dominant-baseline="middle" class="poly">X¹⁶ + X¹² + X⁵ + 1</text>
-    <text x="220" y="232" text-anchor="middle" dominant-baseline="middle" class="note">（省略最高位 X¹⁶）</text>
-    
-    <rect x="340" y="190" width="110" height="50" fill="#fff" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="395" y="220" text-anchor="middle" dominant-baseline="middle" class="poly">0x1021</text>
-    
-    <rect x="460" y="190" width="320" height="50" fill="#fff3e0" stroke="#ffe0b2" class="box" rx="2"/>
-    <text x="620" y="220" text-anchor="middle" dominant-baseline="middle" class="cell">ISO HDLC, ITU X.25, PPP-FCS</text>
-    
-    <!-- Row 5: CRC-32 -->
-    <rect x="0" y="250" width="100" height="70" fill="#e3f2fd" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="50" y="285" text-anchor="middle" dominant-baseline="middle" class="cell" font-weight="bold">CRC-32</text>
-    
-    <rect x="110" y="250" width="220" height="70" fill="#fff" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="220" y="268" text-anchor="middle" dominant-baseline="middle" class="poly">X³² + X²⁶ + X²³ + X²² + X¹⁶</text>
-    <text x="220" y="286" text-anchor="middle" dominant-baseline="middle" class="poly">+ X¹² + X¹¹ + X¹⁰ + X⁸ + X⁷</text>
-    <text x="220" y="304" text-anchor="middle" dominant-baseline="middle" class="poly">+ X⁵ + X⁴ + X² + X + 1</text>
-    
-    <rect x="340" y="250" width="110" height="70" fill="#fff" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="395" y="285" text-anchor="middle" dominant-baseline="middle" class="poly">0x04C11DB7</text>
-    
-    <rect x="460" y="250" width="320" height="70" fill="#ffebee" stroke="#ffcdd2" class="box" rx="2"/>
-    <text x="620" y="272" text-anchor="middle" dominant-baseline="middle" class="cell">ZIP, RAR, IEEE 802</text>
-    <text x="620" y="292" text-anchor="middle" dominant-baseline="middle" class="cell">LAN/FDDI, IEEE 1394</text>
-    <text x="620" y="312" text-anchor="middle" dominant-baseline="middle" class="cell">PPP-FCS</text>
-    
-    <!-- Row 6: CRC-32C -->
-    <rect x="0" y="330" width="100" height="70" fill="#e3f2fd" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="50" y="365" text-anchor="middle" dominant-baseline="middle" class="cell" font-weight="bold">CRC-32C</text>
-    
-    <rect x="110" y="330" width="220" height="70" fill="#fff" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="220" y="348" text-anchor="middle" dominant-baseline="middle" class="poly">X³² + X²⁸ + X²⁷ + X²⁶ + X²⁵</text>
-    <text x="220" y="366" text-anchor="middle" dominant-baseline="middle" class="poly">+ X²³ + X²² + X²⁰ + X¹⁹ + X¹⁸</text>
-    <text x="220" y="384" text-anchor="middle" dominant-baseline="middle" class="poly">+ X¹⁴ + X¹³ + X¹¹ + X¹⁰ + X⁹</text>
-    <text x="220" y="402" text-anchor="middle" dominant-baseline="middle" class="poly">+ X⁸ + X⁶ + 1</text>
-    
-    <rect x="340" y="330" width="110" height="70" fill="#fff" stroke="#bbdefb" class="box" rx="2"/>
-    <text x="395" y="365" text-anchor="middle" dominant-baseline="middle" class="poly">0x1EDC6F41</text>
-    
-    <rect x="460" y="330" width="320" height="70" fill="#ffebee" stroke="#ffcdd2" class="box" rx="2"/>
-    <text x="620" y="352" text-anchor="middle" dominant-baseline="middle" class="cell">iSCSI, SCTP, G.hn</text>
-    <text x="620" y="372" text-anchor="middle" dominant-baseline="middle" class="cell">SSE4.2 硬件加速</text>
-    <text x="620" y="392" text-anchor="middle" dominant-baseline="middle" class="cell">Btrfs, ext4, Ceph</text>
-  </g>
+  <!-- 行1: CRC-8 -->
+  <line x1="20" y1="95" x2="660" y2="95" stroke="#eee"/>
+  <text x="80" y="115" text-anchor="middle" class="td" font-weight="bold">CRC-8</text>
+  <text x="220" y="115" text-anchor="middle" class="poly">X⁸+X²+X+1</text>
+  <text x="380" y="115" text-anchor="middle" class="hex">0x07</text>
+  <text x="540" y="115" text-anchor="middle" class="app">短帧校验</text>
   
-  <!-- Note -->
-  <g transform="translate(20, 430)">
-    <rect x="0" y="0" width="760" height="30" fill="#f5f5f5" stroke="#e0e0e0" class="box" rx="4"/>
-    <text x="15" y="18" class="note">注：表中多项式均省略了最高位（1），因为最高位在编程时无需考虑</text>
-  </g>
+  <!-- 行2: CRC-12 -->
+  <line x1="20" y1="130" x2="660" y2="130" stroke="#eee"/>
+  <text x="80" y="150" text-anchor="middle" class="td" font-weight="bold">CRC-12</text>
+  <text x="220" y="150" text-anchor="middle" class="poly">X¹²+X¹¹+X³+X²+X+1</text>
+  <text x="380" y="150" text-anchor="middle" class="hex">0x80F</text>
+  <text x="540" y="150" text-anchor="middle" class="app">电信系统</text>
+  
+  <!-- 行3: CRC-16 -->
+  <line x1="20" y1="165" x2="660" y2="165" stroke="#eee"/>
+  <text x="80" y="185" text-anchor="middle" class="td" font-weight="bold">CRC-16</text>
+  <text x="220" y="185" text-anchor="middle" class="poly">X¹⁶+X¹⁵+X²+1</text>
+  <text x="380" y="185" text-anchor="middle" class="hex">0x8005</text>
+  <text x="540" y="185" text-anchor="middle" class="app">Modbus, USB</text>
+  
+  <!-- 行4: CRC-CCITT -->
+  <line x1="20" y1="200" x2="660" y2="200" stroke="#eee"/>
+  <text x="80" y="220" text-anchor="middle" class="td" font-weight="bold">CRC-CCITT</text>
+  <text x="220" y="220" text-anchor="middle" class="poly">X¹⁶+X¹²+X⁵+1</text>
+  <text x="380" y="220" text-anchor="middle" class="hex">0x1021</text>
+  <text x="540" y="220" text-anchor="middle" class="app">ISO HDLC, X.25</text>
+  
+  <!-- 行5: CRC-32 -->
+  <line x1="20" y1="235" x2="660" y2="235" stroke="#eee"/>
+  <text x="80" y="255" text-anchor="middle" class="td" font-weight="bold">CRC-32</text>
+  <text x="220" y="255" text-anchor="middle" class="poly">X³²+X²⁶+...+X+1</text>
+  <text x="380" y="255" text-anchor="middle" class="hex">0x04C11DB7</text>
+  <text x="540" y="255" text-anchor="middle" class="app">ZIP, RAR, IEEE 802</text>
+  
+  <!-- 行6: CRC-32C -->
+  <line x1="20" y1="270" x2="660" y2="270" stroke="#eee"/>
+  <text x="80" y="285" text-anchor="middle" class="td" font-weight="bold">CRC-32C</text>
+  <text x="220" y="285" text-anchor="middle" class="poly">X³²+X²⁸+...+X⁶+1</text>
+  <text x="380" y="285" text-anchor="middle" class="hex">0x1EDC6F41</text>
+  <text x="540" y="285" text-anchor="middle" class="app">iSCSI, Btrfs, ext4</text>
+  
+  <!-- 注释 -->
+  <text x="340" y="298" text-anchor="middle" class="note">多项式省略最高位（1）</text>
 </svg>

@@ -1,121 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 450" width="700" height="450">
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="380" viewBox="0 0 680 380">
+  <style>
+    text { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; }
+    .title { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
+    .section { font-size: 15px; font-weight: bold; fill: #1976d2; }
+    .label { font-size: 13px; fill: #333; }
+    .data { font-size: 13px; fill: #1565c0; font-family: 'Consolas', monospace; }
+    .result { font-size: 13px; fill: #d00; font-weight: bold; }
+    .arrow { fill: none; stroke: #666; stroke-width: 2; marker-end: url(#arr); }
+  </style>
+  
   <defs>
-    <style>
-      .title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #1a1a1a; }
-      .subtitle { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #666; }
-      .label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #333; }
-      .data { font-family: 'Consolas', monospace; font-size: 13px; fill: #1565c0; }
-      .crc { font-family: 'Consolas', monospace; font-size: 13px; fill: #c62828; font-weight: bold; }
-      .step { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #333; }
-      .box { stroke-width: 1.5; }
-    </style>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#666"/>
     </marker>
   </defs>
   
-  <!-- Background -->
-  <rect width="700" height="450" fill="#fafafa" rx="8"/>
+  <rect width="680" height="380" fill="#f8f9fa" rx="10"/>
+  <text x="340" y="30" text-anchor="middle" class="title">CRC 校验原理流程</text>
   
-  <!-- Title -->
-  <text x="350" y="28" text-anchor="middle" class="title">CRC 校验原理流程图</text>
+  <!-- 发送方 -->
+  <text x="150" y="60" text-anchor="middle" class="section">发送方</text>
   
-  <!-- Sender Section -->
-  <g transform="translate(30, 60)">
-    <text x="120" y="0" text-anchor="middle" class="step" fill="#1976d2">发送方</text>
-    
-    <!-- Step 1: Original Data -->
-    <rect x="0" y="20" width="240" height="40" fill="#e3f2fd" stroke="#90caf9" class="box" rx="6"/>
-    <text x="120" y="45" text-anchor="middle" dominant-baseline="middle" class="data">原始数据 D(x)</text>
-    
-    <!-- Arrow -->
-    <line x1="120" y1="60" x2="120" y2="80" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-    
-    <!-- Step 2: Append Zeros -->
-    <rect x="0" y="80" width="240" height="40" fill="#fff3e0" stroke="#ffb74d" class="box" rx="6"/>
-    <text x="120" y="105" text-anchor="middle" dominant-baseline="middle" class="label">添加 r 个 0（r = 除数位数-1）</text>
-    
-    <!-- Arrow -->
-    <line x1="120" y1="120" x2="120" y2="140" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-    
-    <!-- Step 3: Division -->
-    <rect x="0" y="140" width="240" height="50" fill="#e8f5e9" stroke="#a5d6a7" class="box" rx="6"/>
-    <text x="120" y="162" text-anchor="middle" dominant-baseline="middle" class="label">模二除法</text>
-    <text x="120" y="180" text-anchor="middle" dominant-baseline="middle" class="data">÷ 生成多项式 P(x)</text>
-    
-    <!-- Arrow -->
-    <line x1="120" y1="190" x2="120" y2="210" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-    
-    <!-- Step 4: Remainder -->
-    <rect x="0" y="210" width="240" height="40" fill="#ffebee" stroke="#ef9a9a" class="box" rx="6"/>
-    <text x="120" y="235" text-anchor="middle" dominant-baseline="middle" class="crc">余数 = CRC 校验码 R(x)</text>
-    
-    <!-- Arrow -->
-    <line x1="120" y1="250" x2="120" y2="270" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-    
-    <!-- Step 5: Send Data -->
-    <rect x="0" y="270" width="240" height="50" fill="#e3f2fd" stroke="#90caf9" class="box" rx="6"/>
-    <text x="120" y="292" text-anchor="middle" dominant-baseline="middle" class="data">发送：D(x) + R(x)</text>
-    <text x="120" y="310" text-anchor="middle" dominant-baseline="middle" class="label">（原始数据 + CRC码）</text>
-  </g>
+  <rect x="30" y="80" width="240" height="35" fill="#e3f2fd" stroke="#90caf9" rx="4"/>
+  <text x="150" y="102" text-anchor="middle" class="data">原始数据 D(x)</text>
   
-  <!-- Channel -->
-  <g transform="translate(290, 160)">
-    <rect x="0" y="0" width="60" height="180" fill="#f5f5f5" stroke="#bdbdbd" class="box" rx="4"/>
-    <text x="30" y="100" text-anchor="middle" dominant-baseline="middle" class="label" transform="rotate(90, 30, 100)">信道</text>
-  </g>
+  <line x1="150" y1="115" x2="150" y2="135" class="arrow"/>
   
-  <!-- Arrow from sender to channel -->
-  <path d="M 270 310 L 290 250" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect x="30" y="135" width="240" height="35" fill="#fff3e0" stroke="#ffb74d" rx="4"/>
+  <text x="150" y="157" text-anchor="middle" class="label">添加 r 个 0</text>
   
-  <!-- Arrow from channel to receiver -->
-  <line x1="350" y1="250" x2="380" y2="250" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="150" y1="170" x2="150" y2="190" class="arrow"/>
   
-  <!-- Receiver Section -->
-  <g transform="translate(380, 60)">
-    <text x="120" y="0" text-anchor="middle" class="step" fill="#4caf50">接收方</text>
-    
-    <!-- Step 1: Receive Data -->
-    <rect x="0" y="20" width="240" height="50" fill="#e3f2fd" stroke="#90caf9" class="box" rx="6"/>
-    <text x="120" y="42" text-anchor="middle" dominant-baseline="middle" class="data">接收：D(x) + R(x)</text>
-    <text x="120" y="62" text-anchor="middle" dominant-baseline="middle" class="label">（可能包含传输错误）</text>
-    
-    <!-- Arrow -->
-    <line x1="120" y1="70" x2="120" y2="100" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-    
-    <!-- Step 2: CRC Check -->
-    <rect x="0" y="100" width="240" height="50" fill="#e8f5e9" stroke="#a5d6a7" class="box" rx="6"/>
-    <text x="120" y="122" text-anchor="middle" dominant-baseline="middle" class="label">模二除法校验</text>
-    <text x="120" y="140" text-anchor="middle" dominant-baseline="middle" class="data">÷ 生成多项式 P(x)</text>
-    
-    <!-- Arrow -->
-    <line x1="120" y1="150" x2="120" y2="175" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-    
-    <!-- Step 3: Decision -->
-    <rect x="50" y="175" width="140" height="40" fill="#fff3e0" stroke="#ffb74d" class="box" rx="4"/>
-    <text x="120" y="200" text-anchor="middle" dominant-baseline="middle" class="label">余数 == 0 ?</text>
-    
-    <!-- Yes path -->
-    <line x1="80" y1="215" x2="80" y2="245" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-    <text x="65" y="235" text-anchor="end" class="label" fill="#4caf50">是</text>
-    
-    <rect x="0" y="245" width="160" height="40" fill="#e8f5e9" stroke="#a5d6a7" class="box" rx="6"/>
-    <text x="80" y="270" text-anchor="middle" dominant-baseline="middle" class="label" fill="#2e7d32">✓ 接受数据</text>
-    
-    <!-- No path -->
-    <line x1="160" y1="215" x2="160" y2="245" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-    <text x="175" y="235" text-anchor="start" class="label" fill="#c62828">否</text>
-    
-    <rect x="80" y="245" width="160" height="40" fill="#ffebee" stroke="#ef9a9a" class="box" rx="6"/>
-    <text x="160" y="270" text-anchor="middle" dominant-baseline="middle" class="label" fill="#c62828">✗ 丢弃/重传</text>
-  </g>
+  <rect x="30" y="190" width="240" height="35" fill="#e8f5e9" stroke="#a5d6a7" rx="4"/>
+  <text x="150" y="212" text-anchor="middle" class="label">模二除法 ÷ P(x)</text>
   
-  <!-- Key Formula -->
-  <g transform="translate(30, 400)">
-    <rect x="0" y="0" width="640" height="35" fill="#f3e5f5" stroke="#ce93d8" rx="4"/>
-    <text x="20" y="22" class="step">核心公式：</text>
-    <text x="120" y="22" class="data">R(x) = [2^r × D(x)] mod P(x)</text>
-    <text x="380" y="22" class="label">（CRC码 = 左移r位后的数据 除以 多项式的余数）</text>
-  </g>
+  <line x1="150" y1="225" x2="150" y2="245" class="arrow"/>
+  
+  <rect x="30" y="245" width="240" height="35" fill="#ffebee" stroke="#ef9a9a" rx="4"/>
+  <text x="150" y="267" text-anchor="middle" class="result">余数 = CRC 校验码</text>
+  
+  <line x1="150" y1="280" x2="150" y2="300" class="arrow"/>
+  
+  <rect x="30" y="300" width="240" height="40" fill="#e3f2fd" stroke="#90caf9" rx="4"/>
+  <text x="150" y="318" text-anchor="middle" class="data">发送: D(x) + R(x)</text>
+  <text x="150" y="333" text-anchor="middle" class="label" font-size="11">（原始数据 + CRC码）</text>
+  
+  <!-- 信道 -->
+  <rect x="310" y="160" width="60" height="160" fill="#f5f5f5" stroke="#ccc" rx="4"/>
+  <text x="340" y="245" text-anchor="middle" class="label" writing-mode="tb">信 道</text>
+  
+  <path d="M 270 320 Q 290 280 310 240" class="arrow"/>
+  <path d="M 370 240 Q 390 280 410 320" class="arrow"/>
+  
+  <!-- 接收方 -->
+  <text x="530" y="60" text-anchor="middle" class="section" fill="#4caf50">接收方</text>
+  
+  <rect x="410" y="80" width="240" height="40" fill="#e3f2fd" stroke="#90caf9" rx="4"/>
+  <text x="530" y="100" text-anchor="middle" class="data">接收: D(x) + R(x)</text>
+  <text x="530" y="115" text-anchor="middle" class="label" font-size="11">（可能含错误）</text>
+  
+  <line x1="530" y1="120" x2="530" y2="140" class="arrow"/>
+  
+  <rect x="410" y="140" width="240" height="35" fill="#e8f5e9" stroke="#a5d6a7" rx="4"/>
+  <text x="530" y="162" text-anchor="middle" class="label">模二除法 ÷ P(x)</text>
+  
+  <line x1="530" y1="175" x2="530" y2="195" class="arrow"/>
+  
+  <rect x="460" y="195" width="140" height="35" fill="#fff3e0" stroke="#ffb74d" rx="4"/>
+  <text x="530" y="217" text-anchor="middle" class="label">余数 = 0 ?</text>
+  
+  <!-- 是 -->
+  <line x1="490" y1="230" x2="490" y2="260" class="arrow"/>
+  <text x="478" y="250" class="label" fill="#4caf50" font-size="11">是</text>
+  <rect x="420" y="260" width="140" height="35" fill="#e8f5e9" stroke="#a5d6a7" rx="4"/>
+  <text x="490" y="282" text-anchor="middle" class="label" fill="#2e7d32">✓ 接受数据</text>
+  
+  <!-- 否 -->
+  <line x1="570" y1="230" x2="570" y2="260" class="arrow"/>
+  <text x="582" y="250" class="label" fill="#d00" font-size="11">否</text>
+  <rect x="500" y="260" width="140" height="35" fill="#ffebee" stroke="#ef9a9a" rx="4"/>
+  <text x="570" y="282" text-anchor="middle" class="label" fill="#d00">✗ 丢弃/重传</text>
+  
+  <!-- 公式 -->
+  <rect x="30" y="355" width="620" height="35" fill="#f3e5f5" stroke="#ce93d8" rx="4"/>
+  <text x="340" y="377" text-anchor="middle" class="label">核心公式: R(x) = [2^r × D(x)] mod P(x)</text>
 </svg>

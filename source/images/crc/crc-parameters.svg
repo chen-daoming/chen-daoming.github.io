@@ -1,97 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
-  <defs>
-    <style>
-      .title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #1a1a1a; }
-      .param { font-family: 'Consolas', monospace; font-size: 13px; font-weight: bold; fill: #1565c0; }
-      .desc { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #333; }
-      .example { font-family: 'Consolas', monospace; font-size: 12px; fill: #c62828; }
-      .note { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #666; }
-      .box { stroke-width: 1.5; }
-    </style>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="260" viewBox="0 0 680 260">
+  <style>
+    text { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; }
+    .title { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
+    .param { font-size: 14px; font-weight: bold; fill: #1565c0; font-family: 'Consolas', monospace; }
+    .desc { font-size: 13px; fill: #333; }
+    .val { font-size: 13px; fill: #d00; font-family: 'Consolas', monospace; }
+    .label { font-size: 12px; fill: #666; }
+  </style>
   
-  <!-- Background -->
-  <rect width="800" height="380" fill="#fafafa" rx="8"/>
+  <rect width="680" height="260" fill="#f8f9fa" rx="10"/>
+  <text x="340" y="28" text-anchor="middle" class="title">CRC 算法参数说明</text>
   
-  <!-- Title -->
-  <text x="400" y="28" text-anchor="middle" class="title">CRC 算法模型参数说明</text>
+  <!-- 参数列表 -->
+  <rect x="20" y="45" width="350" height="200" fill="#fff" stroke="#ddd" rx="6"/>
   
-  <!-- Parameters List -->
-  <g transform="translate(40, 60)">
-    <!-- width -->
-    <rect x="0" y="0" width="130" height="50" fill="#e3f2fd" stroke="#90caf9" class="box" rx="6"/>
-    <text x="65" y="22" text-anchor="middle" dominant-baseline="middle" class="param">width</text>
-    <text x="65" y="42" text-anchor="middle" dominant-baseline="middle" class="desc">CRC码位宽</text>
-    
-    <text x="150" y="28" class="desc">CRC码的二进制位数，如 CRC-32 的 width=32</text>
-    
-    <!-- poly -->
-    <rect x="0" y="65" width="130" height="50" fill="#e3f2fd" stroke="#90caf9" class="box" rx="6"/>
-    <text x="65" y="87" text-anchor="middle" dominant-baseline="middle" class="param">poly</text>
-    <text x="65" y="107" text-anchor="middle" dominant-baseline="middle" class="desc">生成多项式</text>
-    
-    <text x="150" y="93" class="desc">省略最高位的多项式系数，如 CRC-32: 0x04C11DB7</text>
-    
-    <!-- init -->
-    <rect x="0" y="130" width="130" height="50" fill="#e3f2fd" stroke="#90caf9" class="box" rx="6"/>
-    <text x="65" y="152" text-anchor="middle" dominant-baseline="middle" class="param">init</text>
-    <text x="65" y="172" text-anchor="middle" dominant-baseline="middle" class="desc">初始值</text>
-    
-    <text x="150" y="158" class="desc">CRC寄存器初始值，用于区分前导0的情况</text>
-    
-    <!-- refin -->
-    <rect x="0" y="195" width="130" height="50" fill="#e3f2fd" stroke="#90caf9" class="box" rx="6"/>
-    <text x="65" y="217" text-anchor="middle" dominant-baseline="middle" class="param">refin</text>
-    <text x="65" y="237" text-anchor="middle" dominant-baseline="middle" class="desc">输入反射</text>
-    
-    <text x="150" y="223" class="desc">为 true 时，输入数据按位倒序后再计算</text>
-    
-    <!-- refout -->
-    <rect x="0" y="260" width="130" height="50" fill="#e3f2fd" stroke="#90caf9" class="box" rx="6"/>
-    <text x="65" y="282" text-anchor="middle" dominant-baseline="middle" class="param">refout</text>
-    <text x="65" y="302" text-anchor="middle" dominant-baseline="middle" class="desc">输出反射</text>
-    
-    <text x="150" y="288" class="desc">为 true 时，输出CRC码按位倒序后再输出</text>
-    
-    <!-- xorout -->
-    <rect x="0" y="325" width="130" height="50" fill="#e3f2fd" stroke="#90caf9" class="box" rx="6"/>
-    <text x="65" y="347" text-anchor="middle" dominant-baseline="middle" class="param">xorout</text>
-    <text x="65" y="367" text-anchor="middle" dominant-baseline="middle" class="desc">输出异或值</text>
-    
-    <text x="150" y="353" class="desc">输出前与CRC码进行异或运算的值</text>
-  </g>
+  <text x="40" y="72" class="param">width</text>
+  <text x="120" y="72" class="desc">CRC码位宽（如 32）</text>
   
-  <!-- Example Box -->
-  <g transform="translate(520, 60)">
-    <rect x="0" y="0" width="240" height="315" fill="#fff" stroke="#c62828" class="box" rx="8"/>
-    
-    <text x="120" y="28" text-anchor="middle" class="param" fill="#c62828">CRC-32/ISO-HDLC</text>
-    <text x="120" y="48" text-anchor="middle" class="desc">示例参数</text>
-    
-    <line x1="20" y1="60" x2="220" y2="60" stroke="#eee" stroke-width="1"/>
-    
-    <text x="25" y="85" class="desc">width  = </text>
-    <text x="120" y="85" class="example">32</text>
-    
-    <text x="25" y="115" class="desc">poly   = </text>
-    <text x="120" y="115" class="example">0x04C11DB7</text>
-    
-    <text x="25" y="145" class="desc">init   = </text>
-    <text x="120" y="145" class="example">0xFFFFFFFF</text>
-    
-    <text x="25" y="175" class="desc">refin  = </text>
-    <text x="120" y="175" class="example">true</text>
-    
-    <text x="25" y="205" class="desc">refout = </text>
-    <text x="120" y="205" class="example">true</text>
-    
-    <text x="25" y="235" class="desc">xorout = </text>
-    <text x="120" y="235" class="example">0xFFFFFFFF</text>
-    
-    <line x1="20" y1="250" x2="220" y2="250" stroke="#eee" stroke-width="1"/>
-    
-    <text x="120" y="275" text-anchor="middle" class="desc" font-weight="bold">验证值</text>
-    <text x="120" y="300" text-anchor="middle" class="example" font-size="14">check = 0xCBF43926</text>
-  </g>
+  <line x1="40" y1="82" x2="350" y2="82" stroke="#eee"/>
+  
+  <text x="40" y="102" class="param">poly</text>
+  <text x="120" y="102" class="desc">生成多项式（省略最高位）</text>
+  
+  <line x1="40" y1="112" x2="350" y2="112" stroke="#eee"/>
+  
+  <text x="40" y="132" class="param">init</text>
+  <text x="120" y="132" class="desc">CRC寄存器初始值</text>
+  
+  <line x1="40" y1="142" x2="350" y2="142" stroke="#eee"/>
+  
+  <text x="40" y="162" class="param">refin</text>
+  <text x="120" y="162" class="desc">输入数据按位倒序</text>
+  
+  <line x1="40" y1="172" x2="350" y2="172" stroke="#eee"/>
+  
+  <text x="40" y="192" class="param">refout</text>
+  <text x="120" y="192" class="desc">输出CRC码按位倒序</text>
+  
+  <line x1="40" y1="202" x2="350" y2="202" stroke="#eee"/>
+  
+  <text x="40" y="222" class="param">xorout</text>
+  <text x="120" y="222" class="desc">输出前异或值</text>
+  
+  <!-- 示例框 -->
+  <rect x="390" y="45" width="270" height="200" fill="#fff" stroke="#d00" rx="6"/>
+  <text x="525" y="70" text-anchor="middle" class="param" fill="#d00">CRC-32 示例</text>
+  
+  <line x1="410" y1="80" x2="640" y2="80" stroke="#eee"/>
+  
+  <text x="410" y="100" class="label">width  = </text>
+  <text x="480" y="100" class="val">32</text>
+  
+  <text x="410" y="125" class="label">poly   = </text>
+  <text x="480" y="125" class="val">0x04C11DB7</text>
+  
+  <text x="410" y="150" class="label">init   = </text>
+  <text x="480" y="150" class="val">0xFFFFFFFF</text>
+  
+  <text x="410" y="175" class="label">refin  = </text>
+  <text x="480" y="175" class="val">true</text>
+  
+  <text x="410" y="200" class="label">refout = </text>
+  <text x="480" y="200" class="val">true</text>
+  
+  <text x="410" y="225" class="label">xorout = </text>
+  <text x="480" y="225" class="val">0xFFFFFFFF</text>
+  
+  <!-- 验证值 -->
+  <rect x="390" y="250" width="270" height="25" fill="#e8f5e9" rx="4"/>
+  <text x="525" y="267" text-anchor="middle" class="label" fill="#090">验证: "123456789" → 0xCBF43926</text>
 </svg>
