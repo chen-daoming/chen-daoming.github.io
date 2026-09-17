@@ -243,4 +243,4 @@ CRC校验是数据通信中不可或缺的差错检测技术：
 
 1. [CRC（循环冗余校验）原理](https://blog.csdn.net/weixin_44256803/article/details/105805628)
 2. [CRC Catalog](http://reveng.sourceforge.net/crc-catalogue/)
-3. [STC8G1K08 Datasheet](https://www.stcmicro.com/datasheet/stc8g1k08.pdf)
+
