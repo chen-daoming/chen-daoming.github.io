@@ -1,6 +1,6 @@
 ---
 title: CRC循环冗余校验：从原理到实现的完整指南
-date: 2024-03-15 10:00:00
+date: 2026-09-15 08:00:00
 categories:
   - 嵌入式开发
   - 通信协议
@@ -243,4 +243,4 @@ CRC校验是数据通信中不可或缺的差错检测技术：
 
 1. [CRC（循环冗余校验）原理](https://blog.csdn.net/weixin_44256803/article/details/105805628)
 2. [CRC Catalog](http://reveng.sourceforge.net/crc-catalogue/)
-3. [STC8G1K08 Datasheet](https://www.stcmicro.com/datasheet/stc8g1k08.pdf)
+
