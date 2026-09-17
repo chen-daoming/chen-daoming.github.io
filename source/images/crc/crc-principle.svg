@@ -1,83 +1,103 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
-  <rect x="0" y="0" width="800" height="480" rx="10" fill="#1b2026"/>
-  <text x="28" y="38" font-size="18" font-weight="700" fill="#e9edf2">CRC 计算原理：线性反馈移位寄存器（LFSR）做模 2 除法</text>
-  <text x="28" y="62" font-size="12.5" fill="#98a4b1">数据位逐位异或移入寄存器；Poly 中为 1 的位反馈到输入端，全部位移完后，寄存器余数即 CRC</text>
-
-  <!-- 反馈总线：抽头 D0/D1/D2（Poly=0x07） -->
-  <path d="M 134 170 L 134 112 L 216 112 M 216 170 L 216 112 M 298 170 L 298 112 M 134 112 L 86 112 L 86 185"
-        fill="none" stroke="#e0a34b" stroke-width="1.8"/>
-  <circle cx="134" cy="112" r="3.2" fill="#e0a34b"/>
-  <circle cx="216" cy="112" r="3.2" fill="#e0a34b"/>
-  <circle cx="298" cy="112" r="3.2" fill="#e0a34b"/>
-  <text x="316" y="106" font-size="12" fill="#e0a34b">反馈抽头：Poly 中为 1 的位（示例 Poly=0x07 → bit0/bit1/bit2）</text>
-
-  <!-- 输入 -->
-  <text x="14" y="168" font-size="12.5" fill="#98a4b1">数据位</text>
-  <text x="14" y="186" font-size="11" fill="#6b7683" font-family="Consolas,monospace">MSB→LSB</text>
-  <line x1="58" y1="197" x2="72" y2="197" stroke="#98a4b1" stroke-width="1.8"/>
-  <polygon points="72,197 65,193 65,201" fill="#98a4b1"/>
-
-  <!-- XOR -->
-  <circle cx="86" cy="197" r="12" fill="none" stroke="#a7e8ba" stroke-width="1.8"/>
-  <text x="86" y="202" text-anchor="middle" font-size="14" fill="#a7e8ba">⊕</text>
-  <line x1="98" y1="197" x2="104" y2="197" stroke="#98a4b1" stroke-width="1.8"/>
-
-  <!-- 寄存器链：step 82, w 60, first x=104, y=170 h=54, centers 134..708 -->
-  <g font-family="Consolas,monospace" font-size="14" fill="#e9edf2">
-    <rect x="104" y="170" width="60" height="54" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
-    <text x="134" y="194" text-anchor="middle">D0</text><text x="134" y="213" text-anchor="middle" font-size="10.5" fill="#6b7683">bit0</text>
-    <rect x="186" y="170" width="60" height="54" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
-    <text x="216" y="194" text-anchor="middle">D1</text><text x="216" y="213" text-anchor="middle" font-size="10.5" fill="#6b7683">bit1</text>
-    <rect x="268" y="170" width="60" height="54" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
-    <text x="298" y="194" text-anchor="middle">D2</text><text x="298" y="213" text-anchor="middle" font-size="10.5" fill="#6b7683">bit2</text>
-    <rect x="350" y="170" width="60" height="54" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
-    <text x="380" y="194" text-anchor="middle">D3</text><text x="380" y="213" text-anchor="middle" font-size="10.5" fill="#6b7683">bit3</text>
-    <rect x="432" y="170" width="60" height="54" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
-    <text x="462" y="194" text-anchor="middle">D4</text><text x="462" y="213" text-anchor="middle" font-size="10.5" fill="#6b7683">bit4</text>
-    <rect x="514" y="170" width="60" height="54" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
-    <text x="544" y="194" text-anchor="middle">D5</text><text x="544" y="213" text-anchor="middle" font-size="10.5" fill="#6b7683">bit5</text>
-    <rect x="596" y="170" width="60" height="54" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
-    <text x="626" y="194" text-anchor="middle">D6</text><text x="626" y="213" text-anchor="middle" font-size="10.5" fill="#6b7683">bit6</text>
-    <rect x="678" y="170" width="60" height="54" rx="5" fill="#21272e" stroke="#3a444f" stroke-width="1.5"/>
-    <text x="708" y="194" text-anchor="middle">D7</text><text x="708" y="213" text-anchor="middle" font-size="10.5" fill="#6b7683">bit7</text>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <style>
+      .title { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #333; }
+      .label { font-family: Arial, sans-serif; font-size: 12px; fill: #555; }
+      .data { font-family: monospace; font-size: 14px; fill: #1976d2; }
+      .crc { font-family: monospace; font-size: 14px; fill: #d32f2f; font-weight: bold; }
+      .arrow { font-family: Arial, sans-serif; font-size: 12px; fill: #666; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="#fafafa" rx="8"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" class="title">CRC 校验原理流程</text>
+  
+  <!-- Sender Side -->
+  <g transform="translate(50, 60)">
+    <text x="150" y="0" text-anchor="middle" class="title" fill="#1976d2">发送方</text>
+    
+    <!-- Original Data -->
+    <rect x="0" y="20" width="300" height="40" fill="#e3f2fd" stroke="#1976d2" rx="6"/>
+    <text x="150" y="45" text-anchor="middle" class="data">原始数据 D(x)</text>
+    
+    <!-- Append Zeros -->
+    <rect x="0" y="80" width="300" height="40" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+    <text x="150" y="105" text-anchor="middle" class="label">添加 r 个 0（r = 除数位数-1）</text>
+    
+    <!-- CRC Calculation -->
+    <rect x="0" y="140" width="300" height="50" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+    <text x="150" y="165" text-anchor="middle" class="label">模二除法</text>
+    <text x="150" y="180" text-anchor="middle" class="data">÷ 生成多项式 P(x)</text>
+    
+    <!-- Remainder -->
+    <rect x="0" y="210" width="300" height="40" fill="#ffebee" stroke="#d32f2f" rx="6"/>
+    <text x="150" y="235" text-anchor="middle" class="crc">余数 = CRC 校验码 R(x)</text>
+    
+    <!-- Send Data -->
+    <rect x="0" y="270" width="300" height="50" fill="#e3f2fd" stroke="#1976d2" rx="6"/>
+    <text x="150" y="295" text-anchor="middle" class="data">发送：D(x) + R(x)</text>
+    <text x="150" y="310" text-anchor="middle" class="label">（原始数据 + CRC码）</text>
   </g>
-  <!-- 级联箭头 -->
-  <g stroke="#98a4b1" stroke-width="1.6">
-    <line x1="164" y1="197" x2="184" y2="197"/><polygon points="184,197 178,193.5 178,200.5" fill="#98a4b1" stroke="none"/>
-    <line x1="246" y1="197" x2="266" y2="197"/><polygon points="266,197 260,193.5 260,200.5" fill="#98a4b1" stroke="none"/>
-    <line x1="328" y1="197" x2="348" y2="197"/><polygon points="348,197 342,193.5 342,200.5" fill="#98a4b1" stroke="none"/>
-    <line x1="410" y1="197" x2="430" y2="197"/><polygon points="430,197 424,193.5 424,200.5" fill="#98a4b1" stroke="none"/>
-    <line x1="492" y1="197" x2="512" y2="197"/><polygon points="512,197 506,193.5 506,200.5" fill="#98a4b1" stroke="none"/>
-    <line x1="574" y1="197" x2="594" y2="197"/><polygon points="594,197 588,193.5 588,200.5" fill="#98a4b1" stroke="none"/>
-    <line x1="656" y1="197" x2="676" y2="197"/><polygon points="676,197 670,193.5 670,200.5" fill="#98a4b1" stroke="none"/>
+  
+  <!-- Arrows -->
+  <line x1="200" y1="100" x2="200" y2="140" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="200" y1="190" x2="200" y2="210" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="200" y1="250" x2="200" y2="270" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Channel -->
+  <rect x="380" y="150" width="40" height="180" fill="#f5f5f5" stroke="#999" rx="4"/>
+  <text x="400" y="240" text-anchor="middle" class="label" transform="rotate(90, 400, 240)">信道</text>
+  
+  <!-- Arrow to channel -->
+  <line x1="300" y1="295" x2="380" y2="240" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Receiver Side -->
+  <g transform="translate(450, 60)">
+    <text x="150" y="0" text-anchor="middle" class="title" fill="#4caf50">接收方</text>
+    
+    <!-- Receive Data -->
+    <rect x="0" y="20" width="300" height="50" fill="#e3f2fd" stroke="#1976d2" rx="6"/>
+    <text x="150" y="45" text-anchor="middle" class="data">接收：D(x) + R(x)</text>
+    <text x="150" y="60" text-anchor="middle" class="label">（可能包含传输错误）</text>
+    
+    <!-- CRC Check -->
+    <rect x="0" y="100" width="300" height="50" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+    <text x="150" y="125" text-anchor="middle" class="label">模二除法校验</text>
+    <text x="150" y="140" text-anchor="middle" class="data">÷ 生成多项式 P(x)</text>
+    
+    <!-- Decision -->
+    <rect x="75" y="180" width="150" height="50" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+    <text x="150" y="205" text-anchor="middle" class="label">余数 == 0？</text>
+    
+    <!-- Results -->
+    <rect x="0" y="260" width="130" height="50" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+    <text x="65" y="285" text-anchor="middle" class="label" fill="#4caf50">✓ 无差错</text>
+    <text x="65" y="300" text-anchor="middle" class="label">接受数据</text>
+    
+    <rect x="170" y="260" width="130" height="50" fill="#ffebee" stroke="#d32f2f" rx="6"/>
+    <text x="235" y="285" text-anchor="middle" class="label" fill="#d32f2f">✗ 有差错</text>
+    <text x="235" y="300" text-anchor="middle" class="label">丢弃/重传</text>
   </g>
-  <!-- 输出 -->
-  <line x1="738" y1="197" x2="772" y2="197" stroke="#a7e8ba" stroke-width="1.8"/>
-  <polygon points="772,197 765,193 765,201" fill="#a7e8ba"/>
-  <text x="772" y="240" text-anchor="end" font-size="12.5" fill="#a7e8ba">CRC 余数</text>
-  <text x="422" y="252" text-anchor="middle" font-size="11.5" fill="#6b7683">移位方向：每个时钟整寄存器右移一位 →</text>
-
-  <!-- 三步流程卡片：x=28/280/532 w=240 y=288 h=168 -->
-  <g>
-    <rect x="28"  y="288" width="240" height="168" rx="8" fill="#21272e" stroke="#2b333c"/>
-    <text x="46" y="318" font-size="13.5" font-weight="700" fill="#e0a34b">① 逐位计算</text>
-    <text x="46" y="346" font-size="12" fill="#98a4b1">RefIn=1：最低位先算，右移</text>
-    <text x="46" y="368" font-size="12" fill="#98a4b1">RefIn=0：最高位先算，左移</text>
-    <text x="46" y="400" font-family="Consolas,monospace" font-size="11.5" fill="#a7e8ba">crc ^= bit 后逐 bit 移位</text>
-    <text x="46" y="422" font-family="Consolas,monospace" font-size="11.5" fill="#a7e8ba">遇 1 则异或 Poly</text>
-
-    <rect x="280" y="288" width="240" height="168" rx="8" fill="#21272e" stroke="#2b333c"/>
-    <text x="298" y="318" font-size="13.5" font-weight="700" fill="#e0a34b">② 输出位序</text>
-    <text x="298" y="346" font-size="12" fill="#98a4b1">RefOut=1：结果整体位反转</text>
-    <text x="298" y="368" font-size="12" fill="#98a4b1">RefIn 与 RefOut 通常成对</text>
-    <text x="298" y="400" font-family="Consolas,monospace" font-size="11.5" fill="#a7e8ba">MODBUS / USB 均为 1</text>
-    <text x="298" y="422" font-family="Consolas,monospace" font-size="11.5" fill="#a7e8ba">CCITT-FALSE 均为 0</text>
-
-    <rect x="532" y="288" width="240" height="168" rx="8" fill="#21272e" stroke="#2b333c"/>
-    <text x="550" y="318" font-size="13.5" font-weight="700" fill="#e0a34b">③ 最终异或</text>
-    <text x="550" y="346" font-size="12" fill="#98a4b1">CRC = 余数 XOR XorOut</text>
-    <text x="550" y="368" font-size="12" fill="#98a4b1">CRC-32 的 Init/XorOut 为全 1</text>
-    <text x="550" y="400" font-family="Consolas,monospace" font-size="11.5" fill="#a7e8ba">校验 123456789 →</text>
-    <text x="550" y="422" font-family="Consolas,monospace" font-size="11.5" fill="#a7e8ba">CRC-32 = 0xCBF43926</text>
+  
+  <!-- Arrows -->
+  <line x1="650" y1="150" x2="650" y2="180" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="600" y1="230" x2="565" y2="260" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="700" y1="230" x2="735" y2="260" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Arrow from channel to receiver -->
+  <line x1="420" y1="240" x2="450" y2="240" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Key Formula -->
+  <g transform="translate(50, 350)">
+    <text x="0" y="0" class="label" font-weight="bold">核心公式：</text>
+    <text x="100" y="0" class="data">R(x) = [2^r × D(x)] mod P(x)</text>
+    <text x="400" y="0" class="label">（CRC码 = 左移r位后的数据 除以 多项式的余数）</text>
   </g>
 </svg>
