@@ -60,7 +60,8 @@ layout: false
   .dev{font-family:var(--mono);font-size:12px;color:var(--err)}
   .dev.ok{color:var(--ok)}
   .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .led-svg{width:100%;height:auto;display:block;max-width:320px;margin:0 auto}
+  .two-col>.panel:first-child{display:flex;flex-direction:column}
+  .led-svg{width:100%;height:auto;display:block;max-width:420px;margin:auto}
   .formula-main{background:var(--display-bg);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;margin-bottom:12px}
   .formula-main .fm-text{font-family:var(--mono);font-size:16px;color:var(--display);font-weight:600}
   .formula-main .fm-text .var{color:var(--accent)}
@@ -188,36 +189,39 @@ layout: false
   <div class="two-col">
     <section class="panel">
       <h2 class="panel-title">电路原理图</h2>
-      <svg class="led-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LED 串联限流电阻电路">
-        <!-- 外框导线 -->
-        <rect x="40" y="20" width="220" height="240" fill="none" stroke="#98a4b1" stroke-width="1.8"/>
-        <!-- 电流方向箭头 -->
-        <path d="M 100 20 L 115 20 M 110 16 L 115 20 L 110 24" stroke="#e0a34b" stroke-width="1.5" fill="none"/>
-        <text x="130" y="15" fill="#e0a34b" font-family="ui-monospace,monospace" font-size="12" font-weight="700">I</text>
-        <!-- 电压源 -->
-        <circle cx="40" cy="140" r="22" fill="none" stroke="#e9edf2" stroke-width="2"/>
-        <text x="40" y="135" text-anchor="middle" fill="#e9edf2" font-family="ui-monospace,monospace" font-size="14" font-weight="700">+</text>
-        <text x="40" y="152" text-anchor="middle" fill="#e9edf2" font-family="ui-monospace,monospace" font-size="14" font-weight="700">−</text>
-        <text x="15" y="145" text-anchor="end" fill="#e0a34b" font-family="ui-monospace,monospace" font-size="13" font-weight="700">Vs</text>
-        <!-- LED 符号 -->
-        <line x1="150" y1="60" x2="150" y2="80" stroke="#98a4b1" stroke-width="1.8"/>
-        <path d="M 130 80 L 170 80 L 150 105 Z" fill="none" stroke="#a7e8ba" stroke-width="2"/>
-        <line x1="130" y1="105" x2="170" y2="105" stroke="#a7e8ba" stroke-width="2"/>
-        <line x1="150" y1="105" x2="150" y2="125" stroke="#98a4b1" stroke-width="1.8"/>
-        <!-- 光线箭头 -->
-        <line x1="160" y1="82" x2="178" y2="68" stroke="#a7e8ba" stroke-width="1.5"/>
-        <path d="M 172 68 L 178 68 L 176 74" stroke="#a7e8ba" stroke-width="1.5" fill="none"/>
-        <line x1="165" y1="90" x2="185" y2="80" stroke="#a7e8ba" stroke-width="1.5"/>
-        <path d="M 179 78 L 185 80 L 180 84" stroke="#a7e8ba" stroke-width="1.5" fill="none"/>
-        <text x="185" y="95" fill="#a7e8ba" font-family="ui-monospace,monospace" font-size="11" font-weight="600">LED</text>
-        <text x="118" y="74" fill="#98a4b1" font-family="ui-monospace,monospace" font-size="10">Anode</text>
-        <text x="118" y="118" fill="#98a4b1" font-family="ui-monospace,monospace" font-size="10">Cathode</text>
-        <!-- 电阻（锯齿形） -->
-        <line x1="150" y1="125" x2="150" y2="145" stroke="#98a4b1" stroke-width="1.8"/>
-        <path d="M 150 145 L 140 153 L 160 161 L 140 169 L 160 177 L 140 185 L 160 193 L 150 201" fill="none" stroke="#e9edf2" stroke-width="2"/>
-        <line x1="150" y1="201" x2="150" y2="220" stroke="#98a4b1" stroke-width="1.8"/>
-        <text x="170" y="178" fill="#e9edf2" font-family="ui-monospace,monospace" font-size="13" font-weight="600">R</text>
-      </svg>
+      <svg class="led-svg" viewBox="0 0 334 228" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LED 串联限流电阻电路：直流电源 Vs 经限流电阻 R 驱动 N 个串联 LED，回路电流 If" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <!-- 回路导线（底部中间断开，留给电源符号） -->
+  <path d="M52 70 H92 M164 70 H218 M256 70 H300 M300 70 V190 M300 190 H200 M160 190 H52 M52 190 V70"
+        fill="none" stroke="#98a4b1" stroke-width="2"/>
+
+  <!-- 限流电阻 R -->
+  <path d="M92 70 L100 60 L108 80 L116 60 L124 80 L132 60 L140 80 L148 60 L156 80 L164 70"
+        fill="none" stroke="#e0a34b" stroke-width="2.4" stroke-linejoin="round"/>
+
+  <!-- LED -->
+  <polygon points="218,52 218,88 256,70" fill="rgba(109,179,232,0.15)" stroke="#6db3e8" stroke-width="2" stroke-linejoin="round"/>
+  <line x1="256" y1="52" x2="256" y2="88" stroke="#6db3e8" stroke-width="2.5"/>
+
+  <!-- 发光箭头 -->
+  <path d="M262 58 L275 45 M267.6 47.5 L275 45 L272.5 52.4" fill="none" stroke="#6db3e8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M270 64 L283 51 M275.6 53.5 L283 51 L280.5 58.4" fill="none" stroke="#6db3e8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 直流电压源 -->
+  <circle cx="180" cy="190" r="20" fill="none" stroke="#a7e8ba" stroke-width="2"/>
+  <text x="170" y="196" text-anchor="middle" font-size="15" font-weight="700" fill="#a7e8ba">+</text>
+  <text x="190" y="196" text-anchor="middle" font-size="15" font-weight="700" fill="#a7e8ba">−</text>
+
+  <!-- 电流方向 -->
+  <path d="M52 152 L52 126 M48.5 130 L52 124 L55.5 130" fill="none" stroke="#a7e8ba" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="44" y="143" text-anchor="end" font-size="11" font-weight="600" fill="#a7e8ba">If</text>
+
+  <!-- 标注 -->
+  <text x="128" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="#e0a34b">R 限流电阻</text>
+  <text x="236" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="#6db3e8">LED ×N</text>
+  <text x="128" y="98" text-anchor="middle" font-size="11" fill="#a7e8ba">Vr</text>
+  <text x="236" y="98" text-anchor="middle" font-size="11" fill="#a7e8ba">N·Vf</text>
+  <text x="180" y="158" text-anchor="middle" font-size="13" font-weight="700" fill="#a7e8ba">Vs</text>
+</svg>
     </section>
     <section class="panel">
       <h2 class="panel-title">计算公式</h2>
