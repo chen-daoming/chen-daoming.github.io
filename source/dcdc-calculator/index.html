@@ -189,6 +189,7 @@ layout: false
         <div class="detail-item"><div class="di-label">谷值电流</div><div class="di-value" id="dIvy">—</div></div>
         <div class="detail-item accent"><div class="di-label">饱和电流 Isat ≥</div><div class="di-value" id="dIsat">—</div></div>
         <div class="detail-item"><div class="di-label">电流有效值</div><div class="di-value" id="dIrms">—</div></div>
+        <div class="detail-item" id="cinItem" title="Cin = Iout × Vout / (0.2 × FSW(MHz) × Vin)，按 0.2 V 输入电压纹波估算"><div class="di-label">输入电容参考（Buck）</div><div class="di-value" id="dCin">—</div></div>
       </div>
       <div id="ccmLine" class="ok-line"></div>
       <div class="rec-box">
@@ -667,6 +668,14 @@ document.addEventListener('DOMContentLoaded', function() {
     el = $("dIvy"); if (el) el.textContent = fmtA(Ivalley);
     el = $("dIsat"); if (el) el.textContent = fmtA(Ipk * kmar);
     el = $("dIrms"); if (el) el.textContent = fmtA(Math.sqrt(ILavg * ILavg + DIL * DIL / 12));
+
+    // 输入电容参考值（仅 Buck）：Cin = Iout × Vout / (0.2 × FSW(MHz) × Vin)，按 0.2 V 输入纹波估算
+    var cinItem = $("cinItem");
+    var cinVal = $("dCin");
+    var cinOk = isBuck && fM > 0 && vin > 0;
+    if (cinItem) cinItem.style.display = isBuck ? "" : "none";
+    if (cinVal) cinVal.textContent = cinOk ? sigFigs(iout * vout / (0.2 * fM * vin), 3) + " µF" : "—";
+
     el = $("ccmLine"); if (el) el.textContent = Ivalley > 0 ? "✓ CCM 连续导通模式" : "⚠ DCM 断续导通模式";
 
     el = $("rangeE12"); if (el) el.innerHTML = chipList(inRange(E12, Lmin, Lmax), E12Pick.value);
