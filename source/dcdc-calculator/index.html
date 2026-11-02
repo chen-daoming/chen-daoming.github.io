@@ -571,14 +571,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ===== 电感计算 =====
   var state = { mode: "buck", rect: "async" };
+  // 图片名带版本号：拓扑图更新后递增，避免浏览器/CDN 命中旧缓存
   var TOPO = {
     buck: {
-      async: ["buck-topology.svg", "非同步整流：结构简单、成本低。"],
-      sync: ["buck-sync.svg", "同步整流：低压大电流效率高。"]
+      async: ["buck-topology.svg?v=2", "非同步整流：结构简单、成本低。"],
+      sync: ["buck-sync.svg?v=2", "同步整流：低压大电流效率高。"]
     },
     boost: {
-      async: ["boost-topology.svg", "非同步整流：经典升压方案。"],
-      sync: ["boost-sync.svg", "同步整流：效率提升显著。"]
+      async: ["boost-topology.svg?v=2", "非同步整流：经典升压方案。"],
+      sync: ["boost-sync.svg?v=2", "同步整流：效率提升显著。"]
     }
   };
   var DEFAULTS = {
