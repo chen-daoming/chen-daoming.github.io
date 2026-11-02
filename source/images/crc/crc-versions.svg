@@ -1,72 +1,50 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="680" height="300" viewBox="0 0 680 300">
-  <style>
-    text { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; }
-    .title { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
-    .th { font-size: 13px; font-weight: bold; fill: #fff; }
-    .td { font-size: 13px; fill: #333; }
-    .poly { font-size: 12px; fill: #1565c0; font-family: 'Consolas', monospace; }
-    .hex { font-size: 13px; fill: #d00; font-weight: bold; font-family: 'Consolas', monospace; }
-    .app { font-size: 12px; fill: #555; }
-    .note { font-size: 11px; fill: #888; }
-  </style>
-  
-  <rect width="680" height="300" fill="#f8f9fa" rx="10"/>
-  <text x="340" y="28" text-anchor="middle" class="title">常用 CRC 版本对比</text>
-  
-  <!-- 表格 -->
-  <rect x="20" y="45" width="640" height="240" fill="#fff" stroke="#ddd" rx="6"/>
-  
-  <!-- 表头 -->
-  <rect x="20" y="45" width="640" height="30" fill="#1976d2" rx="6"/>
-  <rect x="20" y="60" width="640" height="15" fill="#1976d2"/>
-  <text x="80" y="65" text-anchor="middle" class="th">名称</text>
-  <text x="220" y="65" text-anchor="middle" class="th">多项式</text>
-  <text x="380" y="65" text-anchor="middle" class="th">16进制</text>
-  <text x="540" y="65" text-anchor="middle" class="th">典型应用</text>
-  
-  <!-- 行1: CRC-8 -->
-  <line x1="20" y1="95" x2="660" y2="95" stroke="#eee"/>
-  <text x="80" y="115" text-anchor="middle" class="td" font-weight="bold">CRC-8</text>
-  <text x="220" y="115" text-anchor="middle" class="poly">X⁸+X²+X+1</text>
-  <text x="380" y="115" text-anchor="middle" class="hex">0x07</text>
-  <text x="540" y="115" text-anchor="middle" class="app">短帧校验</text>
-  
-  <!-- 行2: CRC-12 -->
-  <line x1="20" y1="130" x2="660" y2="130" stroke="#eee"/>
-  <text x="80" y="150" text-anchor="middle" class="td" font-weight="bold">CRC-12</text>
-  <text x="220" y="150" text-anchor="middle" class="poly">X¹²+X¹¹+X³+X²+X+1</text>
-  <text x="380" y="150" text-anchor="middle" class="hex">0x80F</text>
-  <text x="540" y="150" text-anchor="middle" class="app">电信系统</text>
-  
-  <!-- 行3: CRC-16 -->
-  <line x1="20" y1="165" x2="660" y2="165" stroke="#eee"/>
-  <text x="80" y="185" text-anchor="middle" class="td" font-weight="bold">CRC-16</text>
-  <text x="220" y="185" text-anchor="middle" class="poly">X¹⁶+X¹⁵+X²+1</text>
-  <text x="380" y="185" text-anchor="middle" class="hex">0x8005</text>
-  <text x="540" y="185" text-anchor="middle" class="app">Modbus, USB</text>
-  
-  <!-- 行4: CRC-CCITT -->
-  <line x1="20" y1="200" x2="660" y2="200" stroke="#eee"/>
-  <text x="80" y="220" text-anchor="middle" class="td" font-weight="bold">CRC-CCITT</text>
-  <text x="220" y="220" text-anchor="middle" class="poly">X¹⁶+X¹²+X⁵+1</text>
-  <text x="380" y="220" text-anchor="middle" class="hex">0x1021</text>
-  <text x="540" y="220" text-anchor="middle" class="app">ISO HDLC, X.25</text>
-  
-  <!-- 行5: CRC-32 -->
-  <line x1="20" y1="235" x2="660" y2="235" stroke="#eee"/>
-  <text x="80" y="255" text-anchor="middle" class="td" font-weight="bold">CRC-32</text>
-  <text x="220" y="255" text-anchor="middle" class="poly">X³²+X²⁶+...+X+1</text>
-  <text x="380" y="255" text-anchor="middle" class="hex">0x04C11DB7</text>
-  <text x="540" y="255" text-anchor="middle" class="app">ZIP, RAR, IEEE 802</text>
-  
-  <!-- 行6: CRC-32C -->
-  <line x1="20" y1="270" x2="660" y2="270" stroke="#eee"/>
-  <text x="80" y="285" text-anchor="middle" class="td" font-weight="bold">CRC-32C</text>
-  <text x="220" y="285" text-anchor="middle" class="poly">X³²+X²⁸+...+X⁶+1</text>
-  <text x="380" y="285" text-anchor="middle" class="hex">0x1EDC6F41</text>
-  <text x="540" y="285" text-anchor="middle" class="app">iSCSI, Btrfs, ext4</text>
-  
-  <!-- 注释 -->
-  <text x="340" y="298" text-anchor="middle" class="note">多项式省略最高位（1）</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 360" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="680" height="360" rx="12" fill="#161b20" stroke="#2b333c"/>
+  <text x="28" y="38" font-size="12" font-weight="500" fill="#e0a34b" letter-spacing="1.2">常用 CRC 版本</text>
+
+  <rect x="28" y="64" width="624" height="36" rx="4" fill="#21272e"/>
+  <text x="88" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="#e0a34b">名称</text>
+  <text x="258" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="#e0a34b">多项式</text>
+  <text x="428" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="#e0a34b">十六进制</text>
+  <text x="570" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="#e0a34b">典型应用</text>
+
+  <line x1="28" y1="100" x2="652" y2="100" stroke="#2b333c"/>
+  <line x1="28" y1="136" x2="652" y2="136" stroke="#2b333c"/>
+  <line x1="28" y1="172" x2="652" y2="172" stroke="#2b333c"/>
+  <line x1="28" y1="208" x2="652" y2="208" stroke="#2b333c"/>
+  <line x1="28" y1="244" x2="652" y2="244" stroke="#2b333c"/>
+  <line x1="28" y1="280" x2="652" y2="280" stroke="#2b333c"/>
+  <line x1="28" y1="316" x2="652" y2="316" stroke="#2b333c"/>
+
+  <text x="88" y="123" text-anchor="middle" font-size="13" font-weight="700" fill="#e9edf2">CRC-8</text>
+  <text x="258" y="123" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#6db3e8">X⁸+X²+X+1</text>
+  <text x="428" y="123" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#a7e8ba">0x07</text>
+  <text x="570" y="123" text-anchor="middle" font-size="12" fill="#98a4b1">短帧校验</text>
+
+  <text x="88" y="159" text-anchor="middle" font-size="13" font-weight="700" fill="#e9edf2">CRC-12</text>
+  <text x="258" y="159" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#6db3e8">X¹²+X¹¹+X³+X²+X+1</text>
+  <text x="428" y="159" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#a7e8ba">0x80F</text>
+  <text x="570" y="159" text-anchor="middle" font-size="12" fill="#98a4b1">电信系统</text>
+
+  <text x="88" y="195" text-anchor="middle" font-size="13" font-weight="700" fill="#e9edf2">CRC-16</text>
+  <text x="258" y="195" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#6db3e8">X¹⁶+X¹⁵+X²+1</text>
+  <text x="428" y="195" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#a7e8ba">0x8005</text>
+  <text x="570" y="195" text-anchor="middle" font-size="12" fill="#98a4b1">Modbus、USB</text>
+
+  <text x="88" y="231" text-anchor="middle" font-size="13" font-weight="700" fill="#e9edf2">CRC-CCITT</text>
+  <text x="258" y="231" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#6db3e8">X¹⁶+X¹²+X⁵+1</text>
+  <text x="428" y="231" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#a7e8ba">0x1021</text>
+  <text x="570" y="231" text-anchor="middle" font-size="12" fill="#98a4b1">HDLC、X.25</text>
+
+  <text x="88" y="267" text-anchor="middle" font-size="13" font-weight="700" fill="#e9edf2">CRC-32</text>
+  <text x="258" y="267" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#6db3e8">X³²+X²⁶+…+X+1</text>
+  <text x="428" y="267" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#a7e8ba">0x04C11DB7</text>
+  <text x="570" y="267" text-anchor="middle" font-size="12" fill="#98a4b1">ZIP、以太网</text>
+
+  <text x="88" y="303" text-anchor="middle" font-size="13" font-weight="700" fill="#e9edf2">CRC-32C</text>
+  <text x="258" y="303" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#6db3e8">X³²+X²⁸+…+X⁶+1</text>
+  <text x="428" y="303" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#a7e8ba">0x1EDC6F41</text>
+  <text x="570" y="303" text-anchor="middle" font-size="12" fill="#98a4b1">iSCSI、Btrfs</text>
+
+  <text x="28" y="332" font-size="11.5" fill="#6b7683">十六进制为省略最高位后的 poly 值，例如 CRC-32 完整多项式是 x³²+x²⁶+…+1，写作 0x04C11DB7</text>
 </svg>

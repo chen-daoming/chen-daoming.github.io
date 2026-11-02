@@ -1,58 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="480" height="240" viewBox="0 0 480 240">
-  <style>
-    text { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; }
-    .title { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
-    .th { font-size: 14px; font-weight: bold; fill: #fff; }
-    .td { font-size: 16px; fill: #333; }
-    .res { font-size: 16px; font-weight: bold; fill: #d00; }
-    .note { font-size: 12px; fill: #666; }
-    .sym { font-size: 20px; font-weight: bold; fill: #06f; }
-  </style>
-  
-  <rect width="480" height="240" fill="#f8f9fa" rx="10"/>
-  <text x="240" y="30" text-anchor="middle" class="title">模二运算（XOR）</text>
-  
-  <!-- 真值表 -->
-  <rect x="30" y="50" width="220" height="150" fill="#fff" stroke="#ddd" rx="6"/>
-  
-  <rect x="30" y="50" width="220" height="30" fill="#1976d2" rx="6"/>
-  <rect x="30" y="65" width="220" height="15" fill="#1976d2"/>
-  <text x="75" y="72" text-anchor="middle" class="th">A</text>
-  <text x="140" y="72" text-anchor="middle" class="th">B</text>
-  <text x="205" y="72" text-anchor="middle" class="th">A ⊕ B</text>
-  
-  <line x1="30" y1="100" x2="250" y2="100" stroke="#eee"/>
-  <text x="75" y="120" text-anchor="middle" class="td">0</text>
-  <text x="140" y="120" text-anchor="middle" class="td">0</text>
-  <text x="205" y="120" text-anchor="middle" class="res">0</text>
-  
-  <line x1="30" y1="135" x2="250" y2="135" stroke="#eee"/>
-  <text x="75" y="155" text-anchor="middle" class="td">0</text>
-  <text x="140" y="155" text-anchor="middle" class="td">1</text>
-  <text x="205" y="155" text-anchor="middle" class="res">1</text>
-  
-  <line x1="30" y1="170" x2="250" y2="170" stroke="#eee"/>
-  <text x="75" y="190" text-anchor="middle" class="td">1</text>
-  <text x="140" y="190" text-anchor="middle" class="td">0</text>
-  <text x="205" y="190" text-anchor="middle" class="res">1</text>
-  
-  <!-- 分隔线 -->
-  <line x1="30" y1="200" x2="250" y2="200" stroke="#eee"/>
-  <text x="75" y="210" text-anchor="middle" class="td">1</text>
-  <text x="140" y="210" text-anchor="middle" class="td">1</text>
-  <text x="205" y="210" text-anchor="middle" class="res">0</text>
-  
-  <!-- 右侧说明 -->
-  <rect x="280" y="50" width="200" height="150" fill="#fff" stroke="#ddd" rx="6"/>
-  <text x="380" y="75" text-anchor="middle" class="th" fill="#333">特点</text>
-  
-  <text x="300" y="105" class="td" font-size="14">• 相同得 0</text>
-  <text x="300" y="130" class="td" font-size="14">• 相异得 1</text>
-  <text x="300" y="155" class="td" font-size="14">• 不进位加法</text>
-  <text x="300" y="180" class="td" font-size="14">• ⊕ = XOR 运算符</text>
-  
-  <!-- 底部公式 -->
-  <rect x="30" y="215" width="450" height="35" fill="#fff3e0" rx="4"/>
-  <text x="255" y="238" text-anchor="middle" class="note">模二加法 = 模二减法 = XOR（异或）运算</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 300" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="680" height="300" rx="12" fill="#161b20" stroke="#2b333c"/>
+
+  <text x="28" y="40" font-size="12" font-weight="500" fill="#e0a34b" letter-spacing="1.2">模二运算 · XOR</text>
+
+  <rect x="28" y="64" width="280" height="174" rx="6" fill="none" stroke="#2b333c"/>
+  <rect x="28" y="64" width="280" height="34" rx="6" fill="#21272e"/>
+  <text x="74" y="86" text-anchor="middle" font-size="12" font-weight="700" fill="#e0a34b">A</text>
+  <text x="168" y="86" text-anchor="middle" font-size="12" font-weight="700" fill="#e0a34b">B</text>
+  <text x="262" y="86" text-anchor="middle" font-size="12" font-weight="700" fill="#e0a34b">A ⊕ B</text>
+
+  <line x1="28" y1="133" x2="308" y2="133" stroke="#2b333c"/>
+  <line x1="28" y1="168" x2="308" y2="168" stroke="#2b333c"/>
+  <line x1="28" y1="203" x2="308" y2="203" stroke="#2b333c"/>
+
+  <text x="74" y="119" text-anchor="middle" font-size="14" font-family="Consolas,monospace" fill="#e9edf2">0</text>
+  <text x="168" y="119" text-anchor="middle" font-size="14" font-family="Consolas,monospace" fill="#e9edf2">0</text>
+  <text x="262" y="119" text-anchor="middle" font-size="14" font-family="Consolas,monospace" fill="#6b7683">0</text>
+
+  <text x="74" y="154" text-anchor="middle" font-size="14" font-family="Consolas,monospace" fill="#e9edf2">0</text>
+  <text x="168" y="154" text-anchor="middle" font-size="14" font-family="Consolas,monospace" fill="#e9edf2">1</text>
+  <text x="262" y="154" text-anchor="middle" font-size="14" font-family="Consolas,monospace" fill="#a7e8ba">1</text>
+
+  <text x="74" y="189" text-anchor="middle" font-size="14" font-family="Consolas,monospace" fill="#e9edf2">1</text>
+  <text x="168" y="189" text-anchor="middle" font-size="14" font-family="Consolas,monospace" fill="#e9edf2">0</text>
+  <text x="262" y="189" text-anchor="middle" font-size="14" font-family="Consolas,monospace" fill="#a7e8ba">1</text>
+
+  <text x="74" y="224" text-anchor="middle" font-size="14" font-family="Consolas,monospace" fill="#e9edf2">1</text>
+  <text x="168" y="224" text-anchor="middle" font-size="14" font-family="Consolas,monospace" fill="#e9edf2">1</text>
+  <text x="262" y="224" text-anchor="middle" font-size="14" font-family="Consolas,monospace" fill="#6b7683">0</text>
+
+  <rect x="340" y="95" width="6" height="6" rx="1" fill="#e0a34b"/>
+  <text x="358" y="102" font-size="13" fill="#e9edf2">相同得 0</text>
+  <rect x="340" y="127" width="6" height="6" rx="1" fill="#e0a34b"/>
+  <text x="358" y="134" font-size="13" fill="#e9edf2">相异得 1</text>
+  <rect x="340" y="159" width="6" height="6" rx="1" fill="#e0a34b"/>
+  <text x="358" y="166" font-size="13" fill="#e9edf2">不进位、不借位</text>
+  <rect x="340" y="191" width="6" height="6" rx="1" fill="#e0a34b"/>
+  <text x="358" y="198" font-size="13" fill="#e9edf2">⊕ 即 XOR 运算符</text>
+
+  <rect x="28" y="256" width="624" height="32" rx="6" fill="#a7e8ba" fill-opacity="0.08" stroke="#2b333c"/>
+  <text x="340" y="277" text-anchor="middle" font-size="13" fill="#a7e8ba">模二加法 = 模二减法 = XOR（异或），这就是 CRC 能做除法的原因</text>
 </svg>

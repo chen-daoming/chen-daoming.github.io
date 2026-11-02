@@ -35,7 +35,7 @@ CRC通过数学运算建立数据位和校验位的约定关系，能够高效�
 
 CRC的核心是**模二运算**，它与普通四则运算的关键区别是**不考虑进位和借位**。
 
-![模二运算](/images/crc/xor-operation.svg)
+![模二运算](/images/crc/xor-operation.svg?v=2)
 
 ### 模二运算特点
 
@@ -55,7 +55,7 @@ CRC的核心是**模二运算**，它与普通四则运算的关键区别是**�
 
 CRC的基本思想是将传输的数据当做一个位数很长的数，将这个数模二除以另一个数，得到的余数作为校验数据附加到原数据后面。
 
-![CRC校验原理](/images/crc/crc-principle.svg)
+![CRC校验原理](/images/crc/crc-principle.svg?v=2)
 
 ### 算法流程
 
@@ -85,7 +85,7 @@ CRC的基本思想是将传输的数据当做一个位数很长的数，将这�
 
 以CRC-8为例，演示完整的计算过程：
 
-![CRC计算示例](/images/crc/crc-calculation.svg)
+![CRC计算示例](/images/crc/crc-calculation.svg?v=2)
 
 ### 计算步骤
 
@@ -115,7 +115,7 @@ CRC算法中，二进制数用**二进制系数多项式**描述：
 
 ## 常用CRC版本
 
-![常用CRC版本对比](/images/crc/crc-versions.svg)
+![常用CRC版本对比](/images/crc/crc-versions.svg?v=2)
 
 ### 特殊说明
 
@@ -134,7 +134,7 @@ CRC算法中，二进制数用**二进制系数多项式**描述：
 
 ## CRC算法参数
 
-![CRC算法参数](/images/crc/crc-parameters.svg)
+![CRC算法参数](/images/crc/crc-parameters.svg?v=2)
 
 ### 参数详解
 

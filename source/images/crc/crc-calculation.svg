@@ -1,95 +1,72 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="700" height="320" viewBox="0 0 700 320">
-  <style>
-    text { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; }
-    .title { font-size: 18px; font-weight: bold; fill: #1a1a2e; }
-    .subtitle { font-size: 13px; fill: #666; }
-    .label { font-size: 12px; fill: #333; }
-    .num { font-size: 12px; fill: #999; }
-    .op { font-size: 12px; fill: #666; }
-    .data { font-size: 14px; fill: #1565c0; font-family: 'Consolas', monospace; }
-    .div { font-size: 14px; fill: #d00; font-weight: bold; font-family: 'Consolas', monospace; }
-    .res { font-size: 14px; fill: #090; font-weight: bold; font-family: 'Consolas', monospace; }
-    .step { font-size: 14px; font-weight: bold; fill: #333; }
-  </style>
-  
-  <rect width="700" height="320" fill="#f8f9fa" rx="10"/>
-  <text x="350" y="28" text-anchor="middle" class="title">CRC-8 计算示例</text>
-  <text x="350" y="48" text-anchor="middle" class="subtitle">数据: 1101011011  除数: 10011 (x⁴+x+1)</text>
-  
-  <!-- 左侧：除法过程 -->
-  <text x="180" y="75" text-anchor="middle" class="step">模二除法过程</text>
-  
-  <!-- 表头 -->
-  <rect x="20" y="85" width="320" height="25" fill="#e3f2fd" rx="3"/>
-  <text x="60" y="102" text-anchor="middle" class="label" font-weight="bold">步骤</text>
-  <text x="140" y="102" text-anchor="middle" class="label" font-weight="bold">部分余数</text>
-  <text x="240" y="102" text-anchor="middle" class="label" font-weight="bold">÷ 除数</text>
-  <text x="320" y="102" text-anchor="middle" class="label" font-weight="bold">结果</text>
-  
-  <!-- 步骤1 -->
-  <text x="60" y="128" text-anchor="middle" class="num">1</text>
-  <text x="140" y="128" text-anchor="middle" class="data">11010</text>
-  <text x="240" y="128" text-anchor="middle" class="div">10011</text>
-  <text x="320" y="128" text-anchor="middle" class="res">= 01001</text>
-  
-  <line x1="20" y1="138" x2="340" y2="138" stroke="#eee"/>
-  
-  <!-- 步骤2 -->
-  <text x="60" y="155" text-anchor="middle" class="num">2</text>
-  <text x="140" y="155" text-anchor="middle" class="data">10011</text>
-  <text x="240" y="155" text-anchor="middle" class="div">10011</text>
-  <text x="320" y="155" text-anchor="middle" class="res">= 00000</text>
-  
-  <line x1="20" y1="165" x2="340" y2="165" stroke="#eee"/>
-  
-  <!-- 步骤3-6 简化 -->
-  <text x="60" y="182" text-anchor="middle" class="num">3-6</text>
-  <text x="140" y="182" text-anchor="middle" class="data">00010</text>
-  <text x="240" y="182" text-anchor="middle" class="div">10011</text>
-  <text x="320" y="182" text-anchor="middle" class="op">→ 商0，落下一位</text>
-  
-  <line x1="20" y1="192" x2="340" y2="192" stroke="#eee"/>
-  
-  <!-- 步骤7 -->
-  <text x="60" y="209" text-anchor="middle" class="num">7</text>
-  <text x="140" y="209" text-anchor="middle" class="data">10110</text>
-  <text x="240" y="209" text-anchor="middle" class="div">10011</text>
-  <text x="320" y="209" text-anchor="middle" class="res">= 00101</text>
-  
-  <line x1="20" y1="219" x2="340" y2="219" stroke="#eee"/>
-  
-  <!-- 步骤8-10 简化 -->
-  <text x="60" y="236" text-anchor="middle" class="num">8-10</text>
-  <text x="140" y="236" text-anchor="middle" class="data">10100</text>
-  <text x="240" y="236" text-anchor="middle" class="div">10011</text>
-  <text x="320" y="236" text-anchor="middle" class="op">→ 商1，XOR</text>
-  
-  <line x1="20" y1="246" x2="340" y2="246" stroke="#eee"/>
-  
-  <!-- 最终结果 -->
-  <text x="60" y="268" text-anchor="middle" class="num">11</text>
-  <text x="140" y="268" text-anchor="middle" class="data">00111</text>
-  <text x="240" y="268" text-anchor="middle" class="label">&lt; 除数</text>
-  <text x="320" y="268" text-anchor="middle" class="res" font-size="16">余数 = 1110</text>
-  
-  <!-- 右侧：结果 -->
-  <rect x="380" y="75" width="300" height="180" fill="#fff" stroke="#ddd" rx="6"/>
-  <text x="530" y="100" text-anchor="middle" class="step">计算结果</text>
-  
-  <rect x="400" y="115" width="260" height="40" fill="#ffebee" stroke="#ef9a9a" rx="4"/>
-  <text x="530" y="132" text-anchor="middle" class="label" fill="#d00">CRC 校验码（余数）</text>
-  <text x="530" y="148" text-anchor="middle" class="div" font-size="18">1110</text>
-  
-  <rect x="400" y="170" width="260" height="40" fill="#e8f5e9" stroke="#a5d6a7" rx="4"/>
-  <text x="530" y="187" text-anchor="middle" class="label" fill="#090">实际发送数据</text>
-  <text x="530" y="203" text-anchor="middle" class="data" font-size="16">1101011011 1110</text>
-  
-  <rect x="400" y="220" width="260" height="40" fill="#e3f2fd" stroke="#90caf9" rx="4"/>
-  <text x="530" y="237" text-anchor="middle" class="label" fill="#1565c0">接收方校验</text>
-  <text x="530" y="253" text-anchor="middle" class="res">余数=0 → 传输正确</text>
-  
-  <!-- 底部说明 -->
-  <rect x="20" y="290" width="660" height="30" fill="#fff3e0" rx="4"/>
-  <text x="350" y="310" text-anchor="middle" class="label">注: 除数位数(5) - 1 = CRC码位数(4)  |  CRC-8标准多项式: 0x07 (x⁸+x²+x+1)</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 420" font-family="'Microsoft YaHei','PingFang SC',Arial,sans-serif">
+  <rect width="680" height="420" rx="12" fill="#161b20" stroke="#2b333c"/>
+  <text x="28" y="38" font-size="12" font-weight="500" fill="#e0a34b" letter-spacing="1.2">模二除法求 CRC</text>
+  <text x="28" y="62" font-size="12" fill="#98a4b1">数据 1101011011　生成多项式 10011（x⁴+x+1）　r = 4</text>
+
+  <rect x="28" y="80" width="380" height="34" rx="4" fill="#21272e"/>
+  <text x="58" y="103" text-anchor="middle" font-size="12" font-weight="700" fill="#e0a34b">步</text>
+  <text x="158" y="103" text-anchor="middle" font-size="12" font-weight="700" fill="#e0a34b">当前 5 位</text>
+  <text x="273" y="103" text-anchor="middle" font-size="12" font-weight="700" fill="#e0a34b">⊕ G(x)</text>
+  <text x="363" y="103" text-anchor="middle" font-size="12" font-weight="700" fill="#e0a34b">余数</text>
+
+  <line x1="28" y1="114" x2="408" y2="114" stroke="#2b333c"/>
+  <line x1="28" y1="148" x2="408" y2="148" stroke="#2b333c"/>
+  <line x1="28" y1="182" x2="408" y2="182" stroke="#2b333c"/>
+  <line x1="28" y1="216" x2="408" y2="216" stroke="#2b333c"/>
+  <line x1="28" y1="250" x2="408" y2="250" stroke="#2b333c"/>
+  <line x1="28" y1="284" x2="408" y2="284" stroke="#2b333c"/>
+  <line x1="28" y1="318" x2="408" y2="318" stroke="#2b333c"/>
+
+  <text x="58" y="136" text-anchor="middle" font-size="12" fill="#6b7683">1</text>
+  <text x="158" y="136" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#6db3e8">11010</text>
+  <text x="273" y="136" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#98a4b1">10011</text>
+  <text x="363" y="136" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#e9edf2">01001</text>
+
+  <text x="58" y="170" text-anchor="middle" font-size="12" fill="#6b7683">2</text>
+  <text x="158" y="170" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#6db3e8">10011</text>
+  <text x="273" y="170" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#98a4b1">10011</text>
+  <text x="363" y="170" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#e9edf2">00000</text>
+
+  <text x="58" y="204" text-anchor="middle" font-size="12" fill="#6b7683">3</text>
+  <text x="158" y="204" text-anchor="middle" font-size="12" fill="#98a4b1">移位 5 次</text>
+  <text x="273" y="204" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#6b7683">—</text>
+  <text x="363" y="204" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#e9edf2">10110</text>
+
+  <text x="58" y="238" text-anchor="middle" font-size="12" fill="#6b7683">4</text>
+  <text x="158" y="238" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#6db3e8">10110</text>
+  <text x="273" y="238" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#98a4b1">10011</text>
+  <text x="363" y="238" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#e9edf2">00101</text>
+
+  <text x="58" y="272" text-anchor="middle" font-size="12" fill="#6b7683">5</text>
+  <text x="158" y="272" text-anchor="middle" font-size="12" fill="#98a4b1">移位 2 次</text>
+  <text x="273" y="272" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#6b7683">—</text>
+  <text x="363" y="272" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#e9edf2">10100</text>
+
+  <text x="58" y="306" text-anchor="middle" font-size="12" fill="#6b7683">6</text>
+  <text x="158" y="306" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#6db3e8">10100</text>
+  <text x="273" y="306" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#98a4b1">10011</text>
+  <text x="363" y="306" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#e9edf2">00111</text>
+
+  <rect x="28" y="318" width="380" height="34" fill="#a7e8ba" fill-opacity="0.06"/>
+  <text x="58" y="340" text-anchor="middle" font-size="12" fill="#6b7683">7</text>
+  <text x="158" y="340" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#a7e8ba">01110</text>
+  <text x="273" y="340" text-anchor="middle" font-size="11" fill="#6b7683">小于 10011</text>
+  <text x="363" y="340" text-anchor="middle" font-size="13" font-weight="700" font-family="Consolas,monospace" fill="#a7e8ba">1110</text>
+
+  <rect x="428" y="80" width="224" height="272" rx="6" fill="#1b2026" stroke="#2b333c"/>
+  <text x="540" y="104" text-anchor="middle" font-size="12" font-weight="500" fill="#98a4b1" letter-spacing="0.8">计算结果</text>
+
+  <rect x="444" y="118" width="192" height="60" rx="5" fill="#a7e8ba" fill-opacity="0.08" stroke="#a7e8ba" stroke-opacity="0.35"/>
+  <text x="540" y="138" text-anchor="middle" font-size="11" fill="#98a4b1">CRC 校验码（余数）</text>
+  <text x="540" y="164" text-anchor="middle" font-size="20" font-weight="700" font-family="Consolas,monospace" fill="#a7e8ba">1110</text>
+
+  <rect x="444" y="188" width="192" height="60" rx="5" fill="#1b2026" stroke="#2b333c"/>
+  <text x="540" y="208" text-anchor="middle" font-size="11" fill="#98a4b1">实际发送的数据</text>
+  <text x="540" y="234" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#e9edf2">1101011011 1110</text>
+
+  <rect x="444" y="258" width="192" height="60" rx="5" fill="#1b2026" stroke="#2b333c"/>
+  <text x="540" y="278" text-anchor="middle" font-size="11" fill="#98a4b1">接收端再除一次</text>
+  <text x="540" y="304" text-anchor="middle" font-size="12" fill="#6db3e8">余数 0 → 传输正确</text>
+
+  <text x="28" y="382" font-size="11.5" fill="#6b7683">校验码位数 r 由生成多项式决定：G(x) 为 5 位 → r = 5 − 1 = 4</text>
 </svg>
